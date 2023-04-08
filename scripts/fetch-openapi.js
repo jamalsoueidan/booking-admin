@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const openApiYmlUrl =
-  "https://raw.githubusercontent.com/jamalsoueidan/booking-shopify-api/main/docs/openapi.yaml";
+  "https://raw.githubusercontent.com/jamalsoueidan/booking-api/main/docs/openapi.yaml";
 const openApiYmlLocalPath = "./openapi.yaml";
 const generatedClientPath = "./src/generated-client";
 const newServerUrl = "/api";

@@ -19,7 +19,6 @@ export default defineConfig({
       await generateReactQueryComponents(context, {
         filenamePrefix,
         schemasFiles,
-        baseUrl: "https://your-base-url.com",
       });
     },
   },

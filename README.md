@@ -1,6 +1,6 @@
 # Booking Admin Application
 
-This application gives each user/member access to their own bookings, schedule etc., allows them to edit their own bookings, schedule their time-work, and so on. Also see other members of the group bookings.
+The Booking Admin application manage appointments for users. It is built using the React library and the Shopify Polaris design system. The application serves as the front-end layer that communicates with the back-end Booking API, providing seamless and user-friendly management of appointments, shifts, and user-related tasks.
 
 ## Deployment
 
