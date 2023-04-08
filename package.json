@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:prod": "API_URL=https://booking-shopify-api.azurewebsites.net/api npm run dev",
     "prebuild": "npm run build-openapi",
     "build": "tsc && vite build",
     "preview": "vite preview",

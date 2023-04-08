@@ -2,17 +2,17 @@ import "./App.css";
 import { useReceivePassword } from "./api/bookingApiComponents";
 
 function App() {
-  const { mutate: requestPassword, data } = useReceivePassword();
+  const { mutate: requestPassword, error } = useReceivePassword();
 
   const onClick = () => {
     requestPassword({
       body: {
-        phone: "31317428",
+        phone: "031317428",
       },
     });
   };
 
-  console.log(data);
+  console.log(error);
 
   return (
     <button type="button" onClick={onClick}>
