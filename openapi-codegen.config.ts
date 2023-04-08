@@ -3,6 +3,7 @@ import {
   generateReactQueryComponents,
   generateSchemaTypes,
 } from "@openapi-codegen/typescript";
+
 export default defineConfig({
   bookingApi: {
     from: {
@@ -18,6 +19,7 @@ export default defineConfig({
       await generateReactQueryComponents(context, {
         filenamePrefix,
         schemasFiles,
+        baseUrl: "https://your-base-url.com",
       });
     },
   },
