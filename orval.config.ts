@@ -7,7 +7,7 @@ export default defineConfig({
       schemas: "src/api/model",
       client: "react-query",
       target: "src/api/",
-      mock: true,
+      mock: false,
     },
     input: {
       target: "./openapi.yaml",
