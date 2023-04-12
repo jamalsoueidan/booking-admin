@@ -8,7 +8,7 @@ The Booking Admin application manage appointments for users. It is built using t
 npm run build
 ```
 
-It download the openapi.yml from booking-api repostory and then generate typesafe react-query hook.
+This will install deps, download openapi.yml and generate the typesafe react-query hook, and start the dev server.
 
 ## Development
 
@@ -18,7 +18,7 @@ npm run build-openapi
 npm run dev
 ```
 
-This will install deps, download openapi.yml and generate the typesafe react-query hook.
+## Vite configuration
 
 You need to configure vite to point to the api.
 
