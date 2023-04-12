@@ -18,6 +18,16 @@ npm run build-openapi
 npm run dev
 ```
 
+## Github Actions:
+
+### pull request
+
+1. Running chromatic (storybook)
+
+### main branch
+
+1. Deploy Azure Static Web App
+
 ## Vite configuration
 
 You need to configure vite to point to the api.
