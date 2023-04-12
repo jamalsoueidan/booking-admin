@@ -3,6 +3,8 @@ import { defineConfig } from "vite";
 
 const target = process.env.API_URL ?? "http://localhost:7071/api";
 
+console.log("API_URL", target);
+
 export default defineConfig({
   server: {
     open: true,
