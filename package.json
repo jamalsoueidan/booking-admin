@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "fetch-openapi": "node scripts/fetch-openapi.js",
+    "fetch-openapi": "curl -o ./openapi.yaml https://raw.githubusercontent.com/jamalsoueidan/booking-api/main/docs/openapi.yaml",
     "build-openapi": "npm run fetch-openapi & npx orval --config ./orval.config.ts"
   },
   "dependencies": {
@@ -21,8 +21,6 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@openapi-codegen/cli": "^2.0.0",
-    "@openapi-codegen/typescript": "^6.1.3",
     "@storybook/addon-essentials": "^7.0.4",
     "@storybook/addon-interactions": "^7.0.4",
     "@storybook/addon-links": "^7.0.4",
