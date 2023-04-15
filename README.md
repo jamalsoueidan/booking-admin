@@ -23,6 +23,7 @@ npm run dev
 ### pull request
 
 1. Running chromatic (storybook)
+1. Validate that build works (in case any api generation failling for some reason)
 
 ### main branch
 
