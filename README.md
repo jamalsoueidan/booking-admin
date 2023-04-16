@@ -1,5 +1,7 @@
 # Booking Admin Application
 
+Preview: https://victorious-water-04353a503.2.azurestaticapps.net/
+
 The Booking Admin application manage appointments for users. It is built using the React library and the Shopify Polaris design system. The application serves as the front-end layer that communicates with the back-end Booking API, providing seamless and user-friendly management of appointments, shifts, and user-related tasks.
 
 ## Deployment
@@ -23,7 +25,7 @@ npm run dev
 ### pull request
 
 1. Running chromatic (storybook)
-1. Validate that build works (in case any api generation failling for some reason)
+2. Validate that build works (in case any api generation failling for some reason)
 
 ### main branch
 
