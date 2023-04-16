@@ -4,7 +4,6 @@ import da from "date-fns/locale/da";
 import { Suspense, useMemo } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useInstallationGetSTatus } from "./api/bookingShopifyApi";
-import "./application.css";
 import { LinkComponent } from "./components/application/link-component";
 import { LoadingPage } from "./components/loading/loading-page";
 import AuthPage from "./pages/auth/auth-page";

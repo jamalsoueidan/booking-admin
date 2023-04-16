@@ -1,7 +1,30 @@
 // .storybook/preview.tsx
 import "@shopify/polaris/build/esm/styles.css";
 import type { Preview } from "@storybook/react";
-import React from "react";
+import { setDefaultOptions } from "date-fns";
+import da from "date-fns/locale/da";
+import React, { useMemo } from "react";
+import { BrowserRouter, useNavigate } from "react-router-dom";
+import { LinkComponent } from "../src/components/application/link-component";
+import { SettingsProvider } from "../src/providers/setting-provider";
+
+export const Decorator = ({ children }: { children: React.ReactNode }) => {
+  const navigate = useNavigate();
+
+  const value = useMemo(
+    () => ({
+      LinkComponent: LinkComponent,
+      language: "da",
+      timeZone: "Europe/Copenhagen",
+      navigate,
+    }),
+    [navigate]
+  );
+
+  setDefaultOptions({ locale: value.language === "da" ? da : undefined });
+
+  return <SettingsProvider value={value}>{children}</SettingsProvider>;
+};
 
 const preview: Preview = {
   parameters: {
@@ -15,9 +38,11 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <div>
-        <Story />
-      </div>
+      <BrowserRouter>
+        <Decorator>
+          <Story />
+        </Decorator>
+      </BrowserRouter>
     ),
   ],
 };
