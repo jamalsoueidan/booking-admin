@@ -18,7 +18,7 @@ import { useTranslation } from "~/hooks/use-translation";
 export default () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { mutate: login, isError } = useAuthLogin();
+  const { mutateAsync: login, isError } = useAuthLogin();
   const { t } = useTranslation({ id: "login", locales });
 
   const {
@@ -30,15 +30,16 @@ export default () => {
       password: useField(""),
     },
     onSubmit: async (fieldValues) => {
-      await login({ data: fieldValues });
-      if (isError) {
+      try {
+        const response = await login({ data: fieldValues });
+        console.log(response);
+        return { status: "success" };
+      } catch (error) {
         return {
           errors: [{ field: ["identification"], message: t("error") }],
           status: "fail",
         };
       }
-      navigate("/admin/");
-      return { status: "success" };
     },
   });
 

@@ -1,6 +1,7 @@
 import {
   AlphaCard,
   Button,
+  Form,
   FormLayout,
   Inline,
   Link,
@@ -38,7 +39,7 @@ const locales = {
 
 export default () => {
   const navigate = useNavigate();
-  const mutation = useAuthReceivePassword();
+  const { mutateAsync: receivePassword } = useAuthReceivePassword();
   const { t } = useTranslation({ id: "password", locales });
 
   const { fields, submit, dirty, submitting, submitErrors } = useForm({
@@ -46,26 +47,24 @@ export default () => {
       phone: useField("4531317428"),
     },
     onSubmit: async (fieldValues) => {
-      return {
-        errors: [{ field: ["phone"], message: t("error") }],
-        status: "fail",
-      };
+      try {
+        await receivePassword({ data: fieldValues });
+        return {
+          status: "success",
+        };
+      } catch (error) {
+        return {
+          errors: [{ field: ["phone"], message: t("error") }],
+          status: "fail",
+        };
+      }
     },
   });
-
-  console.log(submitErrors);
 
   return (
     <AuthPage title={t("title")}>
       <AlphaCard>
-        <pre>
-          {JSON.stringify(
-            { dirty, submitting, fields, submitErrors },
-            undefined,
-            2
-          )}
-        </pre>
-        <form onSubmit={submit}>
+        <Form onSubmit={submit}>
           <FormLayout>
             <TextField
               label={t("phone.label")}
@@ -80,7 +79,7 @@ export default () => {
               <Link onClick={() => navigate("/login")}>{t("login")}</Link>
             </Inline>
           </FormLayout>
-        </form>
+        </Form>
       </AlphaCard>
     </AuthPage>
   );

@@ -1,6 +1,6 @@
-import { useTranslation } from "@jamalsoueidan/frontend.hooks.use-translation";
 import { AlphaStack, Spinner, Text } from "@shopify/polaris";
-import React, { memo } from "react";
+import { memo } from "react";
+import { useTranslation } from "~/hooks/use-translation";
 
 export interface LoadingModalProps {
   title?: string;

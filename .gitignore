@@ -27,3 +27,4 @@ dist-ssr
 src/api/*
 openapi.yaml
 storybook-static
+__azurite_db_table__.json

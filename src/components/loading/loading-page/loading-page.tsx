@@ -1,5 +1,5 @@
 import { AlphaStack, Frame, Loading, Spinner } from "@shopify/polaris";
-import React, { memo } from "react";
+import { memo } from "react";
 
 export type LoadingPageProps = {
   /**

@@ -12,5 +12,8 @@ export default defineConfig({
     input: {
       target: "./openapi.yaml",
     },
+    /*hooks: {
+      afterAllFilesWrite: "prettier --write",
+    },*/
   },
 });

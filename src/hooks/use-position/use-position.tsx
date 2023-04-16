@@ -1,5 +1,5 @@
-import { useTranslation } from "@jamalsoueidan/frontend.hooks.use-translation";
 import { useCallback, useMemo } from "react";
+import { useTranslation } from "../use-translation";
 
 // https://www.youtube.com/watch?v=a_m7jxrTlaw&list=PLIvujZeVDLMx040-j1W4WFs1BxuTGdI_b&index=3&ab_channel=MattPocock
 export type Positions = "1" | "2" | Omit<string, "1" | "2">;
@@ -33,7 +33,7 @@ export const usePosition = (): UseTagOptionsReturn => {
       { label: t("makeup"), value: "1" },
       { label: t("hairdresser"), value: "2" },
     ],
-    [t],
+    [t]
   );
 
   const selectPosition = useCallback(
@@ -44,7 +44,7 @@ export const usePosition = (): UseTagOptionsReturn => {
       }
       return option.label;
     },
-    [options],
+    [options]
   );
 
   return {
