@@ -1,4 +1,5 @@
 import react from "@vitejs/plugin-react-swc";
+import path from "path";
 import { defineConfig } from "vite";
 
 const target = process.env.API_URL ?? "http://localhost:7071/api";
@@ -16,6 +17,11 @@ export default defineConfig({
         ws: false,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+    },
+  },
+  resolve: {
+    alias: {
+      "~": path.resolve(__dirname, "./src"),
     },
   },
   plugins: [react()],
