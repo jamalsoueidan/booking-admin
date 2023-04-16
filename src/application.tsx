@@ -3,7 +3,7 @@ import { setDefaultOptions } from "date-fns";
 import da from "date-fns/locale/da";
 import { Suspense, useMemo } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { useInstallationGetSTatus } from "./api/bookingShopifyApi";
+import { useInstallationGetStatus } from "./api/bookingShopifyApi";
 import { LinkComponent } from "./components/application/link-component";
 import { LoadingPage } from "./components/loading/loading-page";
 import AuthPage from "./pages/auth/auth-page";
@@ -19,7 +19,7 @@ axios.interceptors.request.use((config) => {
 });
 
 export const Application = () => {
-  const { data } = useInstallationGetSTatus();
+  const { data } = useInstallationGetStatus();
 
   const navigate = useNavigate();
 
