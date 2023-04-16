@@ -1,0 +1,26 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Hooks/useTranslation" />
+
+## A React Hook to translation words
+
+### Component usage
+
+In this example we use the hook with scope set to bookings, and access all the nested translation when using the t method.
+
+```js
+import { useTranslation } from "./use-translation";
+
+const locales = {
+  da: {
+    lang: "Dansk",
+  },
+  en: {
+    lang: "English",
+  },
+};
+
+const { t } = useTranslation({ id: "bookings", locales });
+
+<h1>{t("lang")}</h1>;
+```

@@ -1,16 +1,17 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "@shopify/polaris/build/esm/styles.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./App.css";
-import "./index.css";
-
-const queryClient = new QueryClient();
+import { BrowserRouter } from "react-router-dom";
+import { Application } from "./application";
+import "./main.css";
+import { QueryProvider } from "./providers/query-provider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <QueryProvider>
+      <BrowserRouter>
+        <Application />
+      </BrowserRouter>
+    </QueryProvider>
   </React.StrictMode>
 );
