@@ -27,6 +27,7 @@
     "@fullcalendar/timegrid": "^6.1.5",
     "@shopify/polaris": "^10.43.0",
     "@shopify/polaris-icons": "^6.12.0",
+    "@shopify/react-form": "^2.5.4",
     "@shopify/react-i18n": "^7.7.2",
     "@tanstack/react-query": "^4.29.3",
     "date-fns": "^2.29.3",
