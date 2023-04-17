@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { PolarisProvider } from "../polaris-provider";
-import { TranslationProvider } from "../translation-provider";
+import { TranslationProvider } from "../translate-provider/translate-provider";
 import { SettingsContext, defaultValues } from "./settings-context";
 import { SettingsContextValues } from "./settings-context.types";
 
@@ -29,8 +29,11 @@ export const SettingsProvider = ({
 
   return (
     <SettingsContext.Provider value={{ ...data, update }}>
-      <TranslationProvider language={value?.language}>
-        <PolarisProvider linkComponent={value?.LinkComponent}>
+      <TranslationProvider language={data?.language}>
+        <PolarisProvider
+          linkComponent={data?.LinkComponent}
+          locale={data.language}
+        >
           {children}
         </PolarisProvider>
       </TranslationProvider>

@@ -34,7 +34,7 @@ export const useTranslation = <T extends object>({
   const t = useCallback(
     (id: NestedKeyOf<T>, replacements?: any) =>
       i18n.translate(id, replacements),
-    [i18n],
+    [i18n]
   );
 
   /*
@@ -45,14 +45,14 @@ export const useTranslation = <T extends object>({
   const tdynamic = useCallback(
     (
       id: NestedKeyOf<T> | Omit<string, NestedKeyOf<T>>,
-      replacements?: ComplexReplacementDictionary,
+      replacements?: ComplexReplacementDictionary
     ) => {
       if (replacements?.count === 0) {
         return i18n.translate(`${id}.zero`, replacements);
       }
       return i18n.translate(id as any, replacements);
     },
-    [i18n],
+    [i18n]
   );
 
   const locale = useMemo(() => i18n.locale, [i18n]);

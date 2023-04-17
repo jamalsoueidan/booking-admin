@@ -12,13 +12,13 @@ import {
 import { useField, useForm } from "@shopify/react-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthLogin } from "~/api/bookingShopifyApi";
-import { AuthPage } from "~/components/auth/auth-page";
-import { useTranslation } from "~/hooks/use-translation";
+import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
+import { useTranslation } from "~/providers/translate-provider";
 
 export default () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { mutateAsync: login, isError } = useAuthLogin();
+  const { mutateAsync: login } = useAuthLogin();
   const { t } = useTranslation({ id: "login", locales });
 
   const {
@@ -31,8 +31,7 @@ export default () => {
     },
     onSubmit: async (fieldValues) => {
       try {
-        const response = await login({ data: fieldValues });
-        console.log(response);
+        await login({ data: fieldValues });
         return { status: "success" };
       } catch (error) {
         return {
@@ -44,7 +43,7 @@ export default () => {
   });
 
   return (
-    <AuthPage title={t("title")}>
+    <AuthenticationWrapper title={t("title")}>
       <AlphaCard>
         {location.state?.message && (
           <>
@@ -75,14 +74,14 @@ export default () => {
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>
-              <Link onClick={() => navigate("/phone")}>
+              <Link onClick={() => navigate("/receive-password")}>
                 {t("receive_action")}
               </Link>
             </Inline>
           </FormLayout>
         </Form>
       </AlphaCard>
-    </AuthPage>
+    </AuthenticationWrapper>
   );
 };
 

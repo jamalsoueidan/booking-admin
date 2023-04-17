@@ -18,12 +18,15 @@ const Flex = styled.div`
   }
 `;
 
-interface LoginFrameProps {
+interface AuthenticationWrapperProps {
   title: string;
   children: ReactNode;
 }
 
-export const AuthPage = ({ title, children }: LoginFrameProps) => (
+export const AuthenticationWrapper = ({
+  title,
+  children,
+}: AuthenticationWrapperProps) => (
   <Center>
     <Flex>
       <TextContainer spacing="loose">

@@ -1,5 +1,6 @@
 import {
   AlphaCard,
+  Banner,
   Button,
   Form,
   FormLayout,
@@ -9,42 +10,20 @@ import {
   TextField,
 } from "@shopify/polaris";
 import { useField, useForm } from "@shopify/react-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthReceivePassword } from "~/api/bookingShopifyApi";
-import { AuthPage } from "~/components/auth/auth-page";
-import { useTranslation } from "~/hooks/use-translation";
-
-const locales = {
-  da: {
-    error: "Forkert email/mobilnummer eller adgangskode!",
-    login: "Log ind",
-    or: "eller",
-    phone: {
-      label: "Indtast mobilnummer",
-    },
-    send_submit: "Send mig adgangskode!",
-    title: "Modtag adgangskode på mobil",
-  },
-  en: {
-    error: "Wrong email/phone or password!",
-    login: "Login",
-    or: "or",
-    phone: {
-      label: "Enter your phonenumber",
-    },
-    send_submit: "Send me password!",
-    title: "Receive password on phone",
-  },
-};
+import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
+import { useTranslation } from "~/providers/translate-provider";
 
 export default () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const { mutateAsync: receivePassword } = useAuthReceivePassword();
   const { t } = useTranslation({ id: "password", locales });
 
-  const { fields, submit, dirty, submitting, submitErrors } = useForm({
+  const { fields, submit } = useForm({
     fields: {
-      phone: useField("4531317428"),
+      phone: useField("31317428"),
     },
     onSubmit: async (fieldValues) => {
       try {
@@ -62,7 +41,15 @@ export default () => {
   });
 
   return (
-    <AuthPage title={t("title")}>
+    <AuthenticationWrapper title={t("title")}>
+      {location.state?.message && (
+        <>
+          <Banner onDismiss={() => void undefined}>
+            <p>{t("setup")}</p>
+          </Banner>
+          <br />
+        </>
+      )}
       <AlphaCard>
         <Form onSubmit={submit}>
           <FormLayout>
@@ -81,6 +68,31 @@ export default () => {
           </FormLayout>
         </Form>
       </AlphaCard>
-    </AuthPage>
+    </AuthenticationWrapper>
   );
+};
+
+const locales = {
+  da: {
+    setup: "Indtast det telefonnummer du brugt til at oprette din bruger.",
+    error: "Forkert email/mobilnummer eller adgangskode!",
+    login: "Log ind",
+    or: "eller",
+    phone: {
+      label: "Indtast mobilnummer",
+    },
+    send_submit: "Send mig adgangskode!",
+    title: "Modtag adgangskode på mobil",
+  },
+  en: {
+    setup: "Enter the phone number you used to create the user",
+    error: "Wrong email/phone or password!",
+    login: "Login",
+    or: "or",
+    phone: {
+      label: "Enter your phonenumber",
+    },
+    send_submit: "Send me password!",
+    title: "Receive password on phone",
+  },
 };

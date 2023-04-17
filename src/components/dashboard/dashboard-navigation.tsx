@@ -10,9 +10,9 @@ import {
   SettingsMajor,
 } from "@shopify/polaris-icons";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "~/hooks/use-translation";
+import { useTranslation } from "~/providers/translate-provider";
 
-export const ApplicationNavigation = () => {
+export const DashboardNavigation = () => {
   const navigate = useNavigate();
   const { t } = useTranslation({ id: "app-navigation", locales });
   return (
