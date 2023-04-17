@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { PolarisProvider } from "../polaris-provider";
-import { TranslationProvider } from "../translation-provider";
+import { TranslationProvider } from "../translate-provider/translate-provider";
 import { SettingsContext, defaultValues } from "./settings-context";
 import { SettingsContextValues } from "./settings-context.types";
 

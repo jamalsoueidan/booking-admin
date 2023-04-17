@@ -11,20 +11,27 @@ const Login = lazy(() => import("./pages/login"));
 const Phone = lazy(() => import("./pages/phone"));
 
 export const ApplicationRoutes = () => {
-  const { data } = useInstallationGetStatus();
+  const { data, isInitialLoading } = useInstallationGetStatus();
+  if (isInitialLoading) {
+    return <LoadingPage title="Loading data" />;
+  }
 
-  console.log(data?.data.payload?.done);
   return (
-    <Suspense fallback={<LoadingPage title="Loading page..." />}>
-      <AuthenticationFrame>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/phone" element={<Phone />} />
-          <Route path="/setup" element={<Setup />} />
-          <Route path="/" element={<Index />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </AuthenticationFrame>
+    <Suspense fallback={<LoadingPage title="Loading page" />}>
+      <Routes>
+        {!data?.data.payload?.done ? (
+          <Route path="*" element={<AuthenticationFrame />}>
+            <Route index element={<Setup />} />
+          </Route>
+        ) : (
+          <Route path="/" element={<AuthenticationFrame />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/phone" element={<Phone />} />
+            <Route index element={<Index />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        )}
+      </Routes>
     </Suspense>
   );
 };

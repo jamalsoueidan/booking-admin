@@ -13,7 +13,7 @@ import { useField, useForm } from "@shopify/react-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthLogin } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
-import { useTranslation } from "~/hooks/use-translation";
+import { useTranslation } from "~/providers/translate-provider";
 
 export default () => {
   const location = useLocation();

@@ -12,7 +12,7 @@ import { useField, useForm } from "@shopify/react-form";
 import { useNavigate } from "react-router-dom";
 import { useAuthReceivePassword } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
-import { useTranslation } from "~/hooks/use-translation";
+import { useTranslation } from "~/providers/translate-provider";
 
 const locales = {
   da: {

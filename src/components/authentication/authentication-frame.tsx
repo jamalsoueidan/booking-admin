@@ -1,9 +1,10 @@
 import { Frame, Icon, Link, Text, TopBar } from "@shopify/polaris";
 import { LanguageMinor } from "@shopify/polaris-icons";
-import { ReactNode, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
-import { useTranslation } from "~/hooks/use-translation";
 import { useSettings } from "~/providers/setting-provider";
+import { useTranslation } from "~/providers/translate-provider";
 import logo from "../../assets/logo.avif";
 
 const Footer = styled.div`
@@ -23,11 +24,7 @@ const logoOptions = {
   width: 124,
 };
 
-interface AuthenticationFrameProps {
-  children: ReactNode;
-}
-
-export const AuthenticationFrame = ({ children }: AuthenticationFrameProps) => {
+export const AuthenticationFrame = () => {
   const { update } = useSettings();
 
   const { t } = useTranslation({
@@ -109,7 +106,7 @@ export const AuthenticationFrame = ({ children }: AuthenticationFrameProps) => {
         />
       }
     >
-      {children}
+      <Outlet />
       <Footer>
         <p>
           {t("rights")} <Link url="https://wwww.by-sisters.dk">BySisters</Link>{" "}

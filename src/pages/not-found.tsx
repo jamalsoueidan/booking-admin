@@ -1,3 +1,8 @@
-import { AuthenticationFrame } from "~/components/authentication/authentication-frame";
+import { AlphaCard } from "@shopify/polaris";
+import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 
-export default () => <AuthenticationFrame>Not Found</AuthenticationFrame>;
+export default () => (
+  <AuthenticationWrapper title="Not found">
+    <AlphaCard>Something went wrong</AlphaCard>
+  </AuthenticationWrapper>
+);

@@ -1,32 +1,21 @@
 import { AppProvider, AppProviderProps } from "@shopify/polaris";
 import da from "@shopify/polaris/locales/da.json";
 import en from "@shopify/polaris/locales/en.json";
-import { useI18n } from "@shopify/react-i18n";
 import { ReactNode } from "react";
 
 export type PolarisProviderProps = {
   children: ReactNode;
+  locale: string;
   linkComponent: AppProviderProps["linkComponent"];
 };
 
 export const PolarisProvider = ({
   children,
+  locale,
   ...props
 }: PolarisProviderProps) => {
-  const [i18n] = useI18n({
-    fallback: da,
-    id: "Polaris",
-    async translations(locale) {
-      return locale === "en" ? en : da;
-    },
-  });
-  const { locale, translations } = i18n;
-
   return (
-    <AppProvider
-      {...props}
-      i18n={locale === "da" ? translations[0] : translations[1]}
-    >
+    <AppProvider {...props} i18n={locale === "da" ? da : en}>
       {children}
     </AppProvider>
   );

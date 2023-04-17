@@ -1,7 +1,7 @@
 import { Box, Button, Image, Text, TextContainer } from "@shopify/polaris";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useTranslation } from "~/hooks/use-translation";
+import { useTranslation } from "~/providers/translate-provider";
 import bookings from "../assets/bookings.png";
 import schedule from "../assets/schedule.png";
 

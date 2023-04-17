@@ -2,7 +2,7 @@ import { TopBar } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePosition } from "~/hooks/use-position";
-import { useTranslation } from "~/hooks/use-translation";
+import { useTranslation } from "~/providers/translate-provider";
 
 const locales = {
   da: {

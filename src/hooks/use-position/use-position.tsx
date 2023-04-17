@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useTranslation } from "../use-translation";
+import { useTranslation } from "../../providers/translate-provider";
 
 // https://www.youtube.com/watch?v=a_m7jxrTlaw&list=PLIvujZeVDLMx040-j1W4WFs1BxuTGdI_b&index=3&ab_channel=MattPocock
 export type Positions = "1" | "2" | Omit<string, "1" | "2">;
