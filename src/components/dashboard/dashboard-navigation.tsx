@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "~/hooks/use-translation";
 
-export const ApplicationNavigation = () => {
+export const DashboardNavigation = () => {
   const navigate = useNavigate();
   const { t } = useTranslation({ id: "app-navigation", locales });
   return (

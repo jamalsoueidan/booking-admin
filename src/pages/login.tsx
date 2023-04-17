@@ -12,7 +12,7 @@ import {
 import { useField, useForm } from "@shopify/react-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthLogin } from "~/api/bookingShopifyApi";
-import { AuthPage } from "~/components/auth/auth-page";
+import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { useTranslation } from "~/hooks/use-translation";
 
 export default () => {
@@ -44,7 +44,7 @@ export default () => {
   });
 
   return (
-    <AuthPage title={t("title")}>
+    <AuthenticationWrapper title={t("title")}>
       <AlphaCard>
         {location.state?.message && (
           <>
@@ -82,7 +82,7 @@ export default () => {
           </FormLayout>
         </Form>
       </AlphaCard>
-    </AuthPage>
+    </AuthenticationWrapper>
   );
 };
 

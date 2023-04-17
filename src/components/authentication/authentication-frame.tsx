@@ -23,11 +23,11 @@ const logoOptions = {
   width: 124,
 };
 
-interface AuthFrameProps {
+interface AuthenticationFrameProps {
   children: ReactNode;
 }
 
-export const AuthFrame = ({ children }: AuthFrameProps) => {
+export const AuthenticationFrame = ({ children }: AuthenticationFrameProps) => {
   const { update } = useSettings();
 
   const { t } = useTranslation({

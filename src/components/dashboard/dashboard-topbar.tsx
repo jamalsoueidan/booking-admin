@@ -13,11 +13,11 @@ const locales = {
   },
 };
 
-interface AppTopBarProps {
+interface DashboardTopbarProps {
   toggleNavigation: (value: any) => void;
 }
 
-export const ApplicationTopbar = ({ toggleNavigation }: AppTopBarProps) => {
+export const DashboardTopbar = ({ toggleNavigation }: DashboardTopbarProps) => {
   const { t } = useTranslation({ id: "app-topbar", locales });
   const { selectPosition } = usePosition();
   const navigate = useNavigate();

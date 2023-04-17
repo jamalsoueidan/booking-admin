@@ -1,10 +1,14 @@
 import { Frame } from "@shopify/polaris";
 import { ReactNode, useCallback, useState } from "react";
 import logo from "../../assets/logo.avif";
-import { ApplicationNavigation } from "./application-navigation";
-import { ApplicationTopbar } from "./application-topbar";
+import { DashboardNavigation } from "./dashboard-navigation";
+import { DashboardTopbar } from "./dashboard-topbar";
 
-export const ApplicationFrame = ({ children }: { children: ReactNode }) => {
+type DashboardFrameProps = {
+  children: ReactNode;
+};
+
+export const DashboardFrame = ({ children }: DashboardFrameProps) => {
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
 
   const toggleMobileNavigationActive = useCallback(
@@ -26,10 +30,8 @@ export const ApplicationFrame = ({ children }: { children: ReactNode }) => {
   return (
     <Frame
       logo={logoOptions}
-      topBar={
-        <ApplicationTopbar toggleNavigation={setMobileNavigationActive} />
-      }
-      navigation={<ApplicationNavigation />}
+      topBar={<DashboardTopbar toggleNavigation={setMobileNavigationActive} />}
+      navigation={<DashboardNavigation />}
       showMobileNavigation={mobileNavigationActive}
       onNavigationDismiss={toggleMobileNavigationActive}
     >

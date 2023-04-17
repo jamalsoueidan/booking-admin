@@ -11,7 +11,7 @@ import {
 import { useField, useForm } from "@shopify/react-form";
 import { useNavigate } from "react-router-dom";
 import { useAuthReceivePassword } from "~/api/bookingShopifyApi";
-import { AuthPage } from "~/components/auth/auth-page";
+import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { useTranslation } from "~/hooks/use-translation";
 
 const locales = {
@@ -62,7 +62,7 @@ export default () => {
   });
 
   return (
-    <AuthPage title={t("title")}>
+    <AuthenticationWrapper title={t("title")}>
       <AlphaCard>
         <Form onSubmit={submit}>
           <FormLayout>
@@ -81,6 +81,6 @@ export default () => {
           </FormLayout>
         </Form>
       </AlphaCard>
-    </AuthPage>
+    </AuthenticationWrapper>
   );
 };
