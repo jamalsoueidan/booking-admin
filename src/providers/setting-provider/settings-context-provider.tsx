@@ -29,8 +29,11 @@ export const SettingsProvider = ({
 
   return (
     <SettingsContext.Provider value={{ ...data, update }}>
-      <TranslationProvider language={value?.language}>
-        <PolarisProvider linkComponent={value?.LinkComponent}>
+      <TranslationProvider language={data?.language}>
+        <PolarisProvider
+          linkComponent={data?.LinkComponent}
+          locale={data.language}
+        >
           {children}
         </PolarisProvider>
       </TranslationProvider>
