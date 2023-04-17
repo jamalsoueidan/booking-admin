@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import mock from "./mock";
 
 const meta: Meta<typeof BookingCustomer> = {
-  title: "Components/BookingCustomer",
+  title: "Components/Booking/BookingCustomer",
   component: BookingCustomer,
   tags: ["autodocs"],
   argTypes: {},
