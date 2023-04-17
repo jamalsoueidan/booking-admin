@@ -18,7 +18,7 @@ import { useTranslation } from "~/providers/translate-provider";
 export default () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { mutateAsync: login, isError } = useAuthLogin();
+  const { mutateAsync: login } = useAuthLogin();
   const { t } = useTranslation({ id: "login", locales });
 
   const {
@@ -31,8 +31,7 @@ export default () => {
     },
     onSubmit: async (fieldValues) => {
       try {
-        const response = await login({ data: fieldValues });
-        console.log(response);
+        await login({ data: fieldValues });
         return { status: "success" };
       } catch (error) {
         return {
@@ -75,7 +74,7 @@ export default () => {
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>
-              <Link onClick={() => navigate("/phone")}>
+              <Link onClick={() => navigate("/receive-password")}>
                 {t("receive_action")}
               </Link>
             </Inline>

@@ -26,7 +26,7 @@ export default () => {
     fields: {
       email: useField<InstallationSetupMutationBody["email"]>(""),
       fullname: useField<InstallationSetupMutationBody["fullname"]>(""),
-      phone: useField<InstallationSetupMutationBody["phone"]>(""),
+      phone: useField<InstallationSetupMutationBody["phone"]>("31317428"),
       avatar: useField<InstallationSetupMutationBody["avatar"]>(
         "https://gravatar.com/avatar/75135ea001ed66433a6e9f0f55d20aae?s=400&d=robohash&r=x"
       ),
@@ -37,8 +37,9 @@ export default () => {
     onSubmit: async (fieldValues) => {
       try {
         await setup({ data: fieldValues });
-        navigate("/");
-        return { status: "success" };
+        return navigate("/receive-password", {
+          state: { message: "setup" },
+        }) as any;
       } catch (error) {
         if (error instanceof AxiosError) {
           const data: BadResponseResponse = error.response?.data;
