@@ -1,28 +1,32 @@
-import {
-  AlphaCard,
-  Button,
-  Form,
-  FormLayout,
-  Inline,
-  TextField,
-} from "@shopify/polaris";
-import { useField, useForm } from "@shopify/react-form";
+import { AlphaCard, FormLayout, Inline, TextField } from "@shopify/polaris";
+import { useField } from "@shopify/react-form";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { ActionFunctionArgs, Form, redirect } from "react-router-dom";
 import {
   InstallationSetupMutationBody,
-  useInstallationSetup,
+  installationSetup,
 } from "~/api/bookingShopifyApi";
-import { BadResponseResponse } from "~/api/model";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
+import { ButtonNavigation } from "~/components/authentication/button-navigation";
+import { useRouterForm } from "~/hooks/use-router-form";
 import { useTranslation } from "~/providers/translate-provider";
 
+export const action = async ({ request }: ActionFunctionArgs) => {
+  try {
+    const formData = await request.formData();
+    await installationSetup(Object.fromEntries(formData) as any);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
+    return error;
+  }
+  return redirect("/receive-password");
+};
 export default () => {
-  const navigate = useNavigate();
-  const { mutateAsync: setup } = useInstallationSetup();
   const { t } = useTranslation({ id: "login", locales });
 
-  const { fields, submit } = useForm({
+  const { fields, onSubmit } = useRouterForm({
     fields: {
       email: useField<InstallationSetupMutationBody["email"]>(""),
       fullname: useField<InstallationSetupMutationBody["fullname"]>(""),
@@ -34,38 +38,13 @@ export default () => {
       address: useField<InstallationSetupMutationBody["address"]>("Address"),
       postal: useField<InstallationSetupMutationBody["postal"]>(8000),
     },
-    onSubmit: async (fieldValues) => {
-      try {
-        await setup({ data: fieldValues });
-        return navigate("/receive-password", {
-          state: { message: "setup" },
-        }) as any;
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          const data: BadResponseResponse = error.response?.data;
-          const errors =
-            data.error?.map((d) => ({
-              field: d.path,
-              message: d.message,
-            })) || [];
-          return {
-            errors,
-            status: "fail",
-          };
-        }
-        return {
-          errors: [],
-          status: "fail",
-        };
-      }
-    },
   });
 
   return (
     <AuthenticationWrapper title={t("title")}>
       <p>{t("description")}</p>
       <AlphaCard>
-        <Form onSubmit={submit}>
+        <Form onSubmit={onSubmit}>
           <FormLayout>
             <TextField
               label={t("fullname.label")}
@@ -110,7 +89,7 @@ export default () => {
             />
 
             <Inline gap="1" align="center">
-              <Button submit>{t("submit")}</Button>
+              <ButtonNavigation>{t("submit")}</ButtonNavigation>
             </Inline>
           </FormLayout>
         </Form>

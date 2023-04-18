@@ -71,6 +71,12 @@ export default function Authentication() {
     []
   );
 
+  /*useEffect(() => {
+    if (!loaderData.done) {
+      console.log("redirect to setup");
+    }
+  }, [loaderData]);*/
+
   const secondaryMenuMarkup = (
     <TopBar.Menu
       activatorContent={

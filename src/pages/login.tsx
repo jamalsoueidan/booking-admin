@@ -1,7 +1,6 @@
 import {
   AlphaCard,
   Banner,
-  Button,
   FormLayout,
   Inline,
   Link,
@@ -15,10 +14,10 @@ import {
   Form,
   redirect,
   useLocation,
-  useNavigation,
 } from "react-router-dom";
 import { authLogin } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
+import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { useRouterForm } from "~/hooks/use-router-form";
 import { useTranslation } from "~/providers/translate-provider";
 
@@ -37,7 +36,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function login() {
-  const navigation = useNavigation();
   const location = useLocation();
   const { t } = useTranslation({ id: "login", locales });
 
@@ -81,9 +79,7 @@ export default function login() {
             />
 
             <Inline gap="1" blockAlign="center">
-              <Button submit disabled={navigation.state === "submitting"}>
-                {t("login_submit")}
-              </Button>
+              <ButtonNavigation>{t("login_submit")}</ButtonNavigation>
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>

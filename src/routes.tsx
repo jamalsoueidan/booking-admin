@@ -14,26 +14,23 @@ import ReceivePassword, {
 } from "./pages/receive-password";
 import Setup from "./pages/setup";
 import Welcome from "./pages/welcome";
-export const ApplicationRoutes = () => {
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route
-        path="/"
-        element={<Authentication />}
-        loader={authenticationLoader}
-      >
-        <Route index element={<Welcome />} />
-        <Route path="/setup" element={<Setup />} />
-        <Route path="/login" element={<Login />} action={loginAction} />
-        <Route
-          path="/receive-password"
-          element={<ReceivePassword />}
-          action={receivePasswordAction}
-        />
-      </Route>
-    )
-  );
 
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Authentication />} loader={authenticationLoader}>
+      <Route index element={<Welcome />} />
+      <Route path="/setup" element={<Setup />} />
+      <Route path="/login" element={<Login />} action={loginAction} />
+      <Route
+        path="/receive-password"
+        element={<ReceivePassword />}
+        action={receivePasswordAction}
+      />
+    </Route>
+  )
+);
+
+export const ApplicationRoutes = () => {
   return <RouterProvider router={router} />;
 };
 
