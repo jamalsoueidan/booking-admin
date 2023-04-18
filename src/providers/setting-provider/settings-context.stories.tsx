@@ -4,12 +4,11 @@ import { Meta } from "@storybook/react";
 import { useState } from "react";
 import { SettingsProvider } from "./settings-context-provider";
 import { SettingsContextValues } from "./settings-context.types";
-import { LinkComponent, Navigate } from "./stories/helper";
+import { LinkComponent } from "./stories/helper";
 
 const value: SettingsContextValues = {
   LinkComponent,
   language: "da",
-  navigate: Navigate(),
   timeZone: "Europe",
 };
 

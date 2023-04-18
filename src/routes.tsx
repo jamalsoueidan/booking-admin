@@ -1,40 +1,55 @@
-import { Suspense, lazy, useEffect } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { useInstallationGetStatus } from "./api/bookingShopifyApi";
-import { AuthenticationFrame } from "./components/authentication/authentication-frame";
-import { LoadingPage } from "./components/loading/loading-page";
-import NotFound from "./pages/not-found";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import Authentication, {
+  loader as authenticationLoader,
+} from "./pages/layouts/authentication";
+import Login, { action as loginAction } from "./pages/login";
 
-const Index = lazy(() => import("./pages/index"));
-const Setup = lazy(() => import("./pages/setup"));
-const Login = lazy(() => import("./pages/login"));
-const ReceivePassword = lazy(() => import("./pages/recieve-password"));
+import axios from "axios";
+import Protected from "./pages/protected";
+import ReceivePassword, {
+  action as receivePasswordAction,
+} from "./pages/receive-password";
+import Setup from "./pages/setup";
+import Welcome from "./pages/welcome";
+import {
+  AbilityProvider,
+  getAbilityFromToken,
+} from "./providers/ability-provider";
+
+axios.interceptors.request.use((config) => ({
+  ...config,
+  baseURL: "/api",
+}));
+
+const AdminRoute = () => (
+  <Protected>
+    <AbilityProvider ability={getAbilityFromToken()}>
+      <>test</>
+    </AbilityProvider>
+  </Protected>
+);
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Authentication />} loader={authenticationLoader}>
+      <Route index element={<Welcome />} />
+      <Route path="/setup" element={<Setup />} />
+      <Route path="/login" element={<Login />} action={loginAction} />
+      <Route
+        path="/receive-password"
+        element={<ReceivePassword />}
+        action={receivePasswordAction}
+      />
+      <Route path="/admin/*" element={<AdminRoute />} />
+    </Route>
+  )
+);
 
 export const ApplicationRoutes = () => {
-  const navigate = useNavigate();
-  const { data } = useInstallationGetStatus();
-
-  useEffect(() => {
-    if (!data?.data.payload?.done) {
-      navigate("/setup");
-    }
-  }, [data?.data.payload]);
-
-  console.log(data);
-
-  return (
-    <Suspense fallback={<LoadingPage title="Loading page" />}>
-      <Routes>
-        <Route path="/" element={<AuthenticationFrame />}>
-          {!data?.data.payload?.done && (
-            <Route path="/setup" element={<Setup />} />
-          )}
-          <Route path="/login" element={<Login />} />
-          <Route path="/receive-password" element={<ReceivePassword />} />
-          <Route index element={<Index />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </Suspense>
-  );
+  return <RouterProvider router={router} />;
 };

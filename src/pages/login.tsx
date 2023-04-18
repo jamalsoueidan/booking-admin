@@ -1,44 +1,51 @@
 import {
   AlphaCard,
   Banner,
-  Button,
-  Form,
   FormLayout,
   Inline,
   Link,
   Text,
   TextField,
 } from "@shopify/polaris";
-import { useField, useForm } from "@shopify/react-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuthLogin } from "~/api/bookingShopifyApi";
+import { useField } from "@shopify/react-form";
+import { AxiosError } from "axios";
+import {
+  ActionFunctionArgs,
+  Form,
+  redirect,
+  useLocation,
+} from "react-router-dom";
+import { authLogin } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
+import { ButtonNavigation } from "~/components/authentication/button-navigation";
+import { useRouterForm } from "~/hooks/use-router-form";
 import { useTranslation } from "~/providers/translate-provider";
 
-export default () => {
+export const action = async ({ request }: ActionFunctionArgs) => {
+  try {
+    const formData = await request.formData();
+    const response = await authLogin(Object.fromEntries(formData) as any);
+    localStorage.setItem("token", response.data.payload.token);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
+    return error;
+  }
+  return redirect("/admin");
+};
+
+export default function login() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { mutateAsync: login } = useAuthLogin();
   const { t } = useTranslation({ id: "login", locales });
 
   const {
     fields: { identification, password },
-    submit,
-  } = useForm({
+    onSubmit,
+  } = useRouterForm({
     fields: {
-      identification: useField("4531317428"),
+      identification: useField(location.state?.phone || ""),
       password: useField(""),
-    },
-    onSubmit: async (fieldValues) => {
-      try {
-        await login({ data: fieldValues });
-        return { status: "success" };
-      } catch (error) {
-        return {
-          errors: [{ field: ["identification"], message: t("error") }],
-          status: "fail",
-        };
-      }
     },
   });
 
@@ -54,11 +61,12 @@ export default () => {
           </>
         )}
 
-        <Form onSubmit={submit}>
+        <Form method="post" onSubmit={onSubmit}>
           <FormLayout>
             <TextField
               label={t("login.label")}
-              autoComplete="email"
+              autoComplete="false"
+              name="identification"
               {...identification}
             />
 
@@ -66,24 +74,23 @@ export default () => {
               label={t("password.label")}
               type="password"
               autoComplete="false"
+              name="password"
               {...password}
             />
 
             <Inline gap="1" blockAlign="center">
-              <Button submit>{t("login_submit")}</Button>
+              <ButtonNavigation>{t("login_submit")}</ButtonNavigation>
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>
-              <Link onClick={() => navigate("/receive-password")}>
-                {t("receive_action")}
-              </Link>
+              <Link url="/receive-password">{t("receive_action")}</Link>
             </Inline>
           </FormLayout>
         </Form>
       </AlphaCard>
     </AuthenticationWrapper>
   );
-};
+}
 
 const locales = {
   da: {

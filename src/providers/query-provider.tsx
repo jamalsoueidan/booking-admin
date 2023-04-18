@@ -6,11 +6,13 @@ import {
 } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
-export function QueryProvider({ children }: { children: ReactNode }) {
-  const client = new QueryClient({
-    mutationCache: new MutationCache(),
-    queryCache: new QueryCache(),
-  });
+export const queryClient = new QueryClient({
+  mutationCache: new MutationCache(),
+  queryCache: new QueryCache(),
+});
 
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+export function QueryProvider({ children }: { children: ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 }
