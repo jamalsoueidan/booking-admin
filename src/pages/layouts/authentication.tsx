@@ -35,7 +35,6 @@ export const loader = async () => {
 
 export default function Authentication() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  console.log(loaderData);
   const { update } = useSettings();
 
   const { t } = useTranslation({

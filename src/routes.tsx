@@ -7,8 +7,11 @@ import {
 import Authentication, {
   loader as authenticationLoader,
 } from "./pages/layouts/authentication";
-import Login from "./pages/login";
-import ReceivePassword from "./pages/receive-password";
+import Login, { action as loginAction } from "./pages/login";
+
+import ReceivePassword, {
+  action as receivePasswordAction,
+} from "./pages/receive-password";
 import Setup from "./pages/setup";
 import Welcome from "./pages/welcome";
 export const ApplicationRoutes = () => {
@@ -21,8 +24,12 @@ export const ApplicationRoutes = () => {
       >
         <Route index element={<Welcome />} />
         <Route path="/setup" element={<Setup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/receive-password" element={<ReceivePassword />} />
+        <Route path="/login" element={<Login />} action={loginAction} />
+        <Route
+          path="/receive-password"
+          element={<ReceivePassword />}
+          action={receivePasswordAction}
+        />
       </Route>
     )
   );

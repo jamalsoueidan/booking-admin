@@ -19,7 +19,7 @@ export default defineConfig({
       target: "./openapi.yaml",
     },
     hooks: {
-      afterAllFilesWrite: "  --write",
+      afterAllFilesWrite: "prettier --write",
     },
   },
 });
