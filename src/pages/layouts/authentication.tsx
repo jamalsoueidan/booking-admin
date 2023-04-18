@@ -1,7 +1,7 @@
 import { Frame, Icon, Link, Text, TopBar } from "@shopify/polaris";
 import { LanguageMinor } from "@shopify/polaris-icons";
-import { useCallback, useState } from "react";
-import { Outlet, useLoaderData } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getInstallationGetStatusQueryOptions } from "~/api/bookingShopifyApi";
 import { queryClient } from "~/providers/query-provider";
@@ -35,6 +35,7 @@ export const loader = async () => {
 
 export default function Authentication() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const navigate = useNavigate();
   const { update } = useSettings();
 
   const { t } = useTranslation({
@@ -71,11 +72,11 @@ export default function Authentication() {
     []
   );
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (!loaderData.done) {
-      console.log("redirect to setup");
+      navigate("/setup");
     }
-  }, [loaderData]);*/
+  }, [loaderData]);
 
   const secondaryMenuMarkup = (
     <TopBar.Menu

@@ -9,11 +9,30 @@ import Authentication, {
 } from "./pages/layouts/authentication";
 import Login, { action as loginAction } from "./pages/login";
 
+import axios from "axios";
+import Protected from "./pages/protected";
 import ReceivePassword, {
   action as receivePasswordAction,
 } from "./pages/receive-password";
 import Setup from "./pages/setup";
 import Welcome from "./pages/welcome";
+import {
+  AbilityProvider,
+  getAbilityFromToken,
+} from "./providers/ability-provider";
+
+axios.interceptors.request.use((config) => ({
+  ...config,
+  baseURL: "/api",
+}));
+
+const AdminRoute = () => (
+  <Protected>
+    <AbilityProvider ability={getAbilityFromToken()}>
+      <>test</>
+    </AbilityProvider>
+  </Protected>
+);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +45,7 @@ const router = createBrowserRouter(
         element={<ReceivePassword />}
         action={receivePasswordAction}
       />
+      <Route path="/admin/*" element={<AdminRoute />} />
     </Route>
   )
 );
@@ -33,12 +53,3 @@ const router = createBrowserRouter(
 export const ApplicationRoutes = () => {
   return <RouterProvider router={router} />;
 };
-
-/*const AdminRoute = () => (
-  <Route path="admin/*" element={<AdminRoute />} />
-  <Protected>
-    <AbilityProvider ability={getAbilityFromToken()}>
-      <Admin />
-    </AbilityProvider>
-  </Protected>
-);*/
