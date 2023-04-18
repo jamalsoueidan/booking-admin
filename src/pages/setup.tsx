@@ -23,6 +23,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   return redirect("/receive-password");
 };
+
 export default () => {
   const { t } = useTranslation({ id: "login", locales });
 

@@ -5,29 +5,31 @@ export const defineAbilityFor = (user: AbilityUser): AbilityContextType => {
   const { can, build } = new AbilityBuilder<AbilityContextType>(
     createMongoAbility
   );
-  console.log(user);
 
   if (user.isOwner) {
     can("manage", "product");
-    can("manage", "staff");
+    can("manage", "user");
     can("manage", "collection");
   }
 
   if (user.isAdmin) {
-    can("manage", "staff");
+    can("manage", "user");
     can("update", "product");
   }
 
   if (user.isUser) {
-    can("update", "staff", { _id: user.userId });
+    can("update", "user", { _id: user.userId });
   }
 
   return build();
 };
 
+export const getToken = () => {
+  return parseJwt(localStorage.getItem("token") || "");
+};
+
 export const getAbilityFromToken = () => {
-  const parse = parseJwt(localStorage.getItem("token") || "");
-  return defineAbilityFor(parse);
+  return defineAbilityFor(getToken());
 };
 
 function parseJwt(token: string) {

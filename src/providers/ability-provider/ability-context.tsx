@@ -17,9 +17,8 @@ export type AbilityUser = Pick<
 export type AbilityActions = "manage" | "create" | "read" | "update" | "delete";
 export type AbilitySubjects =
   | "product"
-  | "staff"
+  | "user"
   | "collection"
-  | "shopify"
   | User
   | ProductGetAll
   | CollectionGetAll;

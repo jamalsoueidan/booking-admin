@@ -21,15 +21,15 @@ export default {
     hidden: false,
     productId: 8006173360445,
     shop: "testeriphone.myshopify.com",
-    staff: [
+    users: [
       {
         _id: "63bb724e6bc93da9252b66b2",
-        staff: "63bb71c898f50e4f24c883a8",
+        userId: "63bb71c898f50e4f24c883a8",
         tag: "#4b6043",
       },
       {
         _id: "63bb724e6bc93da9252b66b3",
-        staff: "63bb71e798f50e4f24c883b9",
+        userId: "63bb71e798f50e4f24c883b9",
         tag: "#4b6043",
       },
     ],
@@ -37,7 +37,7 @@ export default {
   },
   productId: 8006173360445,
   shop: "testeriphone.myshopify.com",
-  staff: {
+  user: {
     __v: 0,
     _id: "63bb71c898f50e4f24c883a8",
     active: true,

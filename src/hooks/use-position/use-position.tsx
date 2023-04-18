@@ -40,9 +40,11 @@ export const usePosition = (): UseTagOptionsReturn => {
     (value: Positions) => {
       const option = options.find((o) => o.value === value);
       if (!option) {
-        throw Error("usePosition couldnt find this position");
+        // do we keep the throw error here?
+        // if so we need to validate positions in the DB, API, ENUM restricted!
+        console.log(value);
       }
-      return option.label;
+      return option?.label || "";
     },
     [options]
   );

@@ -6,7 +6,7 @@ import { AbilityCan } from "./ability-context";
 import { AbilityProvider } from "./ability-context-provider";
 import { defineAbilityFor } from "./ability-context.helper";
 
-const staff = {
+const user = {
   _id: "1",
   active: true,
   address: "asdiojdsajioadsoji",
@@ -36,13 +36,13 @@ const MockComponent = () => (
       {(can) => (can ? "yes" : "no")}
     </AbilityCan>
     <br />
-    <strong>Can I create Staff?:</strong>
-    <AbilityCan I="create" a="staff" this={staff} passThrough>
+    <strong>Can I create User?:</strong>
+    <AbilityCan I="create" a="user" this={user} passThrough>
       {(can) => (can ? "yes" : "no")}
     </AbilityCan>
     <br />
-    <strong>Can I update Staff?:</strong>
-    <AbilityCan I="update" a="staff" this={staff} passThrough>
+    <strong>Can I update User?:</strong>
+    <AbilityCan I="update" a="user" this={user} passThrough>
       {(can) => (can ? "yes" : "no")}
     </AbilityCan>
   </>

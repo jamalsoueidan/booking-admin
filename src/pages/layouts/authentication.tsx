@@ -33,7 +33,7 @@ export const loader = async () => {
   return data.data.payload;
 };
 
-export default function Authentication() {
+export default function AuthenticationLayout() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const navigate = useNavigate();
   const { update } = useSettings();
@@ -55,6 +55,15 @@ export default function Authentication() {
       },
     },
   });
+
+  // redirect if setup is not done?
+  // why is it hiding here?
+  useEffect(() => {
+    if (!loaderData.done) {
+      navigate("/setup");
+    }
+  }, [loaderData]);
+
   const [, setMobileNavigationActive] = useState(false);
 
   const toggleMobileNavigationActive = useCallback(
@@ -71,12 +80,6 @@ export default function Authentication() {
     () => setIsSecondaryMenuOpen((isSecondaryMenuOpen) => !isSecondaryMenuOpen),
     []
   );
-
-  useEffect(() => {
-    if (!loaderData.done) {
-      navigate("/setup");
-    }
-  }, [loaderData]);
 
   const secondaryMenuMarkup = (
     <TopBar.Menu
