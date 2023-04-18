@@ -14,13 +14,6 @@ export const useSettings = () => {
   return context;
 };
 
-export const useNavigate = () => {
-  if (typeof window === "undefined")
-    throw new Error("cannot use native navigator outside of browser. ");
-
-  return useSettings().navigate;
-};
-
 export const Link = ({ children, url, ...rest }: LinkComponentProps) => {
   const { LinkComponent } = useSettings();
 

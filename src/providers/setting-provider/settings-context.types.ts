@@ -5,7 +5,6 @@ export interface SettingsContextValues {
   timeZone: string;
   language: string;
   LinkComponent: AppProviderProps["linkComponent"];
-  navigate: Navigator;
   features?: FeaturesConfig;
 }
 
