@@ -1,0 +1,32 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Providers/ModalProvider" />
+
+## React Theme Context
+
+Use this component when you have few tabs that share same modal, then you can control the modal properties through context.
+
+### Component usage
+
+```tsx
+function MockComponent() {
+  const { setPrimaryAction } = useContext(ModalContext);
+
+  useEffect(() => {
+    setPrimaryAction({
+      content: "Tilføj",
+      onAction: () => {
+        console.log("Add");
+      },
+    });
+  }, []);
+
+  return <>MockComponent that read value from context</>;
+}
+
+const BasicThemeUsage = () => (
+  <ModalProvider title="hej med dig" open onClose={() => {}}>
+    <MockComponent />
+  </ModalProvider>
+);
+```
