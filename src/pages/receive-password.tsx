@@ -1,42 +1,53 @@
 import {
   AlphaCard,
   Banner,
-  Button,
-  Form,
   FormLayout,
   Inline,
   Link,
   Text,
   TextField,
 } from "@shopify/polaris";
-import { useField, useForm } from "@shopify/react-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuthReceivePassword } from "~/api/bookingShopifyApi";
+import { lengthMoreThan, notEmpty, useField } from "@shopify/react-form";
+import { AxiosError } from "axios";
+import {
+  ActionFunctionArgs,
+  Form,
+  redirect,
+  useLocation,
+} from "react-router-dom";
+import { authReceivePassword } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
+import { ButtonNavigation } from "~/components/authentication/button-navigation";
+import { useRouterForm } from "~/hooks/use-router-form";
 import { useTranslation } from "~/providers/translate-provider";
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  try {
+    const formData = await request.formData();
+    const phone = formData.get("phone") as string;
+    await authReceivePassword({ phone });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
+    return error;
+  }
+  return redirect("/login");
+};
 
 export default () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { mutateAsync: receivePassword } = useAuthReceivePassword();
   const { t } = useTranslation({ id: "password", locales });
 
-  const { fields, submit } = useForm({
+  const { fields, onSubmit } = useRouterForm({
     fields: {
-      phone: useField("31317428"),
-    },
-    onSubmit: async (fieldValues) => {
-      try {
-        await receivePassword({ data: fieldValues });
-        return {
-          status: "success",
-        };
-      } catch (error) {
-        return {
-          errors: [{ field: ["phone"], message: t("error") }],
-          status: "fail",
-        };
-      }
+      phone: useField<string>({
+        value: "",
+        validates: [
+          notEmpty("Phone is required"),
+          lengthMoreThan(3, "Phone must be more than 3 characters"),
+        ],
+      }),
     },
   });
 
@@ -51,19 +62,20 @@ export default () => {
         </>
       )}
       <AlphaCard>
-        <Form onSubmit={submit}>
+        <Form method="post" onSubmit={onSubmit}>
           <FormLayout>
             <TextField
               label={t("phone.label")}
               autoComplete="phone"
+              name="phone"
               {...fields.phone}
             />
             <Inline gap="1" blockAlign="center">
-              <Button submit>{t("send_submit")}</Button>
+              <ButtonNavigation>{t("send_submit")}</ButtonNavigation>
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>
-              <Link onClick={() => navigate("/login")}>{t("login")}</Link>
+              <Link url="/login">{t("login")}</Link>
             </Inline>
           </FormLayout>
         </Form>

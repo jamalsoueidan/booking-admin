@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useNavigate } from "~/providers/setting-provider";
+import { useNavigate } from "react-router-dom";
 
 export function LinkComponent({ url, children, external, ...rest }: any) {
   const navigate = useNavigate();

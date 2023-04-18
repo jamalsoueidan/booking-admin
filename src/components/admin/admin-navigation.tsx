@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "~/providers/translate-provider";
 
-export const DashboardNavigation = () => {
+export const AdminNavigation = () => {
   const navigate = useNavigate();
   const { t } = useTranslation({ id: "app-navigation", locales });
   return (
@@ -37,32 +37,32 @@ export const DashboardNavigation = () => {
           },
           {
             icon: CustomersMajor,
-            label: t("booking.staff"),
-            onClick: () => navigate("/admin/staff"),
+            label: t("booking.user"),
+            onClick: () => navigate("/admin/user"),
           },
         ]}
       />
       <Navigation.Section
-        title={t("staff.title")}
+        title={t("user.title")}
         items={[
           {
             icon: CalendarMajor,
-            label: t("staff.schedules"),
+            label: t("user.schedules"),
             onClick: () => navigate("/admin/my/schedules"),
           },
           {
             icon: ProfileMajor,
-            label: t("staff.account"),
+            label: t("user.account"),
             onClick: () => navigate("/admin/my/account"),
           },
           {
             icon: SettingsMajor,
-            label: t("staff.settings"),
+            label: t("user.settings"),
             onClick: () => navigate("/admin/my/settings"),
           },
           {
             icon: ExitMajor,
-            label: t("staff.logout"),
+            label: t("user.logout"),
             onClick: () => {
               localStorage.clear();
               return navigate("/");
@@ -80,10 +80,10 @@ const locales = {
       bookings: "Bestillinger",
       collections: "Produkter",
       dashboard: "Dashboard",
-      staff: "Medarbejder",
+      user: "Medarbejder",
       title: "BySisters",
     },
-    staff: {
+    user: {
       account: "Min konto",
       logout: "Log ud",
       schedules: "Min vagtplan",
@@ -96,10 +96,10 @@ const locales = {
       bookings: "My bookings",
       collections: "Products",
       dashboard: "Dashboard",
-      staff: "Staff",
+      user: "User",
       title: "Application",
     },
-    staff: {
+    user: {
       account: "My account",
       logout: "Logout",
       schedules: "My shifts",

@@ -8,12 +8,18 @@ export default defineConfig({
       client: "react-query",
       target: "src/api/",
       mock: false,
+      override: {
+        query: {
+          useQuery: false,
+          useInfinite: false,
+        },
+      },
     },
     input: {
       target: "./openapi.yaml",
     },
-    /*hooks: {
+    hooks: {
       afterAllFilesWrite: "prettier --write",
-    },*/
+    },
   },
 });
