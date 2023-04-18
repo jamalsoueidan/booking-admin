@@ -20,7 +20,7 @@ export const loader = async () => {
   }
 };
 
-export default function AdminLayout() {
+export function Component() {
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
 
   const toggleMobileNavigationActive = useCallback(

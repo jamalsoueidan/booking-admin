@@ -1,12 +1,6 @@
-import { useTranslation } from "@jamalsoueidan/frontend.hooks.use-translation";
 import { ContextualSaveBar } from "@shopify/polaris";
-import React, {
-  ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { ReactNode, useCallback, useContext, useMemo, useState } from "react";
+import { useTranslation } from "../translate-provider";
 import {
   DiscardActions,
   SaveActions,
@@ -35,14 +29,14 @@ export const SaveBarProvider = ({ children }: SaveBarProviderProps) => {
     (value: Partial<DiscardActions>) => {
       setDiscardAction((prev) => ({ ...prev, ...value }));
     },
-    [setDiscardAction],
+    [setDiscardAction]
   );
 
   const updateSaveAction = useCallback(
     (value: Partial<SaveActions>) => {
       setSaveAction((prev) => ({ ...prev, ...value }));
     },
-    [setSaveAction],
+    [setSaveAction]
   );
 
   const contextualSaveBar = useMemo(
@@ -65,7 +59,7 @@ export const SaveBarProvider = ({ children }: SaveBarProviderProps) => {
       updateSaveAction,
       visibility,
       updateVisibility,
-    ],
+    ]
   );
 
   return (

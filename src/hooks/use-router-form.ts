@@ -8,7 +8,10 @@ import { useCallback, useEffect } from "react";
 import { useActionData } from "react-router-dom";
 import { BadResponseResponse } from "~/api/model";
 
-export type RouterForm<T extends FieldBag> = Pick<Form<T>, "fields"> & {
+export type RouterForm<T extends FieldBag> = Pick<
+  Form<T>,
+  "fields" | "submitErrors"
+> & {
   onSubmit: (event: any) => void;
 };
 
@@ -40,5 +43,5 @@ export function useRouterForm<T extends FieldBag>(
     }
   }, [data?.errors]);
 
-  return { fields: form.fields, onSubmit };
+  return { fields: form.fields, onSubmit, submitErrors: form.submitErrors };
 }

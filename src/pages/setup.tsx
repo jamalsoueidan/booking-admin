@@ -24,7 +24,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect("/receive-password");
 };
 
-export default () => {
+export function Component() {
   const { t } = useTranslation({ id: "login", locales });
 
   const { fields, onSubmit } = useRouterForm({
@@ -97,7 +97,7 @@ export default () => {
       </AlphaCard>
     </AuthenticationWrapper>
   );
-};
+}
 
 const locales = {
   da: {

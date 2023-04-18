@@ -6,7 +6,7 @@ import {
   useLoaderData as useLD,
 } from "react-router-dom";
 
-export function useLoaderData<
+export function useDeferredLoaderData<
   TLoader extends ReturnType<typeof deferredLoader>
 >() {
   return useLD() as ReturnType<TLoader>["data"];

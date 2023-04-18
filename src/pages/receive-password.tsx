@@ -35,7 +35,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect("/login");
 };
 
-export default () => {
+export function Component() {
   const location = useLocation();
   const { t } = useTranslation({ id: "password", locales });
 
@@ -82,7 +82,7 @@ export default () => {
       </AlphaCard>
     </AuthenticationWrapper>
   );
-};
+}
 
 const locales = {
   da: {

@@ -2,7 +2,7 @@ import { AlphaCard, Columns, Page, Text } from "@shopify/polaris";
 import { Suspense } from "react";
 import { getUserGetAllQueryOptions } from "~/api/bookingShopifyApi";
 import { DashboardGroup } from "~/components/dashboard/Group";
-import { Await, deferredLoader, useLoaderData } from "~/lib/loaderData";
+import { Await, deferredLoader, useDeferredLoaderData } from "~/lib/loaderData";
 import { queryClient } from "~/providers/query-provider";
 
 export const loader = deferredLoader(() => {
@@ -14,8 +14,8 @@ export const loader = deferredLoader(() => {
   return { users: loadUsers() };
 });
 
-export default function AdminDashboard() {
-  const loaderData = useLoaderData<typeof loader>();
+export function Component() {
+  const loaderData = useDeferredLoaderData<typeof loader>();
 
   return (
     <Page title="Dashboard">

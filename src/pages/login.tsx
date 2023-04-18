@@ -35,7 +35,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect("/admin");
 };
 
-export default function login() {
+export function Component() {
   const location = useLocation();
   const { t } = useTranslation({ id: "login", locales });
 
