@@ -6,7 +6,6 @@ import mock from "./mock";
 const meta: Meta<typeof BookingCustomer> = {
   title: "Components/Booking/BookingCustomer",
   component: BookingCustomer,
-  tags: ["autodocs"],
   argTypes: {},
   args: {
     booking: mock,

@@ -5,7 +5,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 const meta = {
   title: "Loading/LoadingSpinner",
   component: LoadingSpinner,
-  tags: ["autodocs"],
   argTypes: {
     backgroundColor: { control: "color" },
   },

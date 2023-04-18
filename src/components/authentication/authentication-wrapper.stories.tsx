@@ -4,7 +4,6 @@ import { AuthenticationWrapper } from "./authentication-wrapper";
 const meta: Meta<typeof AuthenticationWrapper> = {
   title: "Components/Authentication/AuthenticationWrapper",
   component: AuthenticationWrapper,
-  tags: ["autodocs"],
   argTypes: {},
   args: {
     title: "Title",
