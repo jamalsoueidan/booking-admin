@@ -5,6 +5,7 @@ export const defineAbilityFor = (user: AbilityUser): AbilityContextType => {
   const { can, build } = new AbilityBuilder<AbilityContextType>(
     createMongoAbility
   );
+  console.log(user);
 
   if (user.isOwner) {
     can("manage", "product");

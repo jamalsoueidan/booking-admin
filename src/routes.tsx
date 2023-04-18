@@ -21,10 +21,14 @@ import {
   getAbilityFromToken,
 } from "./providers/ability-provider";
 
-axios.interceptors.request.use((config) => ({
-  ...config,
-  baseURL: "/api",
-}));
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = token ? `Bearer ${token}` : "";
+  }
+  config.baseURL = "/api";
+  return config;
+});
 
 const AdminRoute = () => (
   <Protected>
