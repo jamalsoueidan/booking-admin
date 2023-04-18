@@ -28,9 +28,10 @@ export default () => {
     onSubmit: async (fieldValues) => {
       try {
         await receivePassword({ data: fieldValues });
-        return {
-          status: "success",
-        };
+        navigate("/login", {
+          state: { message: "login", phone: fieldValues.phone },
+        });
+        return { status: "success" };
       } catch (error) {
         return {
           errors: [{ field: ["phone"], message: t("error") }],

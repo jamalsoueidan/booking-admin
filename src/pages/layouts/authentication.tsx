@@ -1,8 +1,10 @@
 import { Frame, Icon, Link, Text, TopBar } from "@shopify/polaris";
 import { LanguageMinor } from "@shopify/polaris-icons";
 import { useCallback, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLoaderData } from "react-router-dom";
 import styled from "styled-components";
+import { getInstallationGetStatusQueryOptions } from "~/api/bookingShopifyApi";
+import { queryClient } from "~/providers/query-provider";
 import { useSettings } from "~/providers/setting-provider";
 import { useTranslation } from "~/providers/translate-provider";
 import logo from "../../assets/logo.avif";
@@ -24,7 +26,16 @@ const logoOptions = {
   width: 124,
 };
 
-export const AuthenticationFrame = () => {
+export const loader = async () => {
+  const data = await queryClient.fetchQuery(
+    getInstallationGetStatusQueryOptions()
+  );
+  return data.data.payload;
+};
+
+export default function Authentication() {
+  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  console.log(loaderData);
   const { update } = useSettings();
 
   const { t } = useTranslation({
@@ -116,4 +127,4 @@ export const AuthenticationFrame = () => {
       </Footer>
     </Frame>
   );
-};
+}

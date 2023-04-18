@@ -15,7 +15,7 @@ import { useAuthLogin } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { useTranslation } from "~/providers/translate-provider";
 
-export default () => {
+export default function login() {
   const location = useLocation();
   const navigate = useNavigate();
   const { mutateAsync: login } = useAuthLogin();
@@ -26,12 +26,14 @@ export default () => {
     submit,
   } = useForm({
     fields: {
-      identification: useField("4531317428"),
+      identification: useField(location.state?.phone || ""),
       password: useField(""),
     },
     onSubmit: async (fieldValues) => {
       try {
-        await login({ data: fieldValues });
+        const response = await login({ data: fieldValues });
+        console.log(response.data.payload?.token);
+        //localStorage.setItem("token", response.data.payload?.token || "");
         return { status: "success" };
       } catch (error) {
         return {
@@ -83,7 +85,7 @@ export default () => {
       </AlphaCard>
     </AuthenticationWrapper>
   );
-};
+}
 
 const locales = {
   da: {
