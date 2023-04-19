@@ -5,18 +5,10 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
-import axios from "axios";
-
+import { setupAxios } from "./axios";
 import Welcome from "./pages/welcome";
 
-axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = token ? `Bearer ${token}` : "";
-  }
-  config.baseURL = "/api";
-  return config;
-});
+setupAxios();
 
 const router = createBrowserRouter(
   createRoutesFromElements(
