@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { InputLabelButton } from "./input-label-button";
 
 const meta = {
-  title: "Components/Input/InputLabelButton",
+  title: "Components/Inputs/InputLabelButton",
   component: InputLabelButton,
   args: {
     children: "Button",

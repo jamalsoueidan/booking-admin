@@ -13,7 +13,7 @@ import {
 import { Meta } from "@storybook/react";
 
 const meta = {
-  title: "Components/Input/InputDropdown",
+  title: "Components/Inputs/InputDropdown",
   component: InputDropdown,
   args: {},
 } satisfies Meta<typeof InputDropdown>;

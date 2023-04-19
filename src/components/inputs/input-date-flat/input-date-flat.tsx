@@ -1,16 +1,13 @@
-import { WidgetSchedule } from "@jamalsoueidan/backend.types.widget";
-import {
-  InputDate,
-  InputDateField,
-} from "@jamalsoueidan/frontend.components.inputs.input-date";
-import { useTranslation } from "@jamalsoueidan/frontend.hooks.use-translation";
 import { Labelled, Range, TextFieldProps } from "@shopify/polaris";
 import { Field } from "@shopify/react-form";
 
-import React, { useId } from "react";
+import { useId } from "react";
+import { AvailabilityShift } from "~/api/model";
+import { useTranslation } from "~/providers/translate-provider";
+import { InputDate, InputDateField } from "../input-date/input-date";
 
 export type InputDateFlatField = InputDateField;
-export type InputDataFlatData = Array<WidgetSchedule>;
+export type InputDataFlatData = Array<AvailabilityShift>;
 export type InputDataFlatInput = Partial<
   Omit<TextFieldProps, "error" | "onBlur" | "onChange" | "value">
 >;
