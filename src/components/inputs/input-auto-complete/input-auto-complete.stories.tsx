@@ -73,7 +73,7 @@ const CustomerInputAutoComplete = ({ field }: CustomerAutoCompleteProps) => {
 import { Meta } from "@storybook/react";
 
 const meta = {
-  title: "Components/Input/InputAutoComplete",
+  title: "Components/Inputs/InputAutoComplete",
   component: InputAutoComplete,
 } satisfies Meta<typeof InputAutoComplete>;
 

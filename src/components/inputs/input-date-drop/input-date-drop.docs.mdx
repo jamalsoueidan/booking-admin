@@ -1,0 +1,20 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Components/Inputs/InputDateDrop" />
+
+A component that render a input, with date selector.
+
+### Component usage
+
+```js
+const [date, setDate] = useState<Range | undefined>(undefined);
+const field = useField(undefined);
+
+<InputDateDrop field={field} onMonthChange={setDate} />
+<Text variant="bodyMd" as="p">
+  {field.value ? format(field.value, "PPP") : ""}
+</Text>
+<div>
+  <pre>onMonthChange: {JSON.stringify(date || {}, null, 2)}</pre>
+</div>
+```
