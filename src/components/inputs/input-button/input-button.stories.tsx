@@ -4,7 +4,9 @@ import { InputButton } from "./input-button";
 const meta = {
   title: "Components/Input/InputButton",
   component: InputButton,
-  argTypes: {},
+  args: {
+    children: "Button",
+  },
 } satisfies Meta<typeof InputButton>;
 
 export default meta;

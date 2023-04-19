@@ -1,6 +1,6 @@
-import { InputButton } from "@jamalsoueidan/frontend.components.inputs.input-button";
 import { ButtonProps, Labelled, LabelledProps } from "@shopify/polaris";
-import React, { memo, useId } from "react";
+import { memo, useId } from "react";
+import { InputButton } from "../input-button";
 
 export interface InputLabelButtonProps {
   labelled: Omit<LabelledProps, "id">;
@@ -19,5 +19,5 @@ export const InputLabelButton = memo(
         </InputButton>
       </Labelled>
     );
-  },
+  }
 );
