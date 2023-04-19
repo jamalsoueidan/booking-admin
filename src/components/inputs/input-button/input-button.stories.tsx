@@ -12,13 +12,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+export const Basic: Story = {};
+
+export const BasicWithError: Story = {
   args: {
     error: "error",
   },
 };
-
-export const BasicInputButtonNoError: Story = {};
 
 export const BasicInputButtonLoading: Story = {
   args: {
