@@ -1,11 +1,11 @@
 import {
-  AlphaStack,
   Avatar,
   AvatarProps,
   Box,
-  Inline,
+  HorizontalStack,
   Text,
   ThumbnailProps,
+  VerticalStack,
 } from "@shopify/polaris";
 import React, { ReactNode } from "react";
 import { LinkComponent } from "~/components/application/link-component";
@@ -28,27 +28,26 @@ export const StaffResourceItem = ({
   action,
 }: StaffResourceItemProps) => (
   <LinkComponent url={url || ""}>
-    <AlphaStack>
+    <HorizontalStack>
       <Box
         paddingInlineStart="4"
         paddingInlineEnd="4"
         paddingBlockStart="3"
         paddingBlockEnd="3"
-        borderBlockStart="divider"
       >
-        <Inline align="space-between">
-          <Inline gap="2">
+        <HorizontalStack align="space-between">
+          <HorizontalStack gap="2">
             {media || <Avatar customer size="medium" name="avatar" />}
-            <AlphaStack>
+            <VerticalStack>
               {title}
               <Text as="span" variant="bodyMd">
                 {desc}
               </Text>
-            </AlphaStack>
-          </Inline>
-          {action && <Inline align="end">{action}</Inline>}
-        </Inline>
+            </VerticalStack>
+          </HorizontalStack>
+          {action && <HorizontalStack align="end">{action}</HorizontalStack>}
+        </HorizontalStack>
       </Box>
-    </AlphaStack>
+    </HorizontalStack>
   </LinkComponent>
 );

@@ -19,7 +19,7 @@ export const loader = async () => {
 };
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const users = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const { t } = useTranslation({ id: "staff", locales });
   const ability = useAbility();
   const { selectPosition } = usePosition();
@@ -59,7 +59,7 @@ export function Component() {
       <AlphaCard padding="0">
         <StaffResourceList
           emptyState={<StaffEmpty />}
-          items={loaderData || []}
+          items={users || []}
           renderItem={renderItem}
         />
       </AlphaCard>

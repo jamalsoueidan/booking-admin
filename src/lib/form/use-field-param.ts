@@ -1,6 +1,6 @@
 import { Field, FieldConfig, useField } from "@shopify/react-form";
 import { useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "~/providers/params-provider";
 
 export type FieldConfigParam<Value> = FieldConfig<Value> & { name: string };
 
@@ -8,25 +8,23 @@ export const useFieldParam = <Value = string>(
   input: FieldConfigParam<Value>,
   dependencies?: unknown[]
 ): Field<Value> => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { params, setParams, resetParams } = useParams([input.name]);
   const field = useField<Value>(
-    { value: searchParams.get(input.name) || "", validates: [] } as any,
+    { value: params[input.name] || "", validates: [] } as any,
     dependencies
   );
 
   const reset = useCallback(() => {
-    searchParams.delete(input.name);
-    setSearchParams(searchParams);
+    resetParams();
     field.reset();
-  }, [field.reset, setSearchParams, searchParams]);
+  }, [field.reset, resetParams]);
 
   const onChange = useCallback(
     (value: unknown) => {
-      searchParams.set(input.name, (value as any) || "");
-      setSearchParams(searchParams);
+      setParams({ [input.name]: value as any });
       field.onChange(value as any);
     },
-    [field.onChange, setSearchParams, searchParams]
+    [field.onChange, setParams]
   );
 
   return { ...field, reset, onChange };

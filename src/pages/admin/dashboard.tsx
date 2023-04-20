@@ -1,4 +1,4 @@
-import { AlphaCard, Columns, Page, Text } from "@shopify/polaris";
+import { AlphaCard, HorizontalGrid, Page, Text } from "@shopify/polaris";
 import { Suspense } from "react";
 import { getUserGetAllQueryOptions } from "~/api/bookingShopifyApi";
 import { DashboardGroup } from "~/components/dashboard/Group";
@@ -19,7 +19,7 @@ export function Component() {
 
   return (
     <Page title="Dashboard">
-      <Columns columns={2} alignItems="start" gap="4">
+      <HorizontalGrid columns={2} alignItems="start" gap="4">
         <AlphaCard>
           <Text variant="bodyMd" fontWeight="bold" as="h2">
             Dashboard
@@ -31,7 +31,7 @@ export function Component() {
             {(users) => <DashboardGroup data={users || []} />}
           </Await>
         </Suspense>
-      </Columns>
+      </HorizontalGrid>
     </Page>
   );
 }

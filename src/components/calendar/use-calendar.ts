@@ -3,5 +3,6 @@ import { CalendarContext } from "./calendar.context";
 
 export const useCalendar = () => {
   const { calendar } = useContext(CalendarContext);
-  return calendar;
+
+  return { calendar };
 };

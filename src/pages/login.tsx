@@ -2,7 +2,7 @@ import {
   AlphaCard,
   Banner,
   FormLayout,
-  Inline,
+  HorizontalStack,
   Link,
   Text,
   TextField,
@@ -44,7 +44,7 @@ export function Component() {
     onSubmit,
   } = useRouterForm({
     fields: {
-      identification: useField(location.state?.phone || ""),
+      identification: useField(location.state?.phone || "31317428"),
       password: useField(""),
     },
   });
@@ -78,13 +78,13 @@ export function Component() {
               {...password}
             />
 
-            <Inline gap="1" blockAlign="center">
+            <HorizontalStack gap="1" blockAlign="center">
               <ButtonNavigation>{t("login_submit")}</ButtonNavigation>
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>
               <Link url="/receive-password">{t("receive_action")}</Link>
-            </Inline>
+            </HorizontalStack>
           </FormLayout>
         </Form>
       </AlphaCard>

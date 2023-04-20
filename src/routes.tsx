@@ -22,24 +22,26 @@ const router = createBrowserRouter(
           lazy={() => import("./pages/receive-password")}
         />
       </Route>
-      <Route path="/admin/" lazy={() => import("./pages/layouts/admin")}>
+      <Route path="/admin" lazy={() => import("./pages/layouts/admin")}>
         <Route index lazy={() => import("./pages/admin/dashboard")} />
         <Route
-          path="/admin/user/new"
+          path="user/new"
           lazy={() => import("./pages/admin/users/create")}
         />
         <Route
-          path="/admin/user/:userId/edit"
+          path="user/:userId/edit"
           lazy={() => import("./pages/admin/users/edit")}
         />
         <Route
-          path="/admin/user/:userId"
+          path="user/:userId"
           lazy={() => import("./pages/admin/users/view")}
-        />
-        <Route
-          path="/admin/users"
-          lazy={() => import("./pages/admin/users/list")}
-        />
+        >
+          <Route
+            path="create"
+            lazy={() => import("./pages/admin/users/create-shift")}
+          />
+        </Route>
+        <Route path="users" lazy={() => import("./pages/admin/users/list")} />
       </Route>
     </Route>
   )

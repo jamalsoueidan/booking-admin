@@ -1,4 +1,9 @@
-import { AlphaCard, FormLayout, Inline, TextField } from "@shopify/polaris";
+import {
+  AlphaCard,
+  FormLayout,
+  HorizontalStack,
+  TextField,
+} from "@shopify/polaris";
 import { useField } from "@shopify/react-form";
 import { AxiosError } from "axios";
 import { ActionFunctionArgs, Form, redirect } from "react-router-dom";
@@ -89,9 +94,9 @@ export function Component() {
               {...fields.address}
             />
 
-            <Inline gap="1" align="center">
+            <HorizontalStack gap="1" align="center">
               <ButtonNavigation>{t("submit")}</ButtonNavigation>
-            </Inline>
+            </HorizontalStack>
           </FormLayout>
         </Form>
       </AlphaCard>

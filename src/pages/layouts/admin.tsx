@@ -8,6 +8,7 @@ import {
   AbilityProvider,
   getAbilityFromToken,
 } from "~/providers/ability-provider";
+import { ParamsProvider } from "~/providers/params-provider";
 import { queryClient } from "~/providers/query-provider";
 import logo from "../../assets/logo.avif";
 
@@ -47,9 +48,11 @@ export function Component() {
       showMobileNavigation={mobileNavigationActive}
       onNavigationDismiss={toggleMobileNavigationActive}
     >
-      <AbilityProvider ability={getAbilityFromToken()}>
-        <Outlet />
-      </AbilityProvider>
+      <ParamsProvider>
+        <AbilityProvider ability={getAbilityFromToken()}>
+          <Outlet />
+        </AbilityProvider>
+      </ParamsProvider>
     </Frame>
   );
 }

@@ -2,7 +2,7 @@ import {
   AlphaCard,
   Banner,
   FormLayout,
-  Inline,
+  HorizontalStack,
   Link,
   Text,
   TextField,
@@ -42,7 +42,7 @@ export function Component() {
   const { fields, onSubmit } = useRouterForm({
     fields: {
       phone: useField<string>({
-        value: "",
+        value: "31317428",
         validates: [
           notEmpty("Phone is required"),
           lengthMoreThan(3, "Phone must be more than 3 characters"),
@@ -70,13 +70,13 @@ export function Component() {
               name="phone"
               {...fields.phone}
             />
-            <Inline gap="1" blockAlign="center">
+            <HorizontalStack gap="1" blockAlign="center">
               <ButtonNavigation>{t("send_submit")}</ButtonNavigation>
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>
               <Link url="/login">{t("login")}</Link>
-            </Inline>
+            </HorizontalStack>
           </FormLayout>
         </Form>
       </AlphaCard>

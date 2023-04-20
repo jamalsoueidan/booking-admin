@@ -12,7 +12,7 @@ import { Form } from "react-router-dom";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { FormErrors } from "~/components/form-errors";
 import { usePosition } from "~/hooks/use-position";
-import { useUserForm } from "~/hooks/useUserForm";
+import { useUserForm } from "~/hooks/use-user-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export function Component() {

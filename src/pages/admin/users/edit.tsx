@@ -24,7 +24,7 @@ import { ButtonNavigation } from "~/components/authentication/button-navigation"
 import { BadgeStatus } from "~/components/badge-status";
 import { FormErrors } from "~/components/form-errors";
 import { usePosition } from "~/hooks/use-position";
-import { useUserForm } from "~/hooks/useUserForm";
+import { useUserForm } from "~/hooks/use-user-form";
 import { queryClient } from "~/providers/query-provider";
 import { useTranslation } from "~/providers/translate-provider";
 
@@ -49,21 +49,21 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 };
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const user = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const { options } = usePosition();
   const { t } = useTranslation({
     id: "staff-form",
     locales: { da, en },
   });
 
-  const { fields, onSubmit, submitErrors } = useUserForm({ data: loaderData });
+  const { fields, onSubmit, submitErrors } = useUserForm({ data: user });
 
   return (
     <Page
       fullWidth
       title={t("form.title")}
-      backAction={{ content: "Staff", url: "../" }}
-      titleMetadata={<BadgeStatus active={loaderData?.active || true} />}
+      backAction={{ content: "User View", url: `../user/${user._id}` }}
+      titleMetadata={<BadgeStatus active={user?.active || true} />}
     >
       <Form onSubmit={onSubmit} method="post">
         <Layout>

@@ -8,34 +8,31 @@ import {
   TextField,
 } from "@shopify/polaris";
 import { useField } from "@shopify/react-form";
-import { useCallback } from "react";
-import { Form, useNavigate } from "react-router-dom";
-import { ShiftTag } from "~/api/model";
+import { useCallback, useEffect } from "react";
+import { Form } from "react-router-dom";
+import { ShiftCreateBody, ShiftTag, ShiftUpdateBody } from "~/api/model";
 import { InputTags } from "~/components/inputs/input-tags";
 import { useDate } from "~/hooks/use-date";
 import { useRouterForm } from "~/hooks/use-router-form";
 import { useTag } from "~/hooks/use-tag";
+import { useFieldCallback } from "~/lib/form/use-field-callback";
 import { useTranslation } from "~/providers/translate-provider";
 
 export type ScheduleFormOneShiftAllowEditing = {
   tag: boolean;
 };
-export interface ScheduleFormOneShiftBody {
-  start: Date;
-  end: Date;
-  tag: ShiftTag;
-}
 
 export interface ScheduleFormOneShiftProps {
-  data: ScheduleFormOneShiftBody;
+  data: ShiftCreateBody | ShiftUpdateBody;
+  onClose: () => void;
   allowEditing?: ScheduleFormOneShiftAllowEditing;
 }
 
-export const ScheduleFormOneShift = ({
+export const FormShift = ({
   data,
+  onClose,
   allowEditing,
 }: ScheduleFormOneShiftProps) => {
-  const navigate = useNavigate();
   const { t } = useTranslation({ id: "schedule-form-one-shift", locales });
   const { options } = useTag();
   const { toUtc, formatInTimezone } = useDate();
@@ -52,13 +49,42 @@ export const ScheduleFormOneShift = ({
     [formatInTimezone, toUtc]
   );
 
+  const onChangeEndTime = useCallback(
+    (value: string) => {
+      fields.end.onChange(convertToUtc(new Date(data.end), value).toJSON());
+    },
+    [convertToUtc, data]
+  );
+
+  const onChangeStartTime = useCallback(
+    (value: string) => {
+      fields.start.onChange(convertToUtc(new Date(data.start), value).toJSON());
+    },
+    [convertToUtc, data]
+  );
+
   const { fields, onSubmit } = useRouterForm({
     fields: {
-      endTime: useField(formatInTimezone(data.end, "HH:mm")),
-      startTime: useField(formatInTimezone(data.start, "HH:mm")),
+      endTime: useFieldCallback({
+        value: formatInTimezone(data.end, "HH:mm"),
+        validates: [],
+        onChange: onChangeEndTime,
+      }),
+      startTime: useFieldCallback({
+        value: formatInTimezone(data.start, "HH:mm"),
+        validates: [],
+        onChange: onChangeStartTime,
+      }),
+      start: useField({ value: "", validates: [] }),
+      end: useField({ value: "", validates: [] }),
       tag: useField<ShiftTag>(options[0].value),
     },
   });
+
+  useEffect(() => {
+    fields.startTime.onChange(fields.startTime.value);
+    fields.endTime.onChange(fields.endTime.value);
+  }, []);
 
   return (
     <Form method="post" onSubmit={onSubmit}>
@@ -71,25 +97,38 @@ export const ScheduleFormOneShift = ({
             })}
           </Layout.Section>
           <Layout.Section>
-            <HorizontalGrid columns={2}>
+            <HorizontalGrid columns={2} gap="2">
               <TextField
                 label={t("time_from.label")}
                 type="time"
                 autoComplete="off"
                 {...fields.startTime}
               />
-              <input type="hidden" name="start" />
-              <input type="hidden" name="end" />
               <TextField
                 label={t("time_to.label")}
                 type="time"
                 autoComplete="off"
                 {...fields.endTime}
               />
+
+              <input
+                name="start"
+                hidden
+                autoComplete="off"
+                value={fields.start.value}
+                onChange={() => {}}
+              />
+              <input
+                name="end"
+                hidden
+                autoComplete="off"
+                value={fields.end.value}
+                onChange={() => {}}
+              />
             </HorizontalGrid>
           </Layout.Section>
           <Layout.Section>
-            <InputTags field={fields.tag} />
+            <InputTags field={fields.tag} name="tag" />
           </Layout.Section>
         </Layout>
       </Box>
@@ -97,9 +136,7 @@ export const ScheduleFormOneShift = ({
       <HorizontalStack align="end">
         <Box padding={"4"}>
           <HorizontalStack gap={"1"}>
-            <Button onClick={() => navigate("../", { relative: "route" })}>
-              Luk
-            </Button>
+            <Button onClick={onClose}>Luk</Button>
             <Button submit primary>
               Opret
             </Button>

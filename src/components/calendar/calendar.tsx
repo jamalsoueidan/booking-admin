@@ -1,4 +1,4 @@
-import { CalendarOptions as CO, DatesSetArg } from "@fullcalendar/core";
+import { CalendarOptions as CO } from "@fullcalendar/core";
 import da from "@fullcalendar/core/locales/da";
 import en from "@fullcalendar/core/locales/en-gb";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -7,11 +7,11 @@ import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useCallback, useMemo, useState } from "react";
 import { useDate } from "~/hooks/use-date";
 import { useSettings } from "~/providers/setting-provider";
 import { CalendarContext } from "./calendar.context";
+import { useCalendarParams } from "./use-calendar-params";
 
 export type CalendarDate = {
   start: Date;
@@ -30,13 +30,13 @@ export type CalendarOptions = Omit<CO, "events"> & {
   children: JSX.Element;
 };
 
-const initialDate = new Date();
 export const Calendar = ({ children, ...props }: CalendarOptions) => {
-  const calendar = useRef<FullCalendar>(null);
+  const [calendar, setCalendar] = useState<FullCalendar>();
   const [, updateState] = useState<any>();
   const { language } = useSettings();
   const { toTimeZone } = useDate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { initialDate, onDatesSet, onDateClick, onEventClick } =
+    useCalendarParams();
 
   const events = useMemo(
     () =>
@@ -48,34 +48,19 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
     [props.events, toTimeZone]
   );
 
-  const onDatesSet = useCallback(
-    ({ startStr, endStr }: DatesSetArg) => {
-      const paramsStart = searchParams.get("start");
-      const paramsEnd = searchParams.get("end");
-      const start = startStr.substring(0, 10);
-      const end = endStr.substring(0, 10);
-      if (start !== paramsStart && end !== paramsEnd) {
-        searchParams.set("start", start);
-        searchParams.set("end", end);
-        setSearchParams(searchParams);
-      }
-    },
-    [searchParams]
-  );
-
-  const locale = useMemo(() => [da, en], [da, en]);
-
-  useEffect(() => {
-    if (calendar?.current) {
-      updateState({});
+  const onRef = useCallback((ref: FullCalendar) => {
+    if (ref) {
+      setCalendar(ref);
     }
   }, []);
 
+  const locale = useMemo(() => [da, en], [da, en]);
+
   return (
-    <CalendarContext.Provider value={{ calendar: calendar?.current }}>
-      {calendar?.current && children}
+    <CalendarContext.Provider value={{ calendar, updateState }}>
+      {children}
       <FullCalendar
-        ref={calendar}
+        ref={onRef}
         height="auto"
         plugins={[
           timeGridPlugin,
@@ -85,7 +70,10 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
           multiMonthPlugin,
         ]}
         firstDay={1}
+        initialDate={initialDate}
         datesSet={onDatesSet}
+        eventClick={onEventClick}
+        dateClick={onDateClick}
         dayMaxEvents
         slotDuration="00:15:00"
         slotLabelFormat={[

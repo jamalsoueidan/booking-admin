@@ -1,16 +1,20 @@
-import { Button, ButtonGroup, Columns, Inline } from "@shopify/polaris";
+import {
+  Button,
+  ButtonGroup,
+  HorizontalGrid,
+  HorizontalStack,
+} from "@shopify/polaris";
 import { ResetMinor } from "@shopify/polaris-icons";
-import { useCallback, useTransition } from "react";
+import { useCallback } from "react";
 import { CalendarTitle } from "~/components/calendar";
-import { useCalendar } from "~/components/calendar/useCalendar";
+import { useCalendar } from "~/components/calendar/use-calendar";
 import { InputTags, InputTagsField } from "~/components/inputs/input-tags";
-import { useFieldParam } from "~/lib/form/useFieldParam";
+import { useFieldParam } from "~/lib/form/use-field-param";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const ScheduleHeader = () => {
-  const calendar = useCalendar();
+  const { calendar } = useCalendar();
   const { t } = useTranslation({ id: "schedule-calendar", locales });
-  const [, startTransition] = useTransition();
   const tag = useFieldParam<InputTagsField>({
     value: "middle_of_week",
     validates: [],
@@ -19,25 +23,20 @@ export const ScheduleHeader = () => {
 
   const reset = useCallback(() => {
     tag.reset();
-    // Since we manipulate the query variable in both tag.reset and calendar components,
-    // we use startTransition to delay the execution of the following code block to a later frame.
-    // This helps prevent conflicts and performance issues related to simultaneous updates.
-    startTransition(() => {
-      calendar?.getApi().today();
-    });
-  }, [tag]);
+    calendar?.getApi().today();
+  }, [tag, calendar]);
 
   const handlePrev = useCallback(() => {
     calendar?.getApi().prev();
-  }, []);
+  }, [calendar]);
 
   const handleNext = useCallback(() => {
     calendar?.getApi().next();
-  }, []);
+  }, [calendar]);
 
   return (
-    <Columns columns={["oneThird", "twoThirds"]}>
-      <Inline gap="4">
+    <HorizontalGrid columns={["oneThird", "twoThirds"]}>
+      <HorizontalStack gap="4">
         <CalendarTitle />
         <ButtonGroup segmented>
           <Button onClick={handlePrev} size="slim">
@@ -47,8 +46,8 @@ export const ScheduleHeader = () => {
             &#62;
           </Button>
         </ButtonGroup>
-      </Inline>
-      <Inline gap="4" align="end">
+      </HorizontalStack>
+      <HorizontalStack gap="4" align="end" blockAlign="end">
         <Button onClick={reset} icon={ResetMinor}>
           {t("reset")}
         </Button>
@@ -60,8 +59,8 @@ export const ScheduleHeader = () => {
             size: "medium",
           }}
         />
-      </Inline>
-    </Columns>
+      </HorizontalStack>
+    </HorizontalGrid>
   );
 };
 

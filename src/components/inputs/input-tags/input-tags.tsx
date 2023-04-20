@@ -24,9 +24,10 @@ export type InputTagsField = ShiftTag | undefined;
 export type InputTagsProps = Pick<InputDropdownProps<ShiftTag>, "options"> & {
   field: Field<InputTagsField>;
   input?: InputDropdownInput;
+  name?: string;
 };
 
-export const InputTags = ({ field, input }: InputTagsProps) => {
+export const InputTags = ({ field, input, name }: InputTagsProps) => {
   const { options } = useTag();
   const { t } = useTranslation({ id: "input-tags", locales });
 
@@ -36,12 +37,23 @@ export const InputTags = ({ field, input }: InputTagsProps) => {
   );
 
   return (
-    <InputDropdown
-      input={{ label: t("label"), placeholder: t("placeholder"), ...input }}
-      options={options}
-      selected={selected}
-      error={field.error}
-      onChange={field.onChange}
-    />
+    <>
+      <InputDropdown
+        input={{ label: t("label"), placeholder: t("placeholder"), ...input }}
+        options={options}
+        selected={selected}
+        error={field.error}
+        onChange={field.onChange}
+      />
+      {name ? (
+        <input
+          type="string"
+          name={name}
+          value={field.value}
+          hidden
+          onChange={() => {}}
+        />
+      ) : null}
+    </>
   );
 };
