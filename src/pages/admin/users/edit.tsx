@@ -12,7 +12,7 @@ import { AxiosError } from "axios";
 import {
   ActionFunctionArgs,
   Form,
-  Params,
+  LoaderFunctionArgs,
   redirect,
   useLoaderData,
 } from "react-router-dom";
@@ -38,12 +38,12 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     }
     return error;
   }
-  return redirect("/users/");
+  return redirect("../users/");
 };
 
-export const loader = async ({ params }: { params: Params }) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
   const data = await queryClient.fetchQuery(
-    getUserGetByIdQueryOptions(params.id || "")
+    getUserGetByIdQueryOptions(params.userId || "")
   );
   return data.data.payload;
 };

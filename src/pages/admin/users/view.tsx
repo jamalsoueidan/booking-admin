@@ -1,135 +1,66 @@
-import { subject } from "@casl/ability";
-import { LoadingPage } from "@jamalsoueidan/frontend.components.loading.loading-page";
-import { ScheduleCalendar } from "@jamalsoueidan/frontend.components.schedule.schedule-calendar";
-import { ScheduleModalCreateShift } from "@jamalsoueidan/frontend.components.schedule.schedule-modal-create-shift";
-import { ScheduleModalEditManyShifts } from "@jamalsoueidan/frontend.components.schedule.schedule-modal-edit-many-shifts";
-import { ScheduleModalEditOneShift } from "@jamalsoueidan/frontend.components.schedule.schedule-modal-edit-one-shift";
-import { useStaffSchedule } from "@jamalsoueidan/frontend.state.schedule";
-import { useStaffGet } from "@jamalsoueidan/frontend.state.staff";
 import { AlphaCard, Page } from "@shopify/polaris";
-import { Suspense, useCallback, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Suspense } from "react";
 
-import { Schedule } from "@jamalsoueidan/backend.types.schedule";
-import { endOfMonth } from "date-fns";
+import {
+  getUserGetByIdQueryOptions,
+  getUserShiftGetAllQueryOptions,
+} from "~/api/bookingShopifyApi";
 import { BadgeStatus } from "~/components/badge-status";
-import { LoadingModal } from "~/components/loading/loading-modal";
 import { LoadingSpinner } from "~/components/loading/loading-spinner";
-import { useAbility } from "~/providers/ability-provider";
+import { ScheduleCalendar } from "~/components/schedule/schedule-calendar";
+import { Await, deferredLoader, useDeferredLoaderData } from "~/lib/loaderData";
+import { queryClient } from "~/providers/query-provider";
 import { useTranslation } from "~/providers/translate-provider";
 
-export const View = () => {
-  const { t } = useTranslation({ id: "staff-schedule", locales });
-  const ability = useAbility();
-  const params = useParams();
-  const [rangeDate, setRangeDate] = useState<{ start: Date; end: Date }>({
-    end: endOfMonth(new Date()),
-    start: new Date(),
-  });
-
-  const [date, setDate] = useState<Date>();
-  const [editOneSchedule, setEditOneSchedule] = useState<Schedule>();
-  const [editManySchedule, setEditManySchedule] = useState<Schedule>();
-
-  const close = useCallback(() => {
-    setDate(undefined);
-    setEditManySchedule(undefined);
-    setEditOneSchedule(undefined);
-  }, []);
-
-  const edit = useCallback((schedule: Schedule) => {
-    if (schedule.groupId) {
-      setEditManySchedule(schedule);
-    } else {
-      setEditOneSchedule(schedule);
-    }
-  }, []);
-
-  const { data: staff } = useStaffGet({ userId: params.id || "" });
-
-  const { data: calendar } = useStaffSchedule({
-    end: rangeDate?.end,
-    staff: params.id || "",
-    start: rangeDate?.start,
-  });
-
-  if (!staff || !calendar) {
-    return (
-      <LoadingPage title={!staff ? t("loading.staff") : t("loading.data")} />
+export const loader = deferredLoader(({ request, params }) => {
+  const searchParams = new URLSearchParams(request.url.split("?")[1]);
+  const loadUser = async () => {
+    const response = await queryClient.fetchQuery(
+      getUserGetByIdQueryOptions(params.userId || "")
     );
-  }
-
-  const { _id, fullname, active } = staff;
-
-  const editSchedule = ability.can("update", subject("staff", staff)) && {
-    onClick: setDate,
-    onClickSchedule: edit,
+    return response.data.payload;
   };
 
+  const loadShifts = async () => {
+    const response = await queryClient.fetchQuery(
+      getUserShiftGetAllQueryOptions(params.userId || "", {
+        start: new Date(searchParams.get("start") || ""),
+        end: new Date(searchParams.get("end") || ""),
+      })
+    );
+    return response.data.payload;
+  };
+
+  return { user: loadUser(), shifts: loadShifts() };
+});
+
+export function Component() {
+  const { user, shifts } = useDeferredLoaderData<typeof loader>();
+  const { t } = useTranslation({ id: "user-schedule", locales });
+
   return (
-    <Page
-      fullWidth
-      title={t("title", { fullname })}
-      titleMetadata={<BadgeStatus active={active} />}
-      backAction={{ content: "staff", url: "../" }}
-      primaryAction={
-        ability.can("update", subject("staff", staff))
-          ? {
-              content: t("edit", { fullname }),
-              url: `../edit/${_id}`,
-            }
-          : null
-      }
-      secondaryActions={
-        ability.can("update", subject("staff", staff))
-          ? [
-              {
-                content: t("add"),
-                onAction: () => setDate(new Date()),
-              },
-            ]
-          : []
-      }
-    >
-      <>
-        {date && (
-          <Suspense fallback={<LoadingModal />}>
-            <ScheduleModalCreateShift
-              selectedDate={date}
-              staff={params.id || ""}
-              close={close}
-            />
-          </Suspense>
+    <Suspense fallback={<LoadingSpinner />}>
+      <Await resolve={user} errorElement={<>problems</>}>
+        {(user) => (
+          <Page
+            fullWidth
+            title={t("title", user)}
+            titleMetadata={<BadgeStatus active={user?.active} />}
+            backAction={{ content: "user", url: "../" }}
+          >
+            <AlphaCard>
+              <Suspense fallback={<LoadingSpinner />}>
+                <Await resolve={shifts} errorElement={<>problems</>}>
+                  {(shifts) => <ScheduleCalendar data={shifts} />}
+                </Await>
+              </Suspense>
+            </AlphaCard>
+          </Page>
         )}
-        {editOneSchedule && (
-          <Suspense fallback={<LoadingModal />}>
-            <ScheduleModalEditOneShift
-              schedule={editOneSchedule}
-              close={close}
-            />
-          </Suspense>
-        )}
-        {editManySchedule && (
-          <Suspense fallback={<LoadingModal />}>
-            <ScheduleModalEditManyShifts
-              schedule={editManySchedule}
-              close={close}
-            />
-          </Suspense>
-        )}
-        <AlphaCard>
-          <Suspense fallback={<LoadingSpinner />}>
-            <ScheduleCalendar
-              onChangeDate={setRangeDate}
-              data={calendar}
-              {...editSchedule}
-            />
-          </Suspense>
-        </AlphaCard>
-      </>
-    </Page>
+      </Await>
+    </Suspense>
   );
-};
+}
 
 const locales = {
   da: {
@@ -137,7 +68,7 @@ const locales = {
     edit: "Redigere {fullname}",
     loading: {
       data: "Henter medarbejder vagtplan",
-      staff: "Henter medarbejder data",
+      user: "Henter medarbejder data",
     },
     title: "{fullname} vagtplan",
   },
@@ -145,8 +76,8 @@ const locales = {
     add: "Add shift",
     edit: "Edit {fullname}",
     loading: {
-      data: "Loading staff shifts",
-      staff: "Loading staff data",
+      data: "Loading user shifts",
+      user: "Loading user data",
     },
     title: "{fullname} shifts",
   },

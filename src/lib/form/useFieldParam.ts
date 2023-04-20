@@ -15,19 +15,18 @@ export const useFieldParam = <Value = string>(
   );
 
   const reset = useCallback(() => {
-    setSearchParams((prev) => {
-      prev.delete(input.name);
-      return prev;
-    });
+    searchParams.delete(input.name);
+    setSearchParams(searchParams);
     field.reset();
-  }, [field.reset, setSearchParams]);
+  }, [field.reset, setSearchParams, searchParams]);
 
   const onChange = useCallback(
     (value: unknown) => {
-      setSearchParams((prev) => ({ ...prev, [input.name]: value || "" }));
+      searchParams.set(input.name, (value as any) || "");
+      setSearchParams(searchParams);
       field.onChange(value as any);
     },
-    [field.onChange, setSearchParams]
+    [field.onChange, setSearchParams, searchParams]
   );
 
   return { ...field, reset, onChange };

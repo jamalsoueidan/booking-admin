@@ -54,19 +54,19 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
       const paramsEnd = searchParams.get("end");
       const start = startStr.substring(0, 10);
       const end = endStr.substring(0, 10);
-      console.log(start, paramsStart, end, paramsEnd);
-      console.log(start !== paramsStart, end !== paramsEnd);
       if (start !== paramsStart && end !== paramsEnd) {
-        //setSearchParams((prev) => ({ ...prev, start, end }));
+        searchParams.set("start", start);
+        searchParams.set("end", end);
+        setSearchParams(searchParams);
       }
     },
-    [calendar.current, searchParams, setSearchParams]
+    [searchParams]
   );
+
+  const locale = useMemo(() => [da, en], [da, en]);
 
   useEffect(() => {
     if (calendar?.current) {
-      console.log("listen to dateset");
-      calendar?.current.getApi().on("datesSet", onDatesSet);
       updateState({});
     }
   }, []);
@@ -85,6 +85,7 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
           multiMonthPlugin,
         ]}
         firstDay={1}
+        datesSet={onDatesSet}
         dayMaxEvents
         slotDuration="00:15:00"
         slotLabelFormat={[
@@ -98,13 +99,12 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
         eventDisplay="block"
         slotMinTime="07:00"
         slotMaxTime="20:00"
-        locales={[da, en]}
+        locales={locale}
         locale={language}
         buttonText={{
           next: ">>",
           prev: "<<",
         }}
-        {...props}
         events={events}
         headerToolbar={
           props.headerToolbar || {
