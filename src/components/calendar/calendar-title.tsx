@@ -1,51 +1,65 @@
 import { Text } from "@shopify/polaris";
-import { addDays, isEqual } from "date-fns";
-import { useLayoutEffect, useState } from "react";
+import { addDays, addMonths } from "date-fns";
+import { useCallback, useEffect, useState } from "react";
 import { useDate } from "~/hooks/use-date";
-import { CalendarType, CalendarView } from "./calendar";
+import { useCalendar } from "./useCalendar";
 
-export type CalendarTitleProps = {
-  calendarRef: CalendarType | null;
-};
+export const CalendarTitle = () => {
+  const calendar = useCalendar();
+  const [, updateState] = useState<any>();
 
-export const CalendarTitle = ({ calendarRef }: CalendarTitleProps) => {
-  const [date, setDate] = useState<Date>();
-  const [view, setView] = useState<CalendarView>();
+  const update = useCallback(() => {
+    updateState({});
+  }, []);
+
+  useEffect(() => {
+    calendar?.getApi().on("datesSet", update);
+  }, []);
+
   const { format } = useDate();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useLayoutEffect(() => {
-    const calendarCurrentStart = calendarRef?.getApi().view.currentStart;
-    if (!isEqual(calendarCurrentStart || new Date(), date || new Date())) {
-      setDate(calendarRef?.getApi().view.currentStart);
-    }
-    const calendarViewType = calendarRef?.getApi().view.type as CalendarView;
-    if (calendarViewType !== view) {
-      setView(calendarViewType);
-    }
-  });
+  const view = calendar?.getApi().view;
+  const mode = view?.type || "dayGridMonth";
+  const currentStart = view?.currentStart || new Date();
 
-  if (!date) {
-    return <></>;
+  const activeStart = view?.activeStart || new Date();
+  const activeEnd = view?.activeEnd || addMonths(activeStart, 1);
+
+  if (mode === "multiMonthYear") {
+    return (
+      <Text as="h1" variant="heading2xl">
+        {format(currentStart, "MMMM yyyy")}
+      </Text>
+    );
   }
 
-  const multimonth = view === "multiMonthYear" && format(date, "MMMM yyyy");
-  const dayGridMonth = view === "dayGridMonth" && format(date, "MMMM yyyy");
-  const timeGridWeek =
-    view === "timeGridWeek" &&
-    `${format(date, "PP")} - ${format(addDays(date, 6), "PP")}`;
-  const timeGridDay = view === "timeGridDay" && format(date, "PPP");
-  const listWeek =
-    view === "listWeek" &&
-    `${format(date, "PP")} - ${format(addDays(date, 6), "PP")}`;
+  if (mode === "dayGridMonth") {
+    return (
+      <Text as="h1" variant="heading2xl">
+        {format(currentStart, "MMMM yyyy")}
+      </Text>
+    );
+  }
+
+  if (mode === "timeGridWeek") {
+    return (
+      <Text as="h1" variant="heading2xl">
+        {format(activeStart, "PP")} - {format(addDays(activeEnd, 6), "PP")}
+      </Text>
+    );
+  }
+
+  if (mode === "timeGridDay") {
+    return (
+      <Text as="h1" variant="heading2xl">
+        {format(currentStart, "PPP")}
+      </Text>
+    );
+  }
 
   return (
     <Text as="h1" variant="heading2xl">
-      {multimonth}
-      {dayGridMonth}
-      {timeGridWeek}
-      {timeGridDay}
-      {listWeek}
+      {format(activeStart, "PP")} - {format(addDays(activeEnd, 6), "PP")}
     </Text>
   );
 };

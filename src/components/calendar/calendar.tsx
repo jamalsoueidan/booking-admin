@@ -1,5 +1,4 @@
-import type { DatesSetArg } from "@fullcalendar/core";
-import { CalendarOptions as CO } from "@fullcalendar/core";
+import { CalendarOptions as CO, DatesSetArg } from "@fullcalendar/core";
 import da from "@fullcalendar/core/locales/da";
 import en from "@fullcalendar/core/locales/en-gb";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -8,10 +7,11 @@ import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { isEqual } from "date-fns";
-import { forwardRef, useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useDate } from "~/hooks/use-date";
 import { useSettings } from "~/providers/setting-provider";
+import { CalendarContext } from "./calendar.context";
 
 export type CalendarDate = {
   start: Date;
@@ -27,48 +27,56 @@ export type CalendarView =
 
 export type CalendarOptions = Omit<CO, "events"> & {
   events?: Array<CalendarDate>;
+  children: JSX.Element;
 };
 
-export type CalendarType = FullCalendar;
+const initialDate = new Date();
+export const Calendar = ({ children, ...props }: CalendarOptions) => {
+  const calendar = useRef<FullCalendar>(null);
+  const [, updateState] = useState<any>();
+  const { language } = useSettings();
+  const { toTimeZone } = useDate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Calendar = forwardRef<CalendarType, CalendarOptions>(
-  (props, ref) => {
-    const { language } = useSettings();
-    const { toTimeZone } = useDate();
+  const events = useMemo(
+    () =>
+      props.events?.map((e: { end: Date; start: Date }) => ({
+        ...e,
+        end: toTimeZone(e.end),
+        start: toTimeZone(e.start),
+      })),
+    [props.events, toTimeZone]
+  );
 
-    const [date, setDate] = useState<CalendarDate>();
-    const handleChangeDate = useCallback(
-      (newDate: DatesSetArg) => {
-        if (
-          !date ||
-          !newDate ||
-          !isEqual(newDate.start, date.start) ||
-          !isEqual(newDate.end, date.end)
-        ) {
-          if (props.datesSet) {
-            props.datesSet(newDate);
-          }
-          setDate(newDate);
-        }
-      },
-      [date, props]
-    );
+  const onDatesSet = useCallback(
+    ({ startStr, endStr }: DatesSetArg) => {
+      const paramsStart = searchParams.get("start");
+      const paramsEnd = searchParams.get("end");
+      const start = startStr.substring(0, 10);
+      const end = endStr.substring(0, 10);
+      console.log(start, paramsStart, end, paramsEnd);
+      console.log(start !== paramsStart, end !== paramsEnd);
+      if (start !== paramsStart && end !== paramsEnd) {
+        //setSearchParams((prev) => ({ ...prev, start, end }));
+      }
+    },
+    [calendar.current, searchParams, setSearchParams]
+  );
 
-    const events = useMemo(
-      () =>
-        props.events?.map((e: { end: Date; start: Date }) => ({
-          ...e,
-          end: toTimeZone(e.end),
-          start: toTimeZone(e.start),
-        })),
-      [props.events, toTimeZone]
-    );
+  useEffect(() => {
+    if (calendar?.current) {
+      console.log("listen to dateset");
+      calendar?.current.getApi().on("datesSet", onDatesSet);
+      updateState({});
+    }
+  }, []);
 
-    return (
+  return (
+    <CalendarContext.Provider value={{ calendar: calendar?.current }}>
+      {calendar?.current && children}
       <FullCalendar
+        ref={calendar}
         height="auto"
-        ref={ref}
         plugins={[
           timeGridPlugin,
           dayGridPlugin,
@@ -97,7 +105,6 @@ export const Calendar = forwardRef<CalendarType, CalendarOptions>(
           prev: "<<",
         }}
         {...props}
-        datesSet={handleChangeDate}
         events={events}
         headerToolbar={
           props.headerToolbar || {
@@ -109,6 +116,6 @@ export const Calendar = forwardRef<CalendarType, CalendarOptions>(
         }
         initialView={props.initialView || "dayGridMonth"}
       />
-    );
-  }
-);
+    </CalendarContext.Provider>
+  );
+};

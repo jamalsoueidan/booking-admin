@@ -1,10 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Calendar } from "./calendar";
+import { CalendarTitle } from "./calendar-title";
 
 const meta = {
   title: "Components/Calendar",
   component: Calendar,
-  argTypes: {},
+  args: {
+    children: <CalendarTitle />,
+  },
 } satisfies Meta<typeof Calendar>;
 
 export default meta;
