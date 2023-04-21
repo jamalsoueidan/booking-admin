@@ -1,5 +1,16 @@
-import { ReactNode, createContext, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  createSearchParams,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
 import { Params, ParamsContextType } from "./types";
 
 export type ParamsProviderProps = {
@@ -7,22 +18,37 @@ export type ParamsProviderProps = {
 };
 
 export const ParamsContext = createContext<ParamsContextType>({
-  values: {},
-  setValues: (defaultValue: any) => {},
-  setSearch: (defaultValue: any) => {},
+  search: {} as any,
+  refreshSearch: (defaultValue: any) => {},
 });
 
 export const ParamsProvider = ({ children }: ParamsProviderProps) => {
-  const [search, setSearch] = useSearchParams();
-  const [values, setValues] = useState<Params>(
-    Object.fromEntries(search) as any
-  );
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const pathname = useRef(location.pathname);
+  const search = useRef<Params>(Object.fromEntries(searchParams) as any);
 
-  const value = useMemo(() => {
-    return { setSearch, setValues, values };
-  }, [values]);
+  // are used as force update
+  const [_, forceUpdate] = useState<any>();
+
+  const refreshSearch = useCallback(() => {
+    forceUpdate({});
+  }, []);
+
+  useEffect(() => {
+    if (pathname.current !== location.pathname) {
+      search.current = Object.fromEntries(createSearchParams(location.search));
+      pathname.current = location.pathname;
+    }
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    setSearchParams(search.current);
+  }, [_]);
 
   return (
-    <ParamsContext.Provider value={value}>{children}</ParamsContext.Provider>
+    <ParamsContext.Provider value={{ search, refreshSearch }}>
+      {children}
+    </ParamsContext.Provider>
   );
 };

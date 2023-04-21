@@ -1,10 +1,12 @@
 import { EventContentArg } from "@fullcalendar/core";
+import { DateClickArg } from "@fullcalendar/interaction";
 import { Text } from "@shopify/polaris";
 import { useCallback, useMemo } from "react";
 import { Shift } from "~/api/model";
 import { Calendar } from "~/components/calendar";
 import { useDate } from "~/hooks/use-date";
 import { useTag } from "~/hooks/use-tag";
+import { useParams } from "~/providers/params-provider";
 
 export type ScheduleCalendarProps = {
   data: Array<Shift>;
@@ -16,6 +18,7 @@ export const ScheduleCalendarCore = ({
   children,
 }: ScheduleCalendarProps) => {
   const { format } = useDate();
+  const { params, navigate } = useParams(["selectedDate"]);
   const { selectTagLabel, selectTagBackgroundColor, selectTagColor } = useTag();
 
   const events = useMemo(
@@ -66,6 +69,16 @@ export const ScheduleCalendarCore = ({
 
   const validRange = useCallback((start: Date) => ({ start }), []);
 
+  const onDateClick = useCallback(
+    ({ dateStr: selectedDate }: DateClickArg) => {
+      navigate({
+        pathname: "create-shift",
+        search: { selectedDate },
+      });
+    },
+    [params, navigate]
+  );
+
   return (
     <Calendar
       events={events}
@@ -75,6 +88,7 @@ export const ScheduleCalendarCore = ({
         left: undefined,
         right: undefined,
       }}
+      dateClick={onDateClick}
       validRange={validRange}
       initialView="dayGridMonth"
     >

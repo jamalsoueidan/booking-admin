@@ -2,7 +2,7 @@ import { AlphaCard, Page } from "@shopify/polaris";
 import { Suspense } from "react";
 
 import { subject } from "@casl/ability";
-import { Outlet, useSearchParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { BadgeStatus } from "~/components/badge-status";
 import { LoadingSpinner } from "~/components/loading/loading-spinner";
 import { ScheduleCalendar } from "~/components/schedule/schedule-calendar";
@@ -12,12 +12,10 @@ import { useTranslation } from "~/providers/translate-provider";
 import { loader } from "./loader";
 
 export function Component() {
-  const [search] = useSearchParams();
   const { user, shifts } = useDeferredLoaderData<typeof loader>();
   const ability = useAbility();
   const { t } = useTranslation({ id: "user-schedule", locales });
 
-  console.log(search.get("selectedDate"));
   return (
     <>
       <Suspense fallback={<LoadingSpinner />}>
@@ -55,6 +53,7 @@ export function Component() {
           )}
         </Await>
       </Suspense>
+      <Outlet />
     </>
   );
 }

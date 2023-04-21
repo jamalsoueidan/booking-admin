@@ -3,16 +3,13 @@ import { useCallback, useMemo, useState } from "react";
 import { ShiftTag } from "~/api/model";
 
 import { setHours } from "date-fns";
-import {
-  createSearchParams,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
+import { useParams } from "~/providers/params-provider";
 import { useTranslation } from "~/providers/translate-provider";
 
 export function Component() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { params } = useParams(["selectedDate"]);
   const { t } = useTranslation({
     id: "create-shift",
     locales,
@@ -36,21 +33,20 @@ export function Component() {
   ];
 
   const data = useMemo(() => {
-    const selectedDate = searchParams.get("selected-date") || "";
     return {
-      start: setHours(new Date(selectedDate), 10),
-      end: setHours(new Date(selectedDate), 16),
+      start: setHours(new Date(params.selectedDate), 10),
+      end: setHours(new Date(params.selectedDate), 16),
       tag: ShiftTag.all_day,
     };
-  }, []);
+  }, [params.selectedDate]);
 
   const onClose = useCallback(() => {
-    searchParams.delete("selected-date");
+    const { selectedDate, ...newParams } = params;
     navigate({
       pathname: "../",
-      search: createSearchParams(searchParams).toString(),
+      search: createSearchParams(newParams).toString(),
     });
-  }, []);
+  }, [params, navigate]);
 
   return (
     <Modal open onClose={onClose} title={t("title")}>

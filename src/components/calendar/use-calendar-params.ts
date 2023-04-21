@@ -21,13 +21,15 @@ export const useCalendarParams = () => {
   const onDatesSet = useCallback(({ startStr, endStr }: DatesSetArg) => {
     const start = startStr.substring(0, 10);
     const end = endStr.substring(0, 10);
-    setParams({
+
+    updateParams({
       start,
       end,
     });
   }, []);
 
   const onDateClick = useCallback(({ dateStr: selectedDate }: DateClickArg) => {
+    console.log("onDateclick");
     updateParams({
       selectedDate,
     });

@@ -51,14 +51,14 @@ export const FormShift = ({
 
   const onChangeEndTime = useCallback(
     (value: string) => {
-      fields.end.onChange(convertToUtc(new Date(data.end), value).toJSON());
+      fields.end.onChange(convertToUtc(data.end, value).toJSON());
     },
     [convertToUtc, data]
   );
 
   const onChangeStartTime = useCallback(
     (value: string) => {
-      fields.start.onChange(convertToUtc(new Date(data.start), value).toJSON());
+      fields.start.onChange(convertToUtc(data.start, value).toJSON());
     },
     [convertToUtc, data]
   );

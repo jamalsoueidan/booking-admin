@@ -1,4 +1,5 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { ParamsContext } from "./provider";
 
 function deepClone<T>(obj: T): T {
@@ -18,61 +19,71 @@ function deepClone<T>(obj: T): T {
 }
 
 export const useParams = <K extends string>(inputs: K[]) => {
-  const { values, setValues, setSearch } = useContext(ParamsContext);
+  const { search, refreshSearch } = useContext(ParamsContext);
+  const nav = useNavigate();
 
   const setParams = useCallback(
     (newValues: Partial<Record<K, any>>) => {
-      setValues((prevValues) => {
-        const updatedValues = inputs.reduce((acc, key) => {
-          if (!newValues[key]) {
-            delete acc[key];
-          } else {
-            acc[key] = newValues[key];
-          }
-          return acc;
-        }, deepClone(prevValues));
+      search.current = inputs.reduce((acc, key) => {
+        if (!newValues[key]) {
+          delete acc[key];
+        } else {
+          acc[key] = newValues[key];
+        }
+        return acc;
+      }, deepClone(search.current));
 
-        return updatedValues;
-      });
+      refreshSearch();
     },
     [inputs]
   );
 
   const resetParams = useCallback(() => {
-    setValues((prevValues) => {
-      const updatedValues = inputs.reduce((acc, key) => {
-        delete acc[key];
-        return acc;
-      }, deepClone(prevValues));
-
-      return updatedValues;
-    });
+    search.current = inputs.reduce((acc, key) => {
+      delete acc[key];
+      return acc;
+    }, deepClone(search.current));
+    refreshSearch();
   }, [inputs]);
 
   const updateParams = useCallback(
     (newValues: Partial<Record<K, any>>) => {
-      setValues((prevValues) => {
-        const updatedValues = inputs.reduce((acc, key) => {
-          if (newValues[key]) {
-            acc[key] = newValues[key];
-          }
-          return acc;
-        }, deepClone(prevValues));
-        console.log(newValues, prevValues, updatedValues);
-        return updatedValues;
-      });
+      search.current = inputs.reduce((acc, key) => {
+        if (newValues[key]) {
+          acc[key] = newValues[key];
+        }
+        return acc;
+      }, deepClone(search.current));
+
+      refreshSearch();
     },
     [inputs]
   );
 
-  useEffect(() => {
-    setSearch(values);
-  }, [JSON.stringify(values)]);
+  const navigate = useCallback(
+    ({
+      pathname,
+      search: additionalSearch,
+    }: {
+      pathname: string;
+      search: object;
+    }) => {
+      nav({
+        pathname,
+        search: createSearchParams({
+          ...search.current,
+          ...additionalSearch,
+        }).toString(),
+      });
+    },
+    []
+  );
 
   return {
-    params: values,
+    params: search.current,
     setParams,
     updateParams,
     resetParams,
+    navigate,
   };
 };

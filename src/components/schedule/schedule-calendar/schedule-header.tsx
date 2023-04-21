@@ -6,6 +6,7 @@ import {
 } from "@shopify/polaris";
 import { ResetMinor } from "@shopify/polaris-icons";
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { CalendarTitle } from "~/components/calendar";
 import { useCalendar } from "~/components/calendar/use-calendar";
 import { InputTags, InputTagsField } from "~/components/inputs/input-tags";
@@ -14,6 +15,7 @@ import { useTranslation } from "~/providers/translate-provider";
 
 export const ScheduleHeader = () => {
   const { calendar } = useCalendar();
+  const navigate = useNavigate();
   const { t } = useTranslation({ id: "schedule-calendar", locales });
   const tag = useFieldParam<InputTagsField>({
     value: "middle_of_week",
