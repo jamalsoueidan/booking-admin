@@ -10,6 +10,7 @@ import {
 } from "~/providers/ability-provider";
 import { ParamsProvider } from "~/providers/params-provider";
 import { queryClient } from "~/providers/query-provider";
+import { ToastProvider } from "~/providers/toast";
 import logo from "../../assets/logo.avif";
 
 export const loader = async () => {
@@ -50,7 +51,9 @@ export function Component() {
     >
       <ParamsProvider>
         <AbilityProvider ability={getAbilityFromToken()}>
-          <Outlet />
+          <ToastProvider>
+            <Outlet />
+          </ToastProvider>
         </AbilityProvider>
       </ParamsProvider>
     </Frame>

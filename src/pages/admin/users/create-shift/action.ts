@@ -5,7 +5,11 @@ import { userShiftCreate } from "~/api/bookingShopifyApi";
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   try {
     const formData = Object.fromEntries(await request.formData());
-    return await userShiftCreate(params.userId || "", formData as any);
+    const response = await userShiftCreate(
+      params.userId || "",
+      formData as any
+    );
+    return response;
   } catch (error) {
     if (error instanceof AxiosError) {
       return error.response?.data;

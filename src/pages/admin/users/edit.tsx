@@ -31,13 +31,17 @@ import { useTranslation } from "~/providers/translate-provider";
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
-    await userUpdateById(params.id || "", Object.fromEntries(formData) as any);
+    await userUpdateById(
+      params.userId || "",
+      Object.fromEntries(formData) as any
+    );
   } catch (error) {
     if (error instanceof AxiosError) {
       return error.response?.data;
     }
     return error;
   }
+  // needs to handle it via toast
   return redirect("../users/");
 };
 

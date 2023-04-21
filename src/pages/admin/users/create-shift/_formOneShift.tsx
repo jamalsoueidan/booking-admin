@@ -7,84 +7,60 @@ import {
   Layout,
   TextField,
 } from "@shopify/polaris";
-import { useField } from "@shopify/react-form";
-import { useCallback, useEffect } from "react";
+import { Field, useField } from "@shopify/react-form";
+import { useCallback } from "react";
 import { Form } from "react-router-dom";
 import { ShiftCreateBody, ShiftTag, ShiftUpdateBody } from "~/api/model";
 import { InputTags } from "~/components/inputs/input-tags";
+import { useRouterSubmit } from "~/hooks/react-forms";
+import { useConvertToUtc } from "~/hooks/use-convert-to-utc";
 import { useDate } from "~/hooks/use-date";
-import { useRouterForm } from "~/hooks/use-router-form";
 import { useTag } from "~/hooks/use-tag";
-import { useFieldCallback } from "~/lib/form/use-field-callback";
 import { useTranslation } from "~/providers/translate-provider";
 
-export type ScheduleFormOneShiftAllowEditing = {
-  tag: boolean;
-};
-
-export interface ScheduleFormOneShiftProps {
+export interface FormOneShiftProps {
   data: ShiftCreateBody | ShiftUpdateBody;
   onClose: () => void;
-  allowEditing?: ScheduleFormOneShiftAllowEditing;
+  allowEditing?: {
+    tag: boolean;
+  };
 }
 
-export const FormShift = ({
+export const FormOneShift = ({
   data,
   onClose,
   allowEditing,
-}: ScheduleFormOneShiftProps) => {
-  const { t } = useTranslation({ id: "schedule-form-one-shift", locales });
+}: FormOneShiftProps) => {
+  const { t } = useTranslation({ id: "form-one-shift", locales });
   const { options } = useTag();
-  const { toUtc, formatInTimezone } = useDate();
+  const { formatInTimezone } = useDate();
+  const convertToUtc = useConvertToUtc();
 
-  const convertToUtc = useCallback(
-    (date: Date, time: string) => {
-      const [hour, minuttes] = time.split(":").map((_) => parseInt(_, 10));
-      return toUtc(
-        new Date(
-          `${formatInTimezone(date, "yyyy-MM-dd")} ${hour}:${minuttes}:00`
-        )
-      );
-    },
-    [formatInTimezone, toUtc]
-  );
-
-  const onChangeEndTime = useCallback(
-    (value: string) => {
-      fields.end.onChange(convertToUtc(data.end, value).toJSON());
-    },
-    [convertToUtc, data]
-  );
-
-  const onChangeStartTime = useCallback(
-    (value: string) => {
-      fields.start.onChange(convertToUtc(data.start, value).toJSON());
-    },
-    [convertToUtc, data]
-  );
-
-  const { fields, onSubmit } = useRouterForm({
+  const { fields, onSubmit } = useRouterSubmit({
     fields: {
-      endTime: useFieldCallback({
-        value: formatInTimezone(data.end, "HH:mm"),
+      start: useField({
+        value: data.start,
         validates: [],
-        onChange: onChangeEndTime,
       }),
-      startTime: useFieldCallback({
-        value: formatInTimezone(data.start, "HH:mm"),
+      end: useField({
+        value: data.end,
         validates: [],
-        onChange: onChangeStartTime,
       }),
-      start: useField({ value: "", validates: [] }),
-      end: useField({ value: "", validates: [] }),
       tag: useField<ShiftTag>(options[0].value),
     },
   });
 
-  useEffect(() => {
-    fields.startTime.onChange(fields.startTime.value);
-    fields.endTime.onChange(fields.endTime.value);
-  }, []);
+  const onChange = useCallback(
+    (
+      value: string,
+      id: Extract<ShiftCreateBody | ShiftUpdateBody, "start" | "end">
+    ) => {
+      const field = fields[id] as Field<any>;
+      field.onChange(convertToUtc(data[id], value));
+      console.log(field.value);
+    },
+    [convertToUtc, fields, data]
+  );
 
   return (
     <Form method="post" onSubmit={onSubmit}>
@@ -101,29 +77,22 @@ export const FormShift = ({
               <TextField
                 label={t("time_from.label")}
                 type="time"
+                id="start"
+                name="start"
                 autoComplete="off"
-                {...fields.startTime}
+                value={formatInTimezone(fields.start.value, "HH:mm")}
+                onChange={onChange}
+                error={fields.start.error}
               />
               <TextField
                 label={t("time_to.label")}
                 type="time"
-                autoComplete="off"
-                {...fields.endTime}
-              />
-
-              <input
-                name="start"
-                hidden
-                autoComplete="off"
-                value={fields.start.value}
-                onChange={() => {}}
-              />
-              <input
+                id="end"
                 name="end"
-                hidden
                 autoComplete="off"
-                value={fields.end.value}
-                onChange={() => {}}
+                value={formatInTimezone(fields.end.value, "HH:mm")}
+                onChange={onChange}
+                error={fields.end.error}
               />
             </HorizontalGrid>
           </Layout.Section>
