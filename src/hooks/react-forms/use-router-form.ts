@@ -28,7 +28,7 @@ export function useRouterForm<T extends FieldBag>(
         event.preventDefault();
       }
     },
-    [form.validate]
+    [form]
   );
 
   return {

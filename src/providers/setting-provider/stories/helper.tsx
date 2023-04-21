@@ -31,7 +31,6 @@ export const LinkComponent = ({
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <a {...rest} onClick={handleClick} role="alert">
       {children}
     </a>

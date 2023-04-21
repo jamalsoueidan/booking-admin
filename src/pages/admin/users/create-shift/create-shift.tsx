@@ -1,19 +1,31 @@
 import { Modal, Tabs } from "@shopify/polaris";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ShiftTag } from "~/api/model";
+import { Shift, ShiftTag } from "~/api/model";
 
 import { setHours } from "date-fns";
-import { useActionData, useLoaderData } from "react-router-dom";
-import { useParams } from "~/providers/params-provider";
+import {
+  createSearchParams,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
-import { FormOneShift } from "./_formOneShift";
 import { action } from "./action";
 import { loader } from "./loader";
 
+function isShift(shift: Awaited<ReturnType<typeof action>>): shift is Shift {
+  if (shift === undefined) {
+    return false;
+  }
+  return (shift as Shift)._id !== undefined;
+}
+
 export function Component() {
   const { show } = useToast();
-  const { navigate } = useParams(["selectedDate"]);
+  const navigate = useNavigate();
+  const [search] = useSearchParams();
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
 
@@ -48,27 +60,19 @@ export function Component() {
   }, [loaderData]);
 
   const onClose = useCallback(() => {
-    navigate({ pathname: "../", search: { selectedDate: null } });
-  }, []);
+    navigate({
+      pathname: "../",
+      search: createSearchParams(search).toString(),
+    });
+  }, [navigate, search]);
 
   useEffect(() => {
-    if (actionData?.data) {
-      show({
-        content: t("success"),
-      });
-      onClose();
-    }
-  }, [JSON.stringify(actionData), onClose]);
+    console.log("here");
+  }, []);
 
   return (
     <Modal open onClose={onClose} title={t("title")}>
       <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
-
-      {tabs[selected].id === "create-day" ? (
-        <FormOneShift data={data} onClose={onClose} />
-      ) : (
-        <FormOneShift data={data} onClose={onClose} />
-      )}
     </Modal>
   );
 }

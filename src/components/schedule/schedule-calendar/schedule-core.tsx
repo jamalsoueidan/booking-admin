@@ -1,12 +1,16 @@
 import { EventContentArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction";
 import { Text } from "@shopify/polaris";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import {
+  createSearchParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { Shift } from "~/api/model";
 import { Calendar } from "~/components/calendar";
 import { useDate } from "~/hooks/use-date";
 import { useTag } from "~/hooks/use-tag";
-import { useParams } from "~/providers/params-provider";
 
 export type ScheduleCalendarProps = {
   data: Array<Shift>;
@@ -18,7 +22,8 @@ export const ScheduleCalendarCore = ({
   children,
 }: ScheduleCalendarProps) => {
   const { format } = useDate();
-  const { params, navigate } = useParams(["selectedDate"]);
+  const navigate = useNavigate();
+  const [search] = useSearchParams();
   const { selectTagLabel, selectTagBackgroundColor, selectTagColor } = useTag();
 
   const events = useMemo(
@@ -71,13 +76,18 @@ export const ScheduleCalendarCore = ({
 
   const onDateClick = useCallback(
     ({ dateStr: selectedDate }: DateClickArg) => {
+      console.log(JSON.stringify(search));
       navigate({
         pathname: "create-shift",
-        search: { selectedDate },
+        search: createSearchParams({ ...search, selectedDate }).toString(),
       });
     },
-    [params, navigate]
+    [navigate, search]
   );
+
+  useEffect(() => {
+    console.log(JSON.stringify(search));
+  }, [search]);
 
   return (
     <Calendar

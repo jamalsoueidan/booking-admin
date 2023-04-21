@@ -8,7 +8,6 @@ import {
   AbilityProvider,
   getAbilityFromToken,
 } from "~/providers/ability-provider";
-import { ParamsProvider } from "~/providers/params-provider";
 import { queryClient } from "~/providers/query-provider";
 import { ToastProvider } from "~/providers/toast";
 import logo from "../../assets/logo.avif";
@@ -49,13 +48,11 @@ export function Component() {
       showMobileNavigation={mobileNavigationActive}
       onNavigationDismiss={toggleMobileNavigationActive}
     >
-      <ParamsProvider>
-        <AbilityProvider ability={getAbilityFromToken()}>
-          <ToastProvider>
-            <Outlet />
-          </ToastProvider>
-        </AbilityProvider>
-      </ParamsProvider>
+      <AbilityProvider ability={getAbilityFromToken()}>
+        <ToastProvider>
+          <Outlet />
+        </ToastProvider>
+      </AbilityProvider>
     </Frame>
   );
 }

@@ -21,16 +21,9 @@ import { useTranslation } from "~/providers/translate-provider";
 export interface FormOneShiftProps {
   data: ShiftCreateBody | ShiftUpdateBody;
   onClose: () => void;
-  allowEditing?: {
-    tag: boolean;
-  };
 }
 
-export const FormOneShift = ({
-  data,
-  onClose,
-  allowEditing,
-}: FormOneShiftProps) => {
+export const FormOneShift = ({ data, onClose }: FormOneShiftProps) => {
   const { t } = useTranslation({ id: "form-one-shift", locales });
   const { options } = useTag();
   const { formatInTimezone } = useDate();
@@ -55,7 +48,7 @@ export const FormOneShift = ({
       value: string,
       id: Extract<ShiftCreateBody | ShiftUpdateBody, "start" | "end">
     ) => {
-      const field = fields[id] as Field<any>;
+      const field = fields[id] as Field<Date>;
       field.onChange(convertToUtc(data[id], value));
       console.log(field.value);
     },

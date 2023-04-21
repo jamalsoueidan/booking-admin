@@ -3,7 +3,6 @@ import {
   Form,
   FormWithoutDynamicListsInput,
 } from "@shopify/react-form";
-import { useEffect } from "react";
 import { useActionData } from "react-router-dom";
 import { BadResponseResponse } from "~/api/model";
 
@@ -14,18 +13,19 @@ export function useRouterErrors<T extends FieldBag>(
 ) {
   const data = useActionData() as BadResponseResponse | null;
 
-  useEffect(() => {
+  /*useEffect(() => {
+    console.log("errors");
     if (Array.isArray(data?.errors)) {
       data?.errors.forEach((error) => {
         error.path.forEach((path) => {
-          const field = input.fields[path] as any;
+          const field = input.fields[path] as Field<T>;
           if (field) {
             field.setError(error.message);
           }
         });
       });
     }
-  }, [data?.errors]);
+  }, [JSON.stringify(data), input.fields]);*/
 
   return data?.errors;
 }

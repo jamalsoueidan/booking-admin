@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs } from "react-router-dom";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  console.log("loader");
   const searchParams = new URLSearchParams(request.url.split("?")[1]);
   return urlSearchParamsToObject<MyObjectType>(searchParams);
 };
