@@ -6,12 +6,15 @@ import { ScheduleHeader } from "./schedule-header";
 export const ScheduleCalendar = (
   props: Pick<ScheduleCalendarProps, "data">
 ) => {
-  const [searchParams] = useSearchParams();
+  const [search] = useSearchParams();
 
-  const dataFilteredByTag = useMemo(() => {
-    const tag = searchParams.get("tag");
-    return tag ? props?.data.filter((d) => d.tag === tag) : props?.data;
-  }, [searchParams.get("tag")]);
+  const dataFilteredByTag = useMemo(
+    () =>
+      search.get("tag")
+        ? props?.data.filter((d) => d.tag === search.get("tag"))
+        : props?.data,
+    [search]
+  );
 
   return (
     <ScheduleCalendarCore data={dataFilteredByTag}>

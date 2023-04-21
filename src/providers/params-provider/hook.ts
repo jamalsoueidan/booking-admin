@@ -23,7 +23,7 @@ export const useParams = <K extends string>(inputs: K[]) => {
   const nav = useNavigate();
 
   const setParams = useCallback(
-    (newValues: Partial<Record<K, any>>) => {
+    (newValues: Partial<Record<K, any>>, silent: boolean = false) => {
       search.current = inputs.reduce((acc, key) => {
         if (!newValues[key]) {
           delete acc[key];
@@ -33,7 +33,9 @@ export const useParams = <K extends string>(inputs: K[]) => {
         return acc;
       }, deepClone(search.current));
 
-      refreshSearch();
+      if (!silent) {
+        refreshSearch();
+      }
     },
     [inputs]
   );
@@ -47,7 +49,7 @@ export const useParams = <K extends string>(inputs: K[]) => {
   }, [inputs]);
 
   const updateParams = useCallback(
-    (newValues: Partial<Record<K, any>>) => {
+    (newValues: Partial<Record<K, any>>, silent: boolean = false) => {
       search.current = inputs.reduce((acc, key) => {
         if (newValues[key]) {
           acc[key] = newValues[key];
@@ -55,7 +57,9 @@ export const useParams = <K extends string>(inputs: K[]) => {
         return acc;
       }, deepClone(search.current));
 
-      refreshSearch();
+      if (!silent) {
+        refreshSearch();
+      }
     },
     [inputs]
   );
@@ -66,21 +70,25 @@ export const useParams = <K extends string>(inputs: K[]) => {
       search: additionalSearch,
     }: {
       pathname: string;
-      search: object;
+      search: Partial<Record<K, any>>;
     }) => {
-      nav({
-        pathname,
-        search: createSearchParams({
+      setParams(
+        {
           ...search.current,
           ...additionalSearch,
-        }).toString(),
+        },
+        true
+      );
+      nav({
+        pathname,
+        search: createSearchParams(search.current).toString(),
       });
     },
     []
   );
 
   return {
-    params: search.current,
+    params: search as Partial<Record<K, any>>,
     setParams,
     updateParams,
     resetParams,

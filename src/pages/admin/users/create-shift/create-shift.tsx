@@ -3,13 +3,15 @@ import { useCallback, useMemo, useState } from "react";
 import { ShiftTag } from "~/api/model";
 
 import { setHours } from "date-fns";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { useParams } from "~/providers/params-provider";
 import { useTranslation } from "~/providers/translate-provider";
+import { FormShift } from "./_formShift";
+import { loader } from "./loader";
 
 export function Component() {
-  const navigate = useNavigate();
-  const { params } = useParams(["selectedDate"]);
+  const { navigate } = useParams(["selectedDate"]);
+  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const { t } = useTranslation({
     id: "create-shift",
     locales,
@@ -34,23 +36,20 @@ export function Component() {
 
   const data = useMemo(() => {
     return {
-      start: setHours(new Date(params.selectedDate), 10),
-      end: setHours(new Date(params.selectedDate), 16),
+      start: setHours(new Date(loaderData.selectedDate), 10),
+      end: setHours(new Date(loaderData.selectedDate), 16),
       tag: ShiftTag.all_day,
     };
-  }, [params.selectedDate]);
+  }, [loaderData]);
 
   const onClose = useCallback(() => {
-    const { selectedDate, ...newParams } = params;
-    navigate({
-      pathname: "../",
-      search: createSearchParams(newParams).toString(),
-    });
-  }, [params, navigate]);
+    navigate({ pathname: "../", search: { selectedDate: null } });
+  }, []);
 
   return (
     <Modal open onClose={onClose} title={t("title")}>
-      <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}></Tabs>
+      <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
+      <FormShift data={data} onClose={onClose} />
     </Modal>
   );
 }
