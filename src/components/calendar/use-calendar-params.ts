@@ -1,8 +1,8 @@
 import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction";
-import { addMonths, startOfMonth } from "date-fns";
+import { addMonths } from "date-fns";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchQuery } from "~/hooks/use-search-query";
 
 export type CalendarParams = {
   start: string;
@@ -11,7 +11,7 @@ export type CalendarParams = {
 };
 
 export const useCalendarParams = () => {
-  const [search, setSearch] = useSearchParams();
+  const { updateQuery, getQuery } = useSearchQuery();
   const firstRender = useRef<boolean>(true);
 
   const onDatesSet = useCallback(
@@ -19,49 +19,43 @@ export const useCalendarParams = () => {
       const start = startStr.substring(0, 10);
       const end = endStr.substring(0, 10);
       if (!firstRender.current) {
-        console.log("setSearch onDatesSet");
-        setSearch({
+        updateQuery({
           start,
           end,
         });
       }
     },
-    [setSearch]
+    [updateQuery]
   );
 
   const onDateClick = useCallback(
     ({ dateStr: selectedDate }: DateClickArg) => {
-      console.log("onDateclick");
-      setSearch({
+      updateQuery({
         selectedDate,
       });
     },
-    [setSearch]
+    [updateQuery]
   );
 
   const onEventClick = useCallback(
     (args: EventClickArg) => {
-      setSearch({ selectedEvent: args.event._def.extendedProps._id });
+      updateQuery({ selectedEvent: args.event._def.extendedProps._id });
     },
-    [setSearch]
+    [updateQuery]
   );
 
   const initialDate = useMemo(() => {
-    const start = search.get("start");
-    if (start) {
-      return addMonths(new Date(start), 1);
+    if (firstRender.current) {
+      const start = getQuery("start");
+      if (start) {
+        return addMonths(new Date(start), 1);
+      }
     }
-
-    return startOfMonth(new Date());
-  }, [search]);
+  }, [getQuery]);
 
   useEffect(() => {
     firstRender.current = false;
   }, []);
-
-  useEffect(() => {
-    console.log(search.get("search"));
-  }, [search]);
 
   return {
     onDatesSet,

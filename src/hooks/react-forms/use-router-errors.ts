@@ -1,8 +1,10 @@
 import {
+  Field,
   FieldBag,
   Form,
   FormWithoutDynamicListsInput,
 } from "@shopify/react-form";
+import { useEffect } from "react";
 import { useActionData } from "react-router-dom";
 import { BadResponseResponse } from "~/api/model";
 
@@ -13,19 +15,18 @@ export function useRouterErrors<T extends FieldBag>(
 ) {
   const data = useActionData() as BadResponseResponse | null;
 
-  /*useEffect(() => {
-    console.log("errors");
+  useEffect(() => {
     if (Array.isArray(data?.errors)) {
       data?.errors.forEach((error) => {
         error.path.forEach((path) => {
           const field = input.fields[path] as Field<T>;
-          if (field) {
+          if (!field.error) {
             field.setError(error.message);
           }
         });
       });
     }
-  }, [JSON.stringify(data), input.fields]);*/
+  }, [data?.errors, input.fields]);
 
   return data?.errors;
 }

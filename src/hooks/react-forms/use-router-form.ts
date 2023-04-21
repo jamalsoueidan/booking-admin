@@ -12,7 +12,7 @@ export type RouterForm<T extends FieldBag> = Pick<
   Form<T>,
   "fields" | "submitErrors"
 > & {
-  onSubmit: (event: any) => void;
+  onSubmit: (event: React.FormEvent) => void;
   actionErrors: ErrorsErrorsItem[] | undefined;
 };
 
@@ -23,7 +23,7 @@ export function useRouterForm<T extends FieldBag>(
   const actionErrors = useRouterErrors({ fields: input.fields });
 
   const onSubmit = useCallback(
-    (event: any) => {
+    (event: React.FormEvent) => {
       if (form.validate().length > 0) {
         event.preventDefault();
       }

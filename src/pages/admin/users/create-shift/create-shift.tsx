@@ -8,10 +8,11 @@ import {
   useActionData,
   useLoaderData,
   useNavigate,
-  useSearchParams,
 } from "react-router-dom";
+import { useSearchQuery } from "~/hooks/use-search-query";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
+import { FormOneShift } from "./_formOneShift";
 import { action } from "./action";
 import { loader } from "./loader";
 
@@ -25,7 +26,7 @@ function isShift(shift: Awaited<ReturnType<typeof action>>): shift is Shift {
 export function Component() {
   const { show } = useToast();
   const navigate = useNavigate();
-  const [search] = useSearchParams();
+  const { query } = useSearchQuery();
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
 
@@ -62,17 +63,20 @@ export function Component() {
   const onClose = useCallback(() => {
     navigate({
       pathname: "../",
-      search: createSearchParams(search).toString(),
+      search: createSearchParams(query).toString(),
     });
-  }, [navigate, search]);
+  }, [navigate, query]);
 
   useEffect(() => {
-    console.log("here");
-  }, []);
+    if (isShift(actionData)) {
+      console.log("added");
+    }
+  }, [actionData]);
 
   return (
     <Modal open onClose={onClose} title={t("title")}>
       <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
+      <FormOneShift data={data} onClose={onClose} />
     </Modal>
   );
 }
