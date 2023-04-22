@@ -1,0 +1,18 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Components/Inputs/InputDate" />
+
+A component that render just date selector, no label or anything, please see InputDateDrop or InputDateFlat.
+
+### Component usage
+
+```js
+const field = useField(undefined);
+
+return (
+  <InputDate input={{label: "Date"}} field={field} />
+  <Text variant="bodyMd" as="p">
+    {field.value ? format(field.value, "PPP") : ""}
+  </Text>
+);
+```

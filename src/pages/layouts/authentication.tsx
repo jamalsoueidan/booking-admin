@@ -33,7 +33,7 @@ export const loader = async () => {
   return data.data.payload;
 };
 
-export default function AuthenticationLayout() {
+export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const navigate = useNavigate();
   const { update } = useSettings();

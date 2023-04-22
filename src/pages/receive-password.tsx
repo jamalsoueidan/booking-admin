@@ -2,7 +2,7 @@ import {
   AlphaCard,
   Banner,
   FormLayout,
-  Inline,
+  HorizontalStack,
   Link,
   Text,
   TextField,
@@ -18,7 +18,7 @@ import {
 import { authReceivePassword } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/hooks/use-router-form";
+import { useRouterForm } from "~/hooks/react-forms";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -35,14 +35,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect("/login");
 };
 
-export default () => {
+export function Component() {
   const location = useLocation();
   const { t } = useTranslation({ id: "password", locales });
 
   const { fields, onSubmit } = useRouterForm({
     fields: {
       phone: useField<string>({
-        value: "",
+        value: "31317428",
         validates: [
           notEmpty("Phone is required"),
           lengthMoreThan(3, "Phone must be more than 3 characters"),
@@ -70,19 +70,19 @@ export default () => {
               name="phone"
               {...fields.phone}
             />
-            <Inline gap="1" blockAlign="center">
+            <HorizontalStack gap="1" blockAlign="center">
               <ButtonNavigation>{t("send_submit")}</ButtonNavigation>
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>
               <Link url="/login">{t("login")}</Link>
-            </Inline>
+            </HorizontalStack>
           </FormLayout>
         </Form>
       </AlphaCard>
     </AuthenticationWrapper>
   );
-};
+}
 
 const locales = {
   da: {

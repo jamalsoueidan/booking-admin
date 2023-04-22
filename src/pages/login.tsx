@@ -2,7 +2,7 @@ import {
   AlphaCard,
   Banner,
   FormLayout,
-  Inline,
+  HorizontalStack,
   Link,
   Text,
   TextField,
@@ -18,7 +18,7 @@ import {
 import { authLogin } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/hooks/use-router-form";
+import { useRouterForm } from "~/hooks/react-forms";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -35,7 +35,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect("/admin");
 };
 
-export default function login() {
+export function Component() {
   const location = useLocation();
   const { t } = useTranslation({ id: "login", locales });
 
@@ -44,7 +44,7 @@ export default function login() {
     onSubmit,
   } = useRouterForm({
     fields: {
-      identification: useField(location.state?.phone || ""),
+      identification: useField(location.state?.phone || "31317428"),
       password: useField(""),
     },
   });
@@ -78,13 +78,13 @@ export default function login() {
               {...password}
             />
 
-            <Inline gap="1" blockAlign="center">
+            <HorizontalStack gap="1" blockAlign="center">
               <ButtonNavigation>{t("login_submit")}</ButtonNavigation>
               <Text variant="bodyMd" as="span">
                 {t("or")}
               </Text>
               <Link url="/receive-password">{t("receive_action")}</Link>
-            </Inline>
+            </HorizontalStack>
           </FormLayout>
         </Form>
       </AlphaCard>

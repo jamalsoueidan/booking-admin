@@ -42,7 +42,7 @@ export const usePosition = (): UseTagOptionsReturn => {
       if (!option) {
         // do we keep the throw error here?
         // if so we need to validate positions in the DB, API, ENUM restricted!
-        console.log(value);
+        return "unknown";
       }
       return option?.label || "";
     },

@@ -1,0 +1,16 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Hooks/usePrevious" />
+
+## A React Hook to get prev value
+
+A React Hook that dispatch with prev, next value
+
+```js
+usePrevious(
+  ([prevDate]) => {
+    console.log(prevDate, date);
+  },
+  [date]
+);
+```

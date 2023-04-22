@@ -4,7 +4,6 @@ import { ButtonNavigation } from "./button-navigation";
 const meta: Meta<typeof ButtonNavigation> = {
   title: "Components/Authentication/ButtonNavigation",
   component: ButtonNavigation,
-  tags: ["autodocs"],
   argTypes: {},
   args: {
     children: "Normal",

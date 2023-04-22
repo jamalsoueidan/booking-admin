@@ -1,0 +1,27 @@
+---
+description: "A React Hook that handle time and field together."
+labels: ["hook", "timer"]
+---
+
+## A React Hook that handle time and field together.
+
+A hook component that extend timer components.
+
+### Component usage
+
+```js
+const { options, onChange } = useTimer({
+  data,
+  field,
+});
+
+return (
+  <Select
+    labelHidden
+    label="-"
+    options={options}
+    onChange={onChange}
+    value={field.value?.start}
+  />
+);
+```

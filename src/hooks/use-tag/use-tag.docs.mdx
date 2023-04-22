@@ -1,0 +1,12 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Hooks/useTag" />
+
+A React Hook that translate tag-color to tag-text
+
+### Component usage
+
+```js
+const { selectTag } = useTag();
+return <>{selectTag(Tag.weekday)}</>;
+```

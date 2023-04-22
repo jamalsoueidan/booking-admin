@@ -1,8 +1,8 @@
-import { AlphaCard, Columns, Page, Text } from "@shopify/polaris";
+import { AlphaCard, HorizontalGrid, Page, Text } from "@shopify/polaris";
 import { Suspense } from "react";
 import { getUserGetAllQueryOptions } from "~/api/bookingShopifyApi";
 import { DashboardGroup } from "~/components/dashboard/Group";
-import { Await, deferredLoader, useLoaderData } from "~/lib/loaderData";
+import { Await, deferredLoader, useDeferredLoaderData } from "~/lib/loaderData";
 import { queryClient } from "~/providers/query-provider";
 
 export const loader = deferredLoader(() => {
@@ -14,12 +14,12 @@ export const loader = deferredLoader(() => {
   return { users: loadUsers() };
 });
 
-export default function AdminDashboard() {
-  const loaderData = useLoaderData<typeof loader>();
+export function Component() {
+  const loaderData = useDeferredLoaderData<typeof loader>();
 
   return (
     <Page title="Dashboard">
-      <Columns columns={2} alignItems="start" gap="4">
+      <HorizontalGrid columns={2} alignItems="start" gap="4">
         <AlphaCard>
           <Text variant="bodyMd" fontWeight="bold" as="h2">
             Dashboard
@@ -31,7 +31,7 @@ export default function AdminDashboard() {
             {(users) => <DashboardGroup data={users || []} />}
           </Await>
         </Suspense>
-      </Columns>
+      </HorizontalGrid>
     </Page>
   );
 }

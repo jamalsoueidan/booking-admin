@@ -4,54 +4,48 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { loader as authenticationLoader } from "./pages/layouts/authentication";
-import Login, { action as loginAction } from "./pages/login";
 
-import axios from "axios";
-
-import AdminDashboard, {
-  loader as adminDashboardLoader,
-} from "./pages/admin/dashboard";
-import AdminLayout, { loader as adminLoader } from "./pages/layouts/admin";
-import AuthenticationLayout from "./pages/layouts/authentication";
-import ReceivePassword, {
-  action as receivePasswordAction,
-} from "./pages/receive-password";
-import Setup from "./pages/setup";
+import { setupAxios } from "./axios";
 import Welcome from "./pages/welcome";
 
-axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = token ? `Bearer ${token}` : "";
-  }
-  config.baseURL = "/api";
-  return config;
-});
+setupAxios();
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route
-        path="/"
-        element={<AuthenticationLayout />}
-        loader={authenticationLoader}
-      >
+      <Route path="/" lazy={() => import("./pages/layouts/authentication")}>
         <Route index element={<Welcome />} />
-        <Route path="/setup" element={<Setup />} />
-        <Route path="/login" element={<Login />} action={loginAction} />
+        <Route path="/setup" lazy={() => import("./pages/setup")} />
+        <Route path="/login" lazy={() => import("./pages/login")} />
         <Route
           path="/receive-password"
-          element={<ReceivePassword />}
-          action={receivePasswordAction}
+          lazy={() => import("./pages/receive-password")}
         />
       </Route>
-      <Route path="/admin/" element={<AdminLayout />} loader={adminLoader}>
+      <Route path="/admin" lazy={() => import("./pages/layouts/admin")}>
+        <Route index lazy={() => import("./pages/admin/dashboard")} />
         <Route
-          index
-          element={<AdminDashboard />}
-          loader={adminDashboardLoader}
+          path="user/new"
+          lazy={() => import("./pages/admin/users/create")}
         />
+        <Route
+          path="user/:userId/edit"
+          lazy={() => import("./pages/admin/users/edit")}
+        />
+        <Route
+          path="user/:userId"
+          lazy={() => import("./pages/admin/users/view")}
+        >
+          <Route
+            path="create-shift"
+            lazy={() => import("./pages/admin/users/create-shift")}
+          />
+          <Route
+            path="edit-shift"
+            lazy={() => import("./pages/admin/users/edit-shift")}
+          />
+        </Route>
+        <Route path="users" lazy={() => import("./pages/admin/users/list")} />
       </Route>
     </Route>
   )

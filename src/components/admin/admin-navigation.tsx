@@ -37,8 +37,8 @@ export const AdminNavigation = () => {
           },
           {
             icon: CustomersMajor,
-            label: t("booking.user"),
-            onClick: () => navigate("/admin/user"),
+            label: t("booking.users"),
+            onClick: () => navigate("/admin/users"),
           },
         ]}
       />
@@ -80,7 +80,7 @@ const locales = {
       bookings: "Bestillinger",
       collections: "Produkter",
       dashboard: "Dashboard",
-      user: "Medarbejder",
+      users: "Medarbejder",
       title: "BySisters",
     },
     user: {
@@ -96,7 +96,7 @@ const locales = {
       bookings: "My bookings",
       collections: "Products",
       dashboard: "Dashboard",
-      user: "User",
+      users: "User",
       title: "Application",
     },
     user: {

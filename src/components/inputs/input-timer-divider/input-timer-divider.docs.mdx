@@ -1,0 +1,17 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Components/Inputs/InputTimerDivider" />
+
+A component that render time in divider (morning, afternoon, evening)
+
+### Component usage
+
+```js
+const field = useField<InputTimerDividerField>(undefined);
+
+<InputTimerDivider data={mock} field={field} />
+
+<div>
+  <pre>{JSON.stringify(field?.value || {}, null, 2)}</pre>
+</div>
+```

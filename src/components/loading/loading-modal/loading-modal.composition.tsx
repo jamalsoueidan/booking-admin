@@ -5,7 +5,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 const meta = {
   title: "Loading/LoadingModal",
   component: LoadingModal,
-  tags: ["autodocs"],
   argTypes: {},
 } satisfies Meta<typeof LoadingModal>;
 

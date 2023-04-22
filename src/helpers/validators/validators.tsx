@@ -23,7 +23,7 @@ export const isDate =
 export function isPhoneNumber(error: ErrorContent<string>) {
   return validator(
     (input: string) =>
-      input !== "" && (input.match(/^(\+|\d)[\d]{7,16}$/im) || []).length > 0,
+      input !== "" && (input.match(/^(\+|\d)[\d]{7,16}$/im) || []).length > 0
   )(error);
 }
 
@@ -31,7 +31,7 @@ export function isHourMinuteFormat(error: ErrorContent<string>) {
   return validator(
     (input: string) =>
       input !== "" &&
-      (input.match(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/im) || []).length > 0,
+      (input.match(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/im) || []).length > 0
   )(error);
 }
 

@@ -1,0 +1,17 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Components/Inputs/InputTimerDrop" />
+
+A component that render time in a select
+
+### Component usage
+
+```js
+const field = useField<InputTimerField>(undefined);
+
+<InputTimerDrop data={mock} field={field} />
+
+<div>
+  <pre>{JSON.stringify(field?.value || {}, null, 2)}</pre>
+</div>
+```

@@ -1,4 +1,4 @@
-import { AlphaStack, Spinner, Text } from "@shopify/polaris";
+import { Spinner, Text, VerticalStack } from "@shopify/polaris";
 import { memo } from "react";
 import { useTranslation } from "~/providers/translate-provider";
 
@@ -31,12 +31,12 @@ export const LoadingModal = memo(({ title }: LoadingModalProps) => {
           zIndex: 6,
         }}
       >
-        <AlphaStack align="center" gap="2">
+        <VerticalStack align="center" gap="2">
           <Spinner accessibilityLabel="Loading" hasFocusableParent={false} />
           <Text variant="bodySm" as="span">
             {title || t("title")}
           </Text>
-        </AlphaStack>
+        </VerticalStack>
       </div>
     </>
   );

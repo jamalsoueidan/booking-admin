@@ -9,6 +9,7 @@ export default defineConfig({
       target: "src/api/",
       mock: false,
       override: {
+        useDates: true,
         query: {
           useQuery: false,
           useInfinite: false,

@@ -9,6 +9,7 @@ import {
   getAbilityFromToken,
 } from "~/providers/ability-provider";
 import { queryClient } from "~/providers/query-provider";
+import { ToastProvider } from "~/providers/toast";
 import logo from "../../assets/logo.avif";
 
 export const loader = async () => {
@@ -20,7 +21,7 @@ export const loader = async () => {
   }
 };
 
-export default function AdminLayout() {
+export function Component() {
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
 
   const toggleMobileNavigationActive = useCallback(
@@ -48,7 +49,9 @@ export default function AdminLayout() {
       onNavigationDismiss={toggleMobileNavigationActive}
     >
       <AbilityProvider ability={getAbilityFromToken()}>
-        <Outlet />
+        <ToastProvider>
+          <Outlet />
+        </ToastProvider>
       </AbilityProvider>
     </Frame>
   );
