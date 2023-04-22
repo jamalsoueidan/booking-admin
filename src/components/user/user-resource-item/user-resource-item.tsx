@@ -10,7 +10,7 @@ import {
 import React, { ReactNode } from "react";
 import { LinkComponent } from "~/components/application/link-component";
 
-export type StaffResourceItemProps = {
+export type UserResourceItemProps = {
   title: string | ReactNode;
   desc?: string | ReactNode;
   media?: React.ReactElement<AvatarProps | ThumbnailProps>;
@@ -20,13 +20,13 @@ export type StaffResourceItemProps = {
   isFirst?: boolean;
 };
 
-export const StaffResourceItem = ({
+export const UserResourceItem = ({
   title,
   desc,
   media,
   url,
   action,
-}: StaffResourceItemProps) => (
+}: UserResourceItemProps) => (
   <LinkComponent url={url || ""}>
     <HorizontalStack>
       <Box

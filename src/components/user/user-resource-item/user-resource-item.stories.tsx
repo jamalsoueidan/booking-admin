@@ -1,12 +1,12 @@
 import { Avatar, Button } from "@shopify/polaris";
 import type { Meta, StoryObj } from "@storybook/react";
-import { StaffResourceItem } from "./staff-resource-item";
+import { UserResourceItem } from "./user-resource-item";
 
 const meta = {
-  title: "Components/Staff/StaffResourceItem",
-  component: StaffResourceItem,
+  title: "Components/User/UserResourceItem",
+  component: UserResourceItem,
   argTypes: {},
-} satisfies Meta<typeof StaffResourceItem>;
+} satisfies Meta<typeof UserResourceItem>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

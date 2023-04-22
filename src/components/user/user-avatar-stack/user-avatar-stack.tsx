@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { User } from "~/api/model";
 import { HelperArray } from "~/helpers/helper-array";
 
-export type StaffAvatarStackProps = {
+export type UserAvatarStackProps = {
   users: User[];
   size: AvatarProps["size"];
   align?: "left" | "right";
@@ -12,32 +12,32 @@ export type StaffAvatarStackProps = {
 
 const DEFAULT_SIZE: AvatarProps["size"] = "medium";
 
-export const StaffAvatarStack = ({
+export const UserAvatarStack = ({
   users,
   size = DEFAULT_SIZE,
   align = "left",
-}: StaffAvatarStackProps) => {
-  const staffMarkup = useMemo(
+}: UserAvatarStackProps) => {
+  const userMarkup = useMemo(
     () =>
       [...users]
         .sort(HelperArray.sortByText((d) => d.fullname))
         .map(({ _id, fullname, avatar }) => (
-          <StaffAvatarItemStyled
+          <UserAvatarItemStyled
             key={_id}
             size={size}
             length={users.length}
             align={align}
           >
             <Avatar customer size={size} name={fullname} source={avatar} />
-          </StaffAvatarItemStyled>
+          </UserAvatarItemStyled>
         )),
     [align, size, users]
   );
 
   return (
-    <StaffAvatarStackStyled size={size} align={align}>
-      {staffMarkup}
-    </StaffAvatarStackStyled>
+    <UserAvatarStackStyled size={size} align={align}>
+      {userMarkup}
+    </UserAvatarStackStyled>
   );
 };
 
@@ -54,7 +54,7 @@ type StyledAvatarItemStyledProps = {
   align: string;
 };
 
-const StaffAvatarStackStyled = styled.div<
+const UserAvatarStackStyled = styled.div<
   Pick<StyledAvatarItemStyledProps, "size" | "align">
 >`
   display: flex;
@@ -68,7 +68,7 @@ const StaffAvatarStackStyled = styled.div<
 `;
 
 // https://codepen.io/landrik/pen/pGVJbq
-const StaffAvatarItemStyled = styled.div<StyledAvatarItemStyledProps>`
+const UserAvatarItemStyled = styled.div<StyledAvatarItemStyledProps>`
   border: 2px solid #fff;
   border-radius: 100%;
   display: block;

@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { StaffEmpty } from "./staff-empty";
+import { UserEmpty } from "./user-empty";
 
 const meta = {
-  title: "Components/Staff/StaffEmpty",
-  component: StaffEmpty,
+  title: "Components/User/UserEmpty",
+  component: UserEmpty,
   argTypes: {},
-} satisfies Meta<typeof StaffEmpty>;
+} satisfies Meta<typeof UserEmpty>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

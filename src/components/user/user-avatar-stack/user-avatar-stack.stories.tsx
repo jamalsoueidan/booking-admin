@@ -1,18 +1,18 @@
 import { users } from "./mock";
-import { StaffAvatarStack } from "./staff-avatar-stack";
+import { UserAvatarStack } from "./user-avatar-stack";
 
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "Components/Staff/StaffAvatarStack",
-  component: StaffAvatarStack,
+  title: "Components/User/UserAvatarStack",
+  component: UserAvatarStack,
   args: {
     users,
   },
   argTypes: {
     size: ["small", "large", "medium", "extraSmall"],
   },
-} satisfies Meta<typeof StaffAvatarStack>;
+} satisfies Meta<typeof UserAvatarStack>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

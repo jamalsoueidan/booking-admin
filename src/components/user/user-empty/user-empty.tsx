@@ -1,9 +1,9 @@
 import { AlphaCard, EmptyState } from "@shopify/polaris";
 import { useTranslation } from "~/providers/translate-provider";
 
-export const StaffEmpty = () => {
+export const UserEmpty = () => {
   const { t } = useTranslation({
-    id: "empty-staff",
+    id: "empty-user",
     locales: {
       da: {
         heading: "Gå igang med at oprette medarbejder!",

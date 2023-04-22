@@ -5,8 +5,9 @@ import { useLoaderData } from "react-router-dom";
 import { getUserGetAllQueryOptions } from "~/api/bookingShopifyApi";
 import { User } from "~/api/model";
 import { BadgeStatus } from "~/components/badge-status";
-import { StaffEmpty } from "~/components/staff/staff-empty";
-import { StaffResourceList } from "~/components/staff/staff-resource-list";
+import { UserEmpty } from "~/components/user/user-empty";
+import { UserResourceList } from "~/components/user/user-resource-list";
+
 import { usePosition } from "~/hooks/use-position";
 
 import { useAbility } from "~/providers/ability-provider";
@@ -57,8 +58,8 @@ export function Component() {
       }
     >
       <AlphaCard padding="0">
-        <StaffResourceList
-          emptyState={<StaffEmpty />}
+        <UserResourceList
+          emptyState={<UserEmpty />}
           items={users || []}
           renderItem={renderItem}
         />

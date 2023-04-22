@@ -1,8 +1,8 @@
 import { Meta } from "@storybook/blocks";
 
-<Meta title="Components/Staff/StaffResourceList" />
+<Meta title="Components/User/UserResourceList" />
 
-A component that render list of staff, you can use it for rendering a list of title, description, avatar.
+A component that render list of user, you can use it for rendering a list of title, description, avatar.
 
 ### Component usage
 
@@ -26,5 +26,5 @@ const renderItem = useCallback((item: number) => {
     title: "mikkel",
   };
 }, []);
-return <StaffResourceList items={[1, 2, 3]} renderItem={renderItem} />;
+return <UserResourceList items={[1, 2, 3]} renderItem={renderItem} />;
 ```

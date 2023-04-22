@@ -14,7 +14,7 @@ const fake = {
   end: "2023-02-11T15:00:00.000Z",
   groupId: "1675520873715",
   shop: "testeriphone.myshopify.com",
-  staff: "63de6b5b769dac4d74557419",
+  userId: "63de6b5b769dac4d74557419",
   start: "2023-02-11T08:00:00.000Z",
 };
 

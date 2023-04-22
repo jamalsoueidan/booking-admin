@@ -1,26 +1,23 @@
 import React, { useMemo } from "react";
-import {
-  StaffResourceItem,
-  StaffResourceItemProps,
-} from "../staff-resource-item";
+import { UserResourceItem, UserResourceItemProps } from "../user-resource-item";
 
-export interface StaffResourceListProps<T> {
+export interface UserResourceListProps<T> {
   emptyState?: React.ReactNode;
   items: Array<T>;
-  renderItem: (item: T) => Omit<StaffResourceItemProps, "isLast" | "isFirst">;
+  renderItem: (item: T) => Omit<UserResourceItemProps, "isLast" | "isFirst">;
 }
 
-export const StaffResourceList = <T,>({
+export const UserResourceList = <T,>({
   emptyState,
   items,
   renderItem,
-}: StaffResourceListProps<T>) => {
+}: UserResourceListProps<T>) => {
   const itemsMarkup = useMemo(
     () =>
       items.map((item: T, index: number) => {
         const localProps = renderItem(item);
         return (
-          <StaffResourceItem
+          <UserResourceItem
             key={index}
             {...localProps}
             isFirst={index === 0}
