@@ -1,8 +1,8 @@
 import { Modal, Tabs } from "@shopify/polaris";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Shift, ShiftTag } from "~/api/model";
+import { Shift, ShiftGroup, ShiftTag } from "~/api/model";
 
-import { setHours } from "date-fns";
+import { addWeeks, setHours } from "date-fns";
 import {
   createSearchParams,
   useActionData,
@@ -19,6 +19,15 @@ function isShift(shift: Awaited<ReturnType<typeof action>>): shift is Shift {
     return false;
   }
   return (shift as Shift)._id !== undefined;
+}
+
+function isShiftGroup(
+  shift: Awaited<ReturnType<typeof action>>
+): shift is ShiftGroup {
+  if (shift === undefined) {
+    return false;
+  }
+  return Array.isArray(shift);
 }
 
 export function Component() {
@@ -50,14 +59,26 @@ export function Component() {
     },
   ];
 
+  const type: FormShiftProps["type"] =
+    tabs[selected].id === "create-all" ? "group" : undefined;
+
+  const start = setHours(new Date(query.selectedDate), 10);
+  const end = setHours(new Date(query.selectedDate), 16);
+
   const data = useMemo(() => {
     return {
-      days: [],
-      start: setHours(new Date(query.selectedDate), 10),
-      end: setHours(new Date(query.selectedDate), 16),
+      days: [
+        start
+          .toLocaleString("en-US", {
+            weekday: "long",
+          })
+          .toLowerCase(),
+      ],
+      start,
+      end: type === "group" ? addWeeks(end, 1) : end,
       tag: ShiftTag.all_day,
     };
-  }, [query]);
+  }, [end, start, type]);
 
   const close = useCallback(() => {
     setOpen((prev) => !prev);
@@ -76,12 +97,13 @@ export function Component() {
   useEffect(() => {
     if (isShift(actionData)) {
       close();
-      show({ content: t("success") });
+      show({ content: t("success_day") });
+    }
+    if (isShiftGroup(actionData)) {
+      close();
+      show({ content: t("success_range") });
     }
   }, [actionData, close, show, t]);
-
-  const type: FormShiftProps["type"] =
-    tabs[selected].id === "create-all" ? "group" : undefined;
 
   return (
     <Modal open={open} onClose={close} title={t("title")}>
@@ -96,12 +118,14 @@ const locales = {
     create_day: "Opret en vagtplan",
     create_range: "Opret flere vagtplan",
     title: "Tilføj vagt(er) til skema",
-    success: "Vagtplan(er) oprettet",
+    success_day: "Vagtplan oprettet",
+    success_range: "Vagtplaner oprettet",
   },
   en: {
     create_day: "Create for day",
     create_range: "Create for range",
     title: "New availability",
-    success: "Shift(s) created",
+    success_day: "Shift created",
+    success_range: "Shifts created",
   },
 };

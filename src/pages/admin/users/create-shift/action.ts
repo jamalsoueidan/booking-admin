@@ -1,16 +1,21 @@
 import { AxiosError } from "axios";
 import { ActionFunctionArgs } from "react-router-dom";
-import { userShiftCreate } from "~/api/bookingShopifyApi";
+import { userShiftCreate, userShiftCreateGroup } from "~/api/bookingShopifyApi";
 import { BadResponseResponse } from "~/api/model";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
-  console.log("executed");
   try {
     const formData = Object.fromEntries(await request.formData());
-    const response = await userShiftCreate(
-      params.userId || "",
-      formData as any
-    );
+    let response;
+    if (formData.days) {
+      // form.days is coming as "wednesday,thursday", useSubmit from react-router convert that.
+      response = await userShiftCreateGroup(params.userId || "", {
+        ...formData,
+        days: (formData.days as string).split(","),
+      } as never);
+    } else {
+      response = await userShiftCreate(params.userId || "", formData as never);
+    }
     return response.data.payload;
   } catch (error) {
     if (error instanceof AxiosError) {

@@ -104,6 +104,7 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
           }
         }
         initialView={props.initialView || "dayGridMonth"}
+        validRange={props.validRange}
       />
     </CalendarContext.Provider>
   );

@@ -53,7 +53,7 @@ export interface FormShiftProps {
 export const FormShift = ({ data, method, type, onClose }: FormShiftProps) => {
   const { formatInTimezone } = useDate();
   const { options } = useTag();
-  const { t } = useTranslation({ id: "schedule-form-many-shifts", locales });
+  const { t } = useTranslation({ id: "form-shifts", locales });
   const { dateTimeToUtc, dateToUtc } = useConvertToUtc();
 
   const days = useField<ShiftDay>({
