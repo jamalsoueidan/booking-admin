@@ -7,6 +7,7 @@ import {
   getYear,
   isPast,
   isSameDay,
+  set,
   startOfMonth,
   subDays,
 } from "date-fns";
@@ -21,7 +22,7 @@ interface InputDatePickerProps
 export type InputDateField = Date | undefined;
 export type InputDateData = Array<AvailabilityShift>;
 export interface InputDateProps {
-  field: Field<InputDateField>;
+  field: Pick<Field<InputDateField>, "onChange" | "value">;
   data?: InputDateData;
   input?: InputDatePickerProps;
   disableDates?: boolean;
@@ -43,7 +44,14 @@ export const InputDate = ({
 
   const handleOnChange = useCallback(
     (value: Range) => {
-      field.onChange(value.start);
+      field.onChange(
+        set(value.start, {
+          hours: field.value?.getHours(),
+          minutes: field.value?.getMinutes(),
+          seconds: field.value?.getSeconds(),
+          milliseconds: field.value?.getMilliseconds(),
+        })
+      );
     },
     [field]
   );

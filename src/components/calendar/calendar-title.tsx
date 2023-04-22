@@ -1,10 +1,10 @@
 import { Text } from "@shopify/polaris";
 import { addDays, addMonths } from "date-fns";
 import { useDate } from "~/hooks/use-date";
-import { useCalendar } from "./useCalendar";
+import { useCalendar } from "./use-calendar";
 
 export const CalendarTitle = () => {
-  const calendar = useCalendar();
+  const { calendar } = useCalendar();
   const { format } = useDate();
 
   const view = calendar?.getApi().view;

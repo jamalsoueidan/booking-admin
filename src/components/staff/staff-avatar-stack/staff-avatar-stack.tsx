@@ -31,7 +31,7 @@ export const StaffAvatarStack = ({
             <Avatar customer size={size} name={fullname} source={avatar} />
           </StaffAvatarItemStyled>
         )),
-    [size, users]
+    [align, size, users]
   );
 
   return (

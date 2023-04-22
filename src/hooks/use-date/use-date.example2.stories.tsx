@@ -1,5 +1,5 @@
-import { AlphaStack, Text } from "@shopify/polaris";
-import type { Meta, StoryObj } from "@storybook/react";
+import { Text, VerticalStack } from "@shopify/polaris";
+import type { Meta } from "@storybook/react";
 import { useDate } from "./use-date";
 
 /*
@@ -32,7 +32,7 @@ export const ToBackend = () => {
 
   return (
     <>
-      <AlphaStack gap="2">
+      <VerticalStack gap="2">
         Selected from dropdown timezone:{" "}
         <Text variant="bodyMd" as="p" fontWeight="bold">
           {timeZone}:
@@ -57,7 +57,7 @@ export const ToBackend = () => {
         <Text variant="bodyMd" as="span" fontWeight="bold">
           ({local.toJSON()})
         </Text>
-      </AlphaStack>
+      </VerticalStack>
     </>
   );
 };
@@ -69,4 +69,3 @@ const meta = {
 } satisfies Meta<typeof ToBackend>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;

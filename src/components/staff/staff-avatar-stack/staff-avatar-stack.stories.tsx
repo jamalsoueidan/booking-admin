@@ -6,6 +6,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 const meta = {
   title: "Components/Staff/StaffAvatarStack",
   component: StaffAvatarStack,
+  args: {
+    users,
+  },
   argTypes: {
     size: ["small", "large", "medium", "extraSmall"],
   },
@@ -16,21 +19,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Large: Story = {
   args: {
-    users,
     size: "large",
   },
 };
 
 export const Small: Story = {
   args: {
-    users,
     size: "small",
   },
 };
 
 export const SmallRight: Story = {
   args: {
-    users,
     size: "large",
     align: "right",
   },

@@ -1,4 +1,9 @@
-import { AlphaCard, FormLayout, Inline, TextField } from "@shopify/polaris";
+import {
+  AlphaCard,
+  FormLayout,
+  HorizontalStack,
+  TextField,
+} from "@shopify/polaris";
 import { useField } from "@shopify/react-form";
 import { AxiosError } from "axios";
 import { ActionFunctionArgs, Form, redirect } from "react-router-dom";
@@ -8,13 +13,13 @@ import {
 } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/hooks/use-router-form";
+import { useRouterForm } from "~/hooks/react-forms";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
-    await installationSetup(Object.fromEntries(formData) as any);
+    await installationSetup(Object.fromEntries(formData) as never);
   } catch (error) {
     if (error instanceof AxiosError) {
       return error.response?.data;
@@ -89,9 +94,9 @@ export function Component() {
               {...fields.address}
             />
 
-            <Inline gap="1" align="center">
+            <HorizontalStack gap="1" align="center">
               <ButtonNavigation>{t("submit")}</ButtonNavigation>
-            </Inline>
+            </HorizontalStack>
           </FormLayout>
         </Form>
       </AlphaCard>

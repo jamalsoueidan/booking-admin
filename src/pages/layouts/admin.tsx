@@ -9,6 +9,7 @@ import {
   getAbilityFromToken,
 } from "~/providers/ability-provider";
 import { queryClient } from "~/providers/query-provider";
+import { ToastProvider } from "~/providers/toast";
 import logo from "../../assets/logo.avif";
 
 export const loader = async () => {
@@ -48,7 +49,9 @@ export function Component() {
       onNavigationDismiss={toggleMobileNavigationActive}
     >
       <AbilityProvider ability={getAbilityFromToken()}>
-        <Outlet />
+        <ToastProvider>
+          <Outlet />
+        </ToastProvider>
       </AbilityProvider>
     </Frame>
   );
