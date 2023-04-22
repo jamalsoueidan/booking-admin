@@ -1,5 +1,4 @@
 import {
-  AlphaStack,
   AutoSelection,
   ButtonProps,
   Icon,
@@ -9,6 +8,7 @@ import {
   Scrollable,
   Text,
   TextField,
+  VerticalStack,
 } from "@shopify/polaris";
 import { SearchMinor } from "@shopify/polaris-icons";
 
@@ -173,11 +173,11 @@ export const InputAutoComplete = ({
   const emptyMarkup = useMemo(
     () =>
       options.length === 0 && (
-        <AlphaStack align="center">
+        <VerticalStack align="center">
           <Text variant="bodyMd" as="span" color="subdued">
             {t("not_found", { query })}
           </Text>
-        </AlphaStack>
+        </VerticalStack>
       ),
     [options.length, query, t]
   );
@@ -250,7 +250,6 @@ const StopPropagation = ({ children }: React.PropsWithChildren<unknown>) => {
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div onClick={stopEventPropagation} onTouchStart={stopEventPropagation}>
       {children}
     </div>

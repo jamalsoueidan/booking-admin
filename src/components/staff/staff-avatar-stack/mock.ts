@@ -41,4 +41,4 @@ export const users = [
     postal: 8220,
     shop: "testeriphone.myshopify.com",
   },
-];
+] as any;

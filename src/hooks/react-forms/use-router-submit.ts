@@ -10,7 +10,7 @@ import { useSubmit } from "react-router-dom";
 import { ErrorsErrorsItem } from "~/api/model";
 import { useRouterErrors } from "./use-router-errors";
 
-export type RouterForm<T extends FieldBag> = Pick<
+export type RouterSubmit<T extends FieldBag> = Pick<
   Form<T>,
   "fields" | "submitErrors"
 > & {
@@ -20,7 +20,7 @@ export type RouterForm<T extends FieldBag> = Pick<
 
 export function useRouterSubmit<T extends FieldBag>(
   input: Pick<FormWithoutDynamicListsInput<T>, "fields">
-): RouterForm<T> {
+): RouterSubmit<T> {
   const form = useForm<T>({ ...input });
   const submit = useSubmit();
   const actionErrors = useRouterErrors({ fields: input.fields });

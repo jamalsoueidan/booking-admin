@@ -2,8 +2,8 @@ import { notEmpty, useField } from "@shopify/react-form";
 import { User } from "~/api/model";
 import { Validators } from "~/helpers/validators";
 import { useTranslation } from "~/providers/translate-provider";
+import { useRouterForm } from "./react-forms";
 import { usePosition } from "./use-position";
-import { useRouterForm } from "./use-router-form";
 
 export type UseUserForm = {
   data?: User;

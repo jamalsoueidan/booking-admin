@@ -1,4 +1,4 @@
-import { AlphaStack, Box, Divider, Text, TextField } from "@shopify/polaris";
+import { Box, Divider, Text, TextField, VerticalStack } from "@shopify/polaris";
 import { useField } from "@shopify/react-form";
 import type { Meta } from "@storybook/react";
 import { useDate } from "./use-date";
@@ -38,7 +38,7 @@ export const FromBackend = () => {
           From backend:
         </Text>
         <Divider />
-        <AlphaStack gap="1">
+        <VerticalStack gap="1">
           <Text variant="bodyMd" as="p" fontWeight="bold">
             Current timezone ({Intl.DateTimeFormat().resolvedOptions().timeZone}
             )
@@ -50,15 +50,15 @@ export const FromBackend = () => {
               Intl.DateTimeFormat().resolvedOptions().timeZone
             )}
           </Text>
-        </AlphaStack>
-        <AlphaStack gap="1">
+        </VerticalStack>
+        <VerticalStack gap="1">
           <Text variant="bodyMd" as="p" fontWeight="bold">
             {timeZone}:
           </Text>
           <Text variant="bodyMd" as="span">
             {formatInTimezone(local, "yyyy-MM-dd HH:mm:ss")}
           </Text>
-        </AlphaStack>
+        </VerticalStack>
       </Box>
     </>
   );
