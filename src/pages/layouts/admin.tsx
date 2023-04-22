@@ -44,7 +44,7 @@ export function Component() {
     <Frame
       logo={logoOptions}
       topBar={<AdminTopbar toggleNavigation={setMobileNavigationActive} />}
-      navigation={<AdminNavigation />}
+      navigation={<AdminNavigation toggle={toggleMobileNavigationActive} />}
       showMobileNavigation={mobileNavigationActive}
       onNavigationDismiss={toggleMobileNavigationActive}
     >
