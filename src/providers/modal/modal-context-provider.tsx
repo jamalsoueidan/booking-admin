@@ -1,5 +1,5 @@
 import { ComplexAction, Modal, ModalProps } from "@shopify/polaris";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ModalContext } from "./modal-context";
 
 export type ModalProviderProps = ModalProps;
@@ -18,7 +18,7 @@ export const ModalProvider = (props: ModalProviderProps) => {
       setPrimaryAction,
       setSecondaryActions,
     }),
-    [props, setPrimaryAction, setSecondaryActions],
+    [props, setPrimaryAction, setSecondaryActions]
   );
 
   const { children } = props;
