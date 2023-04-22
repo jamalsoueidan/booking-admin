@@ -1,12 +1,13 @@
-import { EventContentArg } from "@fullcalendar/core";
+import { EventClickArg, EventContentArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction";
 import { Text } from "@shopify/polaris";
 import { useCallback, useMemo } from "react";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { Shift } from "~/api/model";
 import { Calendar } from "~/components/calendar";
 import { useDate } from "~/hooks/use-date";
+import { useSearchQuery } from "~/hooks/use-search-query";
 import { useTag } from "~/hooks/use-tag";
-import { useParams } from "~/providers/params-provider";
 
 export type ScheduleCalendarProps = {
   data: Array<Shift>;
@@ -18,7 +19,8 @@ export const ScheduleCalendarCore = ({
   children,
 }: ScheduleCalendarProps) => {
   const { format } = useDate();
-  const { params, navigate } = useParams(["selectedDate"]);
+  const navigate = useNavigate();
+  const { query } = useSearchQuery();
   const { selectTagLabel, selectTagBackgroundColor, selectTagColor } = useTag();
 
   const events = useMemo(
@@ -73,10 +75,23 @@ export const ScheduleCalendarCore = ({
     ({ dateStr: selectedDate }: DateClickArg) => {
       navigate({
         pathname: "create-shift",
-        search: { selectedDate },
+        search: createSearchParams({ ...query, selectedDate }).toString(),
       });
     },
-    [params, navigate]
+    [navigate, query]
+  );
+
+  const onEventClick = useCallback(
+    (args: EventClickArg) => {
+      navigate({
+        pathname: "edit-shift",
+        search: createSearchParams({
+          ...query,
+          selectedEvent: args.event._def.extendedProps._id,
+        }).toString(),
+      });
+    },
+    [navigate, query]
   );
 
   return (
@@ -89,6 +104,7 @@ export const ScheduleCalendarCore = ({
         right: undefined,
       }}
       dateClick={onDateClick}
+      eventClick={onEventClick}
       validRange={validRange}
       initialView="dayGridMonth"
     >

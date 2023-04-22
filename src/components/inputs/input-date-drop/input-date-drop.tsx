@@ -20,7 +20,7 @@ export type InputDataDropInput = Partial<
 >;
 
 export interface InputDateDropProps {
-  field: Field<InputDateDropField>;
+  field: Pick<Field<InputDateDropField>, "value" | "onChange" | "error">;
   input?: InputDataDropInput;
   data?: InputDataDropData;
   onMonthChange?: (value: Range) => void;
@@ -58,7 +58,7 @@ export const InputDateDrop = ({
       error={!input?.disabled && field.error}
       labelHidden={input?.labelHidden}
       autoComplete="off"
-      value={field.value ? format(field.value, "PPP") : ""}
+      value={field.value ? format(field.value, "PPPP") : ""}
       readOnly
       onChange={() => {}}
       prefix={<Icon source={CalendarMajor} />}

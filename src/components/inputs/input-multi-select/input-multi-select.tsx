@@ -1,12 +1,12 @@
 import {
-  AlphaStack,
   Autocomplete,
   InlineError,
   Tag,
   TextFieldProps,
+  VerticalStack,
 } from "@shopify/polaris";
 import { Field } from "@shopify/react-form";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export type InputMultiSelectField = string[] | undefined | null;
 export type InputMultiSelectTextField = Partial<TextFieldProps>;
@@ -45,11 +45,11 @@ export const InputMultiSelect = ({
 
       const filterRegex = new RegExp(value, "i");
       const resultOptions = defaultOptions.filter((option) =>
-        option.label.match(filterRegex),
+        option.label.match(filterRegex)
       );
       setOptions(resultOptions);
     },
-    [defaultOptions],
+    [defaultOptions]
   );
 
   const removeTag = useCallback(
@@ -60,12 +60,12 @@ export const InputMultiSelect = ({
         field.onChange(options);
       }
     },
-    [field],
+    [field]
   );
 
   const verticalContentMarkup =
     field.value && field.value.length > 0 ? (
-      <AlphaStack>
+      <VerticalStack>
         {field.value.map((option) => {
           let tagLabel = "";
           tagLabel = option.replace("_", " ");
@@ -75,7 +75,7 @@ export const InputMultiSelect = ({
             </Tag>
           );
         })}
-      </AlphaStack>
+      </VerticalStack>
     ) : null;
 
   const textField = (

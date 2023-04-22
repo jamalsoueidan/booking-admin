@@ -32,7 +32,7 @@ export type CalendarOptions = Omit<CO, "events"> & {
 
 export const Calendar = ({ children, ...props }: CalendarOptions) => {
   const [calendar, setCalendar] = useState<FullCalendar>();
-  const [, updateState] = useState<any>();
+  const [, updateState] = useState<unknown>();
   const { language } = useSettings();
   const { toTimeZone } = useDate();
   const { initialDate, onDatesSet, onDateClick, onEventClick } =
@@ -54,7 +54,7 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
     }
   }, []);
 
-  const locale = useMemo(() => [da, en], [da, en]);
+  const locale = useMemo(() => [da, en], []);
 
   return (
     <CalendarContext.Provider value={{ calendar, updateState }}>
@@ -72,8 +72,9 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
         firstDay={1}
         initialDate={initialDate}
         datesSet={onDatesSet}
-        eventClick={onEventClick}
+        eventClick={props.eventClick || onEventClick}
         dateClick={props.dateClick || onDateClick}
+        eventContent={props.eventContent}
         dayMaxEvents
         slotDuration="00:15:00"
         slotLabelFormat={[

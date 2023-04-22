@@ -13,7 +13,7 @@ export const ScheduleCalendar = (
       search.get("tag")
         ? props?.data.filter((d) => d.tag === search.get("tag"))
         : props?.data,
-    [search]
+    [props?.data, search]
   );
 
   return (

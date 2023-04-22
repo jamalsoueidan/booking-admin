@@ -4,7 +4,7 @@ import { useDate } from "./use-date";
 export const useConvertToUtc = () => {
   const { toUtc, formatInTimezone } = useDate();
 
-  const convertToUtc = useCallback(
+  const dateTimeToUtc = useCallback(
     (date: Date, time: string) => {
       const [hour, minuttes] = time.split(":").map((_) => parseInt(_, 10));
       return toUtc(
@@ -16,5 +16,12 @@ export const useConvertToUtc = () => {
     [formatInTimezone, toUtc]
   );
 
-  return convertToUtc;
+  const dateToUtc = useCallback(
+    (date: Date) => {
+      return toUtc(new Date(date));
+    },
+    [toUtc]
+  );
+
+  return { dateTimeToUtc, dateToUtc };
 };

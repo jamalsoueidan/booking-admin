@@ -7,7 +7,7 @@ export type UsePreviousOptions = {
 export const usePrevious = <T extends unknown[]>(
   callback: (prev: T) => void,
   deps: T,
-  options: UsePreviousOptions = { initial: false },
+  options: UsePreviousOptions = { initial: false }
 ): void => {
   const callbackRef = useRef<null | ((prev: T) => void)>(null);
 

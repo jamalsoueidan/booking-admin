@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 import { useContext, useEffect } from "react";
 import { ToastContext } from "./toast-context";
 import { ToastProvider } from "./toast-context-provider";
@@ -25,4 +25,3 @@ const meta = {
 } satisfies Meta<typeof ToastProvider>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;

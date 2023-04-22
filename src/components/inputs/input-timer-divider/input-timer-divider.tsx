@@ -1,10 +1,10 @@
 import {
-  AlphaStack,
   Button,
-  Columns,
-  Inline,
+  HorizontalGrid,
+  HorizontalStack,
   Labelled,
   Text,
+  VerticalStack,
 } from "@shopify/polaris";
 import { Field } from "@shopify/react-form";
 import { isEqual, setHours } from "date-fns";
@@ -75,7 +75,7 @@ export const InputTimerDivider = ({
           {t("empty")}
         </Text>
       ) : (
-        <Columns columns={{ sm: 3, xs: 1 }}>
+        <HorizontalGrid columns={{ sm: 3, xs: 1 }}>
           <ColumnPeriod
             date={setHours(new Date(), 11)}
             hours={morning}
@@ -94,7 +94,7 @@ export const InputTimerDivider = ({
             onChange={onChange}
             selected={field.value?.start}
           />
-        </Columns>
+        </HorizontalGrid>
       )}
     </Labelled>
   );
@@ -123,7 +123,7 @@ const ColumnPeriod = memo(
     });
 
     return (
-      <AlphaStack gap="1">
+      <VerticalStack gap="1">
         <Text variant="headingSm" as="p" alignment="center">
           {formatInTimezone(date, "B")}
         </Text>
@@ -141,7 +141,7 @@ const ColumnPeriod = memo(
             />
           ))
         )}
-      </AlphaStack>
+      </VerticalStack>
     );
   }
 );
@@ -154,11 +154,11 @@ interface InlineButtonHourProps {
 
 const InlineButtonHour = memo(
   ({ label, onClick, pressed }: InlineButtonHourProps) => (
-    <Inline align="center">
+    <HorizontalStack align="center">
       <Button size="slim" onClick={onClick} pressed={pressed}>
         {label}
       </Button>
-    </Inline>
+    </HorizontalStack>
   )
 );
 

@@ -1,4 +1,5 @@
 import {
+  Field,
   FieldBag,
   Form,
   FormWithoutDynamicListsInput,
@@ -18,14 +19,14 @@ export function useRouterErrors<T extends FieldBag>(
     if (Array.isArray(data?.errors)) {
       data?.errors.forEach((error) => {
         error.path.forEach((path) => {
-          const field = input.fields[path] as any;
-          if (field) {
+          const field = input.fields[path] as Field<T>;
+          if (!field.error) {
             field.setError(error.message);
           }
         });
       });
     }
-  }, [data?.errors]);
+  }, [data?.errors, input.fields]);
 
   return data?.errors;
 }

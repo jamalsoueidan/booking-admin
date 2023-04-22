@@ -8,7 +8,7 @@ export type ButtonNavigationProps = {
 export const ButtonNavigation = ({ children }: ButtonNavigationProps) => {
   const navigation = useNavigation();
   return (
-    <Button submit disabled={navigation.state === "submitting"}>
+    <Button submit disabled={navigation.state === "submitting"} primary>
       {children || ""}
     </Button>
   );

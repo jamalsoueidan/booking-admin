@@ -6,13 +6,14 @@
   "scripts": {
     "dev": "vite",
     "dev:prod": "API_URL=https://booking-shopify-api.azurewebsites.net/api npm run dev",
-    "prebuild": "npm run fb-openapi",
     "chromatic": "npx chromatic --exit-zero-on-changes",
+    "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "npm run fb-openapi",
+    "build-storybook": "storybook build",
+    "prebuild": "npm run fb-openapi",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src/**/*.ts src/**/*.tsx",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
     "fetch-openapi": "curl -o ./openapi.yaml https://raw.githubusercontent.com/jamalsoueidan/booking-api/main/docs/openapi.yaml",
     "build-openapi": "npx orval --config ./orval.config.ts",
     "fb-openapi": "npm run fetch-openapi & npm run build-openapi"

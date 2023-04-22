@@ -1,4 +1,4 @@
-import { AlphaStack, Frame, Loading, Spinner } from "@shopify/polaris";
+import { Frame, Loading, Spinner, VerticalStack } from "@shopify/polaris";
 import { memo } from "react";
 
 export type LoadingPageProps = {
@@ -19,10 +19,10 @@ export const LoadingPage = memo(({ title }: LoadingPageProps) => (
         transform: "translate(-50%, -50%)",
       }}
     >
-      <AlphaStack align="center" gap="2">
+      <VerticalStack align="center" gap="2">
         <Spinner accessibilityLabel="Loading" hasFocusableParent={false} />
         {title}
-      </AlphaStack>
+      </VerticalStack>
     </div>
   </Frame>
 ));
