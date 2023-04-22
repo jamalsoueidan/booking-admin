@@ -1,6 +1,6 @@
 import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction";
-import { addMonths } from "date-fns";
+import { eachMonthOfInterval } from "date-fns";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSearchQuery } from "~/hooks/use-search-query";
 
@@ -47,9 +47,12 @@ export const useCalendarParams = () => {
   const initialDate = useMemo(() => {
     if (firstRender.current) {
       const start = getQuery("start");
-      if (start) {
-        return addMonths(new Date(start), 1);
-      }
+      const end = getQuery("end");
+      const result = eachMonthOfInterval({
+        start: start ? new Date(start) : new Date(),
+        end: end ? new Date(end) : new Date(),
+      });
+      return middleItem(result) || new Date();
     }
   }, [getQuery]);
 
@@ -64,3 +67,13 @@ export const useCalendarParams = () => {
     initialDate,
   };
 };
+
+function middleItem(arr: Date[]) {
+  if (arr.length === 0) {
+    return null;
+  } else if (arr.length === 2) {
+    return arr[0];
+  } else {
+    return arr[Math.floor(arr.length / 2)];
+  }
+}

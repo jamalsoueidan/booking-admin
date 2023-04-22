@@ -5,7 +5,7 @@ import { subject } from "@casl/ability";
 import { Outlet } from "react-router-dom";
 import { BadgeStatus } from "~/components/badge-status";
 import { LoadingSpinner } from "~/components/loading/loading-spinner";
-import { ScheduleCalendar } from "~/components/schedule/schedule-calendar";
+import { ScheduleCalendar } from "~/components/schedule-calendar";
 import { Await, useDeferredLoaderData } from "~/lib/loaderData";
 import { useAbility } from "~/providers/ability-provider";
 import { useTranslation } from "~/providers/translate-provider";

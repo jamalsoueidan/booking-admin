@@ -1,4 +1,4 @@
-import { EventContentArg } from "@fullcalendar/core";
+import { EventClickArg, EventContentArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction";
 import { Text } from "@shopify/polaris";
 import { useCallback, useMemo } from "react";
@@ -73,10 +73,22 @@ export const ScheduleCalendarCore = ({
 
   const onDateClick = useCallback(
     ({ dateStr: selectedDate }: DateClickArg) => {
-      console.log("onDateClick");
       navigate({
         pathname: "create-shift",
         search: createSearchParams({ ...query, selectedDate }).toString(),
+      });
+    },
+    [navigate, query]
+  );
+
+  const onEventClick = useCallback(
+    (args: EventClickArg) => {
+      navigate({
+        pathname: "edit-shift",
+        search: createSearchParams({
+          ...query,
+          selectedEvent: args.event._def.extendedProps._id,
+        }).toString(),
       });
     },
     [navigate, query]
@@ -92,6 +104,7 @@ export const ScheduleCalendarCore = ({
         right: undefined,
       }}
       dateClick={onDateClick}
+      eventClick={onEventClick}
       validRange={validRange}
       initialView="dayGridMonth"
     >

@@ -72,8 +72,9 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
         firstDay={1}
         initialDate={initialDate}
         datesSet={onDatesSet}
-        eventClick={onEventClick}
+        eventClick={props.eventClick || onEventClick}
         dateClick={props.dateClick || onDateClick}
+        eventContent={props.eventContent}
         dayMaxEvents
         slotDuration="00:15:00"
         slotLabelFormat={[

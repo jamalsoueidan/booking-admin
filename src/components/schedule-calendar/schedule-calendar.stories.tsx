@@ -3,7 +3,7 @@ import mock from "./mock";
 import { ScheduleCalendar } from "./schedule-calendar";
 
 const meta = {
-  title: "Components/Schedule/ScheduleCalendar",
+  title: "Components/ScheduleCalendar",
   component: ScheduleCalendar,
   argTypes: {},
   args: {

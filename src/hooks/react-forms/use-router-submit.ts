@@ -29,7 +29,7 @@ export function useRouterSubmit<T extends FieldBag>(
     (event: React.FormEvent) => {
       event.preventDefault();
       if (form.validate().length === 0) {
-        submit(getValues(form.fields) as any, {
+        submit(getValues(form.fields) as never, {
           method: "post",
         });
       }

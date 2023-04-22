@@ -1,5 +1,4 @@
 import { Badge } from "@shopify/polaris";
-import React from "react";
 
 export type BadgeStatusProps = {
   active: boolean;

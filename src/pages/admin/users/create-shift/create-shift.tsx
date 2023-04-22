@@ -6,16 +6,13 @@ import { setHours } from "date-fns";
 import {
   createSearchParams,
   useActionData,
-  useLoaderData,
   useNavigate,
-  useParams,
 } from "react-router-dom";
 import { useSearchQuery } from "~/hooks/use-search-query";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
-import { FormOneShift } from "./_formOneShift";
+import { FormShift, FormShiftProps } from "./_form";
 import { action } from "./action";
-import { loader } from "./loader";
 
 function isShift(shift: Awaited<ReturnType<typeof action>>): shift is Shift {
   if (shift === undefined) {
@@ -28,8 +25,6 @@ export function Component() {
   const { show } = useToast();
   const navigate = useNavigate();
   const { query } = useSearchQuery();
-  const params = useParams();
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
   const [open, setOpen] = useState<boolean>(true);
 
@@ -57,6 +52,7 @@ export function Component() {
 
   const data = useMemo(() => {
     return {
+      days: [],
       start: setHours(new Date(query.selectedDate), 10),
       end: setHours(new Date(query.selectedDate), 16),
       tag: ShiftTag.all_day,
@@ -65,7 +61,6 @@ export function Component() {
 
   const close = useCallback(() => {
     setOpen((prev) => !prev);
-    console.log(params);
     const timer = setTimeout(() => {
       navigate(
         {
@@ -76,7 +71,7 @@ export function Component() {
       );
     }, 250);
     return () => clearTimeout(timer);
-  }, [navigate, params, query]);
+  }, [navigate, query]);
 
   useEffect(() => {
     if (isShift(actionData)) {
@@ -85,26 +80,25 @@ export function Component() {
     }
   }, [actionData, close, show, t]);
 
-  console.log(params);
+  const type: FormShiftProps["type"] =
+    tabs[selected].id === "create-all" ? "group" : undefined;
 
   return (
     <Modal open={open} onClose={close} title={t("title")}>
       <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
-      <FormOneShift data={data} onClose={close} />
+      <FormShift data={data} onClose={close} type={type} method="post" />
     </Modal>
   );
 }
 
 const locales = {
   da: {
-    close: "Luk",
     create_day: "Opret en vagtplan",
     create_range: "Opret flere vagtplan",
-    title: "Tilføj vagt til skema",
+    title: "Tilføj vagt(er) til skema",
     success: "Vagtplan(er) oprettet",
   },
   en: {
-    close: "Close",
     create_day: "Create for day",
     create_range: "Create for range",
     title: "New availability",
