@@ -8,6 +8,7 @@ import {
   useActionData,
   useLoaderData,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 import { useSearchQuery } from "~/hooks/use-search-query";
 import { useToast } from "~/providers/toast";
@@ -27,8 +28,10 @@ export function Component() {
   const { show } = useToast();
   const navigate = useNavigate();
   const { query } = useSearchQuery();
+  const params = useParams();
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
+  const [open, setOpen] = useState<boolean>(true);
 
   const { t } = useTranslation({
     id: "create-shift",
@@ -54,29 +57,40 @@ export function Component() {
 
   const data = useMemo(() => {
     return {
-      start: setHours(new Date(loaderData.selectedDate), 10),
-      end: setHours(new Date(loaderData.selectedDate), 16),
+      start: setHours(new Date(query.selectedDate), 10),
+      end: setHours(new Date(query.selectedDate), 16),
       tag: ShiftTag.all_day,
     };
-  }, [loaderData]);
+  }, [query]);
 
-  const onClose = useCallback(() => {
-    navigate({
-      pathname: "../",
-      search: createSearchParams(query).toString(),
-    });
-  }, [navigate, query]);
+  const close = useCallback(() => {
+    setOpen((prev) => !prev);
+    console.log(params);
+    const timer = setTimeout(() => {
+      navigate(
+        {
+          pathname: `./..`,
+          search: createSearchParams(query).toString(),
+        },
+        { relative: "route" }
+      );
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [navigate, params, query]);
 
   useEffect(() => {
     if (isShift(actionData)) {
-      console.log("added");
+      close();
+      show({ content: t("success") });
     }
-  }, [actionData]);
+  }, [actionData, close, show, t]);
+
+  console.log(params);
 
   return (
-    <Modal open onClose={onClose} title={t("title")}>
+    <Modal open={open} onClose={close} title={t("title")}>
       <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
-      <FormOneShift data={data} onClose={onClose} />
+      <FormOneShift data={data} onClose={close} />
     </Modal>
   );
 }

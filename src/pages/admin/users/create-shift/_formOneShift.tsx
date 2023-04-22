@@ -11,6 +11,7 @@ import { Field, useField } from "@shopify/react-form";
 import { useCallback } from "react";
 import { Form } from "react-router-dom";
 import { ShiftCreateBody, ShiftTag, ShiftUpdateBody } from "~/api/model";
+import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { InputTags } from "~/components/inputs/input-tags";
 import { useRouterSubmit } from "~/hooks/react-forms";
 import { useConvertToUtc } from "~/hooks/use-convert-to-utc";
@@ -99,9 +100,7 @@ export const FormOneShift = ({ data, onClose }: FormOneShiftProps) => {
         <Box padding={"4"}>
           <HorizontalStack gap={"1"}>
             <Button onClick={onClose}>Luk</Button>
-            <Button submit primary>
-              Opret
-            </Button>
+            <ButtonNavigation>Opret</ButtonNavigation>
           </HorizontalStack>
         </Box>
       </HorizontalStack>

@@ -47,7 +47,6 @@ export function Component() {
                     {(shifts) => <ScheduleCalendar data={shifts} />}
                   </Await>
                 </Suspense>
-                <Outlet />
               </AlphaCard>
             </Page>
           )}

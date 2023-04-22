@@ -73,7 +73,7 @@ export const ScheduleCalendarCore = ({
 
   const onDateClick = useCallback(
     ({ dateStr: selectedDate }: DateClickArg) => {
-      console.log(query);
+      console.log("onDateClick");
       navigate({
         pathname: "create-shift",
         search: createSearchParams({ ...query, selectedDate }).toString(),
