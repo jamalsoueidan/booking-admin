@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs } from "react-router-dom";
 import { getUserShiftGetGroupQueryOptions } from "~/api/bookingShopifyApi";
 import { queryClient } from "~/providers/query-provider";
+import { ExtractTData } from "~/types/api";
 import { loadShifts } from "../show-user";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -11,14 +12,19 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   if (!shift) {
     throw new Response("Not Found", { status: 404 });
   }
+
   // return shift (not part of group)
   if (!shift.groupId) {
     return shift;
   }
 
-  const response = await queryClient.fetchQuery(
-    getUserShiftGetGroupQueryOptions(userId, shift.groupId)
-  );
+  const query = getUserShiftGetGroupQueryOptions(userId, shift.groupId);
+
+  const response =
+    queryClient.getQueryData<
+      ExtractTData<typeof getUserShiftGetGroupQueryOptions>
+    >(query.queryKey, { stale: false }) ??
+    (await queryClient.fetchQuery(query));
 
   const shiftGroup = response.data.payload;
   if (!shiftGroup) {

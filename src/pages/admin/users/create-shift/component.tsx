@@ -47,7 +47,7 @@ export function Component() {
   ];
 
   const type: ShiftFormProps["type"] =
-    tabs[selected].id === "create-all" ? "group" : undefined;
+    tabs[selected].id === "create-all" ? "group" : "single";
 
   const start = setHours(new Date(query.selectedDate), 10);
   const end = setHours(new Date(query.selectedDate), 16);
@@ -70,13 +70,10 @@ export function Component() {
   const close = useCallback(() => {
     setOpen((prev) => !prev);
     const timer = setTimeout(() => {
-      navigate(
-        {
-          pathname: `./..`,
-          search: createSearchParams(query).toString(),
-        },
-        { relative: "route" }
-      );
+      navigate({
+        pathname: `./..`,
+        search: createSearchParams(query).toString(),
+      });
     }, 250);
     return () => clearTimeout(timer);
   }, [navigate, query]);

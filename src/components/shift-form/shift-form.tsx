@@ -1,10 +1,4 @@
-import {
-  Box,
-  Divider,
-  HorizontalGrid,
-  Layout,
-  TextField,
-} from "@shopify/polaris";
+import { HorizontalGrid, Modal, TextField } from "@shopify/polaris";
 import { useField } from "@shopify/react-form";
 
 import { Field } from "@shopify/react-form";
@@ -29,12 +23,21 @@ import { useDate } from "~/hooks/use-date";
 import { useTag } from "~/hooks/use-tag";
 import { useTranslation } from "~/providers/translate-provider";
 
-function isGroup(
+export function isShiftGroup(
   value: ShiftFormProps["data"]
 ): value is ShiftCreateGroupBody | ShiftUpdateGroupBody {
   const days = (value as ShiftCreateGroupBody | ShiftUpdateGroupBody).days;
   return Array.isArray(days);
 }
+
+export function getShiftType(value: ShiftFormProps["data"]) {
+  if (isShiftGroup(value)) {
+    return "group";
+  }
+  return "single";
+}
+
+export type ShiftType = "group" | "single";
 
 export interface ShiftFormProps {
   data:
@@ -43,7 +46,7 @@ export interface ShiftFormProps {
     | ShiftCreateGroupBody
     | ShiftUpdateGroupBody;
   method: "put" | "post";
-  type: "group" | undefined;
+  type: ShiftType;
   children: JSX.Element;
 }
 
@@ -55,7 +58,7 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
 
   const days = useField<ShiftDay>({
     validates: [Validators.isSelectedDays(t("select_days.error_empty"))],
-    value: isGroup(data) ? data?.days : [],
+    value: isShiftGroup(data) ? data?.days : [],
   });
 
   const { fields, onSubmit } = useRouterSubmit({
@@ -73,6 +76,7 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
       }),
       tag: useField<ShiftTag>(data.tag || options[0].value),
     },
+    method,
   });
 
   const onChange = useCallback(
@@ -93,67 +97,62 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
 
   return (
     <Form method={method} onSubmit={onSubmit}>
-      <Box padding={"4"}>
-        <Layout>
-          {type === "group" ? (
-            <>
-              <Layout.Section>
-                <InputDays field={days} />
-              </Layout.Section>
-              <Layout.Section>
-                <HorizontalGrid columns={2} gap="2">
-                  <InputDateDrop
-                    input={{ label: t("date_from.label") }}
-                    field={{
-                      value: fields.start.value,
-                      onChange: onChangeDate("start"),
-                      error: fields.start.error,
-                    }}
-                  />
-                  <InputDateDrop
-                    input={{ label: t("date_to.label") }}
-                    field={{
-                      value: fields.end.value,
-                      onChange: onChangeDate("end"),
-                      error: fields.end.error,
-                    }}
-                  />
-                </HorizontalGrid>
-              </Layout.Section>
-            </>
-          ) : null}
-          <Layout.Section>
+      {type === "group" ? (
+        <>
+          <Modal.Section>
+            <InputDays field={days} />
+          </Modal.Section>
+          <Modal.Section>
             <HorizontalGrid columns={2} gap="2">
-              <TextField
-                label={t("time_from.label")}
-                type="time"
-                id="start"
-                name="start"
-                autoComplete="off"
-                value={formatInTimezone(fields.start.value, "HH:mm")}
-                onChange={onChange}
-                error={fields.start.error}
+              <InputDateDrop
+                input={{ label: t("date_from.label") }}
+                field={{
+                  value: fields.start.value,
+                  onChange: onChangeDate("start"),
+                  error: fields.start.error,
+                }}
               />
-              <TextField
-                label={t("time_to.label")}
-                type="time"
-                id="end"
-                name="end"
-                autoComplete="off"
-                value={formatInTimezone(fields.end.value, "HH:mm")}
-                onChange={onChange}
-                error={fields.end.error}
+              <InputDateDrop
+                input={{ label: t("date_to.label") }}
+                field={{
+                  value: fields.end.value,
+                  onChange: onChangeDate("end"),
+                  error: fields.end.error,
+                }}
               />
             </HorizontalGrid>
-          </Layout.Section>
-          {method === "post" ? (
-            <Layout.Section>
-              <InputTags field={fields.tag} />
-            </Layout.Section>
-          ) : null}
-        </Layout>
-      </Box>
-      <Divider />
+          </Modal.Section>
+        </>
+      ) : null}
+      <Modal.Section>
+        <HorizontalGrid columns={2} gap="2">
+          <TextField
+            label={t("time_from.label")}
+            type="time"
+            id="start"
+            name="start"
+            autoComplete="off"
+            value={formatInTimezone(fields.start.value, "HH:mm")}
+            onChange={onChange}
+            error={fields.start.error}
+          />
+          <TextField
+            label={t("time_to.label")}
+            type="time"
+            id="end"
+            name="end"
+            autoComplete="off"
+            value={formatInTimezone(fields.end.value, "HH:mm")}
+            onChange={onChange}
+            error={fields.end.error}
+          />
+        </HorizontalGrid>
+      </Modal.Section>
+      {method === "post" ? (
+        <Modal.Section>
+          <InputTags field={fields.tag} />
+        </Modal.Section>
+      ) : null}
       {children}
     </Form>
   );

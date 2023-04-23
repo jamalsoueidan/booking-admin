@@ -19,7 +19,8 @@ export const loadShifts = async ({ request, params }: LoaderFunctionArgs) => {
   const response =
     queryClient.getQueryData<
       ExtractTData<typeof getUserShiftGetAllQueryOptions>
-    >(query.queryKey) ?? (await queryClient.fetchQuery(query));
+    >(query.queryKey, { stale: false }) ??
+    (await queryClient.fetchQuery(query));
 
   return response.data.payload;
 };

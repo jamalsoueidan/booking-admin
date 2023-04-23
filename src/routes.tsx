@@ -44,6 +44,10 @@ const router = createBrowserRouter(
             path="edit-shift"
             lazy={() => import("./pages/admin/users/edit-shift")}
           />
+          <Route
+            path="delete-shift"
+            lazy={() => import("./pages/admin/users/delete-shift")}
+          />
         </Route>
         <Route path="users" lazy={() => import("./pages/admin/users/list")} />
       </Route>

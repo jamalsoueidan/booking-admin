@@ -11,12 +11,8 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const response = await userUpdateById(
       params.userId || "",
-      Object.fromEntries(formData) as any
+      Object.fromEntries(formData) as never
     );
-
-    /*queryClient.invalidateQueries({
-      queryKey: getUserGetByIdQueryKey(params.userId || ""),
-    });*/
 
     queryClient.setQueriesData(
       getUserGetByIdQueryKey(params.userId || ""),
