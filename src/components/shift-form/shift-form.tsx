@@ -1,9 +1,7 @@
 import {
   Box,
-  Button,
   Divider,
   HorizontalGrid,
-  HorizontalStack,
   Layout,
   TextField,
 } from "@shopify/polaris";
@@ -20,7 +18,6 @@ import {
   ShiftUpdateBody,
   ShiftUpdateGroupBody,
 } from "~/api/model";
-import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { InputDateField } from "~/components/inputs/input-date";
 import { InputDateDrop } from "~/components/inputs/input-date-drop";
 import { InputDays } from "~/components/inputs/input-days";
@@ -33,13 +30,13 @@ import { useTag } from "~/hooks/use-tag";
 import { useTranslation } from "~/providers/translate-provider";
 
 function isGroup(
-  value: FormShiftProps["data"]
+  value: ShiftFormProps["data"]
 ): value is ShiftCreateGroupBody | ShiftUpdateGroupBody {
   const days = (value as ShiftCreateGroupBody | ShiftUpdateGroupBody).days;
   return Array.isArray(days);
 }
 
-export interface FormShiftProps {
+export interface ShiftFormProps {
   data:
     | ShiftCreateBody
     | ShiftUpdateBody
@@ -47,10 +44,10 @@ export interface FormShiftProps {
     | ShiftUpdateGroupBody;
   method: "put" | "post";
   type: "group" | undefined;
-  onClose: () => void;
+  children: JSX.Element;
 }
 
-export const FormShift = ({ data, method, type, onClose }: FormShiftProps) => {
+export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
   const { formatInTimezone } = useDate();
   const { options } = useTag();
   const { t } = useTranslation({ id: "form-shifts", locales });
@@ -157,39 +154,24 @@ export const FormShift = ({ data, method, type, onClose }: FormShiftProps) => {
         </Layout>
       </Box>
       <Divider />
-      <HorizontalStack align="end">
-        <Box padding={"4"}>
-          <HorizontalStack gap={"1"}>
-            <Button onClick={onClose}>{t("close")}</Button>
-            <ButtonNavigation>
-              {type === "group" ? t("create_range") : t("create_day")}
-            </ButtonNavigation>
-          </HorizontalStack>
-        </Box>
-      </HorizontalStack>
+      {children}
     </Form>
   );
 };
 
 const locales = {
   da: {
-    close: "Luk",
     date_from: { label: "Dato fra" },
     date_to: { label: "Dato til" },
     select_days: { error_empty: "Du skal mindst vælge en dag" },
     time_from: { label: "Tid fra" },
     time_to: { label: "Tid til" },
-    create_day: "Opret en vagtplan",
-    create_range: "Opret flere vagtplan",
   },
   en: {
-    close: "Close",
     date_from: { label: "Date from" },
     date_to: { label: "Date to" },
     select_days: { error_empty: "You must select atleast one day" },
     time_from: { label: "Time from" },
     time_to: { label: "Time to" },
-    create_day: "Create for day",
-    create_range: "Create for range",
   },
 };

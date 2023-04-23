@@ -1,4 +1,5 @@
 import "@shopify/polaris/build/esm/styles.css";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { Application } from "./application";
@@ -8,6 +9,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
     <QueryProvider>
       <Application />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryProvider>
   </StrictMode>
 );

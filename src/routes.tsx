@@ -26,15 +26,15 @@ const router = createBrowserRouter(
         <Route index lazy={() => import("./pages/admin/dashboard")} />
         <Route
           path="user/new"
-          lazy={() => import("./pages/admin/users/create")}
+          lazy={() => import("./pages/admin/users/create-user")}
         />
         <Route
           path="user/:userId/edit"
-          lazy={() => import("./pages/admin/users/edit")}
+          lazy={() => import("./pages/admin/users/edit-user")}
         />
         <Route
           path="user/:userId"
-          lazy={() => import("./pages/admin/users/view")}
+          lazy={() => import("./pages/admin/users/show-user")}
         >
           <Route
             path="create-shift"

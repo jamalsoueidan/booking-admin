@@ -8,49 +8,14 @@ import {
   Select,
   TextField,
 } from "@shopify/polaris";
-import { AxiosError } from "axios";
-import {
-  ActionFunctionArgs,
-  Form,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-} from "react-router-dom";
-import {
-  getUserGetByIdQueryOptions,
-  userUpdateById,
-} from "~/api/bookingShopifyApi";
+import { Form, useLoaderData } from "react-router-dom";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { BadgeStatus } from "~/components/badge-status";
 import { FormErrors } from "~/components/form-errors";
 import { usePosition } from "~/hooks/use-position";
 import { useUserForm } from "~/hooks/use-user-form";
-import { queryClient } from "~/providers/query-provider";
 import { useTranslation } from "~/providers/translate-provider";
-
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-  try {
-    const formData = await request.formData();
-    await userUpdateById(
-      params.userId || "",
-      Object.fromEntries(formData) as any
-    );
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      return error.response?.data;
-    }
-    return error;
-  }
-  // needs to handle it via toast
-  return redirect("../users/");
-};
-
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const data = await queryClient.fetchQuery(
-    getUserGetByIdQueryOptions(params.userId || "")
-  );
-  return data.data.payload;
-};
+import { loader } from "./loader";
 
 export function Component() {
   const user = useLoaderData() as Awaited<ReturnType<typeof loader>>;

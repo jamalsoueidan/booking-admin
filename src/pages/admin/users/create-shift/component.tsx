@@ -1,6 +1,6 @@
-import { Modal, Tabs } from "@shopify/polaris";
+import { Box, Button, HorizontalStack, Modal, Tabs } from "@shopify/polaris";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Shift, ShiftGroup, ShiftTag } from "~/api/model";
+import { ShiftTag } from "~/api/model";
 
 import { addWeeks, setHours } from "date-fns";
 import {
@@ -8,27 +8,14 @@ import {
   useActionData,
   useNavigate,
 } from "react-router-dom";
+import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { useSearchQuery } from "~/hooks/use-search-query";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
-import { FormShift, FormShiftProps } from "./_form";
+import { isModifyShiftGroup, isShift } from "~/types/shift";
+
+import { ShiftForm, ShiftFormProps } from "~/components/shift-form";
 import { action } from "./action";
-
-function isShift(shift: Awaited<ReturnType<typeof action>>): shift is Shift {
-  if (shift === undefined) {
-    return false;
-  }
-  return (shift as Shift)._id !== undefined;
-}
-
-function isShiftGroup(
-  shift: Awaited<ReturnType<typeof action>>
-): shift is ShiftGroup {
-  if (shift === undefined) {
-    return false;
-  }
-  return Array.isArray(shift);
-}
 
 export function Component() {
   const { show } = useToast();
@@ -59,7 +46,7 @@ export function Component() {
     },
   ];
 
-  const type: FormShiftProps["type"] =
+  const type: ShiftFormProps["type"] =
     tabs[selected].id === "create-all" ? "group" : undefined;
 
   const start = setHours(new Date(query.selectedDate), 10);
@@ -99,7 +86,7 @@ export function Component() {
       close();
       show({ content: t("success_day") });
     }
-    if (isShiftGroup(actionData)) {
+    if (isModifyShiftGroup(actionData)) {
       close();
       show({ content: t("success_range") });
     }
@@ -108,20 +95,33 @@ export function Component() {
   return (
     <Modal open={open} onClose={close} title={t("title")}>
       <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} />
-      <FormShift data={data} onClose={close} type={type} method="post" />
+      <ShiftForm data={data} type={type} method="post">
+        <HorizontalStack align="end">
+          <Box padding={"4"}>
+            <HorizontalStack gap={"1"}>
+              <Button onClick={close}>{t("close")}</Button>
+              <ButtonNavigation>
+                {type === "group" ? t("create_range") : t("create_day")}
+              </ButtonNavigation>
+            </HorizontalStack>
+          </Box>
+        </HorizontalStack>
+      </ShiftForm>
     </Modal>
   );
 }
 
 const locales = {
   da: {
+    close: "Luk",
     create_day: "Opret en vagtplan",
-    create_range: "Opret flere vagtplan",
+    create_range: "Opret flere vagtplaner",
     title: "Tilføj vagt(er) til skema",
     success_day: "Vagtplan oprettet",
     success_range: "Vagtplaner oprettet",
   },
   en: {
+    close: "Close",
     create_day: "Create for day",
     create_range: "Create for range",
     title: "New availability",

@@ -58,7 +58,7 @@ export const InputDateDrop = ({
       error={!input?.disabled && field.error}
       labelHidden={input?.labelHidden}
       autoComplete="off"
-      value={field.value ? format(field.value, "PPPP") : ""}
+      value={field.value ? format(field.value, "PP") : ""}
       readOnly
       onChange={() => {}}
       prefix={<Icon source={CalendarMajor} />}
