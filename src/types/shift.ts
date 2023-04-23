@@ -1,4 +1,4 @@
-import { Shift, ShiftGetGroup, ShiftGroup } from "~/api/model";
+import { Shift, ShiftGetGroup, ShiftModifyGroup } from "~/api/model";
 
 export function isShift(shift: unknown): shift is Shift {
   if (shift === undefined) {
@@ -7,7 +7,9 @@ export function isShift(shift: unknown): shift is Shift {
   return (shift as Shift)._id !== undefined;
 }
 
-export function isModifyShiftGroup(shift: unknown): shift is ShiftGroup[] {
+export function isModifyShiftGroup(
+  shift: unknown
+): shift is ShiftModifyGroup[] {
   if (shift === undefined) {
     return false;
   }
