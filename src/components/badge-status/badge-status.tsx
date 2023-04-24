@@ -1,7 +1,7 @@
 import { Badge } from "@shopify/polaris";
 
 export type BadgeStatusProps = {
-  active: boolean;
+  active?: boolean;
 };
 
 export const BadgeStatus = ({ active }: BadgeStatusProps) =>

@@ -5,8 +5,18 @@ import {
   userShiftCreate,
   userShiftCreateGroup,
 } from "~/api/bookingShopifyApi";
-import { BadResponseResponse } from "~/api/model";
+import { BadResponseResponse, Errors, Shift } from "~/api/model";
 import { queryClient } from "~/providers/query-provider";
+
+export const isActionSuccess = (
+  actionData: Shift | Shift[] | Errors | undefined
+): actionData is Shift | Shift[] => {
+  if (!actionData || Array.isArray((actionData as Errors).errors)) {
+    return false;
+  }
+
+  return true;
+};
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   try {
@@ -23,7 +33,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       response = await userShiftCreate(userId || "", formData as never);
     }
 
-    await queryClient.invalidateQueries({
+    queryClient.invalidateQueries({
       queryKey: getUserShiftGetAllQueryKey(userId || "", null as never),
     });
 
@@ -32,6 +42,5 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     if (error instanceof AxiosError) {
       return error.response?.data as BadResponseResponse;
     }
-    return error as AxiosError;
   }
 };

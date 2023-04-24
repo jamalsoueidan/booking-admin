@@ -53,6 +53,5 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     if (error instanceof AxiosError) {
       return error.response?.data as BadResponseResponse;
     }
-    return error as AxiosError;
   }
 };

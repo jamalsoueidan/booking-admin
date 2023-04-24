@@ -11,6 +11,7 @@ import { ButtonNavigation } from "~/components/authentication/button-navigation"
 import { ShiftForm } from "~/components/shift-form";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
+import { isActionSuccess } from "../create-shift";
 import { action } from "./action";
 import { loadShiftGroup } from "./loader";
 
@@ -34,7 +35,7 @@ export function EditShiftGroupForm({
   });
 
   useEffect(() => {
-    if (actionData) {
+    if (isActionSuccess(actionData)) {
       onClose();
       show({ content: t("success") });
     }

@@ -25,7 +25,7 @@ export function Component() {
               fullWidth
               title={t("title", user)}
               titleMetadata={<BadgeStatus active={user?.active} />}
-              backAction={{ content: "user", url: "../" }}
+              backAction={{ content: "user", url: "../users" }}
               primaryAction={
                 ability.can("update", subject("user", user)) && {
                   content: t("edit", user),

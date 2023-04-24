@@ -9,7 +9,7 @@ import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
 
 import { ShiftData, ShiftForm } from "~/components/shift-form";
-import { action } from "./action";
+import { action, isActionSuccess } from "./action";
 
 type CreateShiftFormProps = {
   actionData: Awaited<ReturnType<typeof action>>;
@@ -37,7 +37,7 @@ export function CreateShiftForm({ actionData, onClose }: CreateShiftFormProps) {
   }, [end, start]);
 
   useEffect(() => {
-    if (actionData) {
+    if (isActionSuccess(actionData)) {
       onClose();
       show({ content: t("success") });
     }
