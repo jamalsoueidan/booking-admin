@@ -4,14 +4,8 @@ import { useField } from "@shopify/react-form";
 import { Field } from "@shopify/react-form";
 import { useCallback } from "react";
 import { Form } from "react-router-dom";
-import {
-  ShiftCreateBody,
-  ShiftCreateGroupBody,
-  ShiftDay,
-  ShiftTag,
-  ShiftUpdateBody,
-  ShiftUpdateGroupBody,
-} from "~/api/model";
+import { Shift, ShiftDay, ShiftTag } from "~/api/model";
+import { ShiftGroup } from "~/api/model/shiftGroup";
 import { InputDateField } from "~/components/inputs/input-date";
 import { InputDateDrop } from "~/components/inputs/input-date-drop";
 import { InputDays } from "~/components/inputs/input-days";
@@ -23,30 +17,20 @@ import { useDate } from "~/hooks/use-date";
 import { useTag } from "~/hooks/use-tag";
 import { useTranslation } from "~/providers/translate-provider";
 
-export function isShiftGroup(
-  value: ShiftFormProps["data"]
-): value is ShiftCreateGroupBody | ShiftUpdateGroupBody {
-  const days = (value as ShiftCreateGroupBody | ShiftUpdateGroupBody).days;
+export function isDataShiftGroup(value?: ShiftData): value is ShiftGroup {
+  const days = (value as ShiftGroup).days;
   return Array.isArray(days);
 }
 
-export function getShiftType(value: ShiftFormProps["data"]) {
-  if (isShiftGroup(value)) {
-    return "group";
-  }
-  return "single";
-}
-
-export type ShiftType = "group" | "single";
+export type ShiftData =
+  | Pick<Shift, "start" | "end" | "tag">
+  | Omit<ShiftGroup, "userId">;
+export type ShiftType = "group";
 
 export interface ShiftFormProps {
-  data:
-    | ShiftCreateBody
-    | ShiftUpdateBody
-    | ShiftCreateGroupBody
-    | ShiftUpdateGroupBody;
+  data: ShiftData;
   method: "put" | "post";
-  type: ShiftType;
+  type?: ShiftType;
   children: JSX.Element;
 }
 
@@ -58,20 +42,25 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
 
   const days = useField<ShiftDay>({
     validates: [Validators.isSelectedDays(t("select_days.error_empty"))],
-    value: isShiftGroup(data) ? data?.days : [],
+    value: isDataShiftGroup(data) ? data?.days : [],
   });
+
+  const groupId = useField<string | undefined>(
+    isDataShiftGroup(data) ? data?.groupId : undefined
+  );
 
   const { fields, onSubmit } = useRouterSubmit({
     fields: {
       ...(type === "group" && {
         days,
+        ...(method === "put" && { groupId }),
       }),
       start: useField({
-        value: data.start,
+        value: data.start || new Date(),
         validates: [],
       }),
       end: useField({
-        value: data.end,
+        value: data.end || new Date(),
         validates: [],
       }),
       tag: useField<ShiftTag>(data.tag || options[0].value),

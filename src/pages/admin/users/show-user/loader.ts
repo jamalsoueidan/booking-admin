@@ -2,7 +2,7 @@ import { endOfMonth, startOfMonth } from "date-fns";
 import { LoaderFunctionArgs } from "react-router-dom";
 
 import { getUserShiftGetAllQueryOptions } from "~/api/bookingShopifyApi";
-import { deferredLoader } from "~/lib/loaderData";
+import { deferredLoader } from "~/lib/loader-data";
 import { queryClient } from "~/providers/query-provider";
 import { ExtractTData } from "~/types/api";
 import { loader as loadUser } from "../edit-user";

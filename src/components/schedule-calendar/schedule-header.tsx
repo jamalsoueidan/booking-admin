@@ -10,7 +10,7 @@ import { useCallback } from "react";
 import { CalendarTitle } from "~/components/calendar";
 import { useCalendar } from "~/components/calendar/use-calendar";
 import { InputTags, InputTagsField } from "~/components/inputs/input-tags";
-import { useFieldParam } from "~/lib/form/use-field-param";
+import { useFieldParam } from "~/lib/react-form/use-field-param";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const ScheduleHeader = () => {

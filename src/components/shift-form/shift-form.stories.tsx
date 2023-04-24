@@ -7,11 +7,6 @@ const meta = {
   title: "Components/ShiftForm",
   component: ShiftForm,
   args: {
-    data: {
-      end: addHours(new Date(), 1),
-      start: new Date(),
-      tag: "all_day",
-    },
     children: <Button>Send</Button>,
   },
 } satisfies Meta<typeof ShiftForm>;
@@ -21,6 +16,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Group: Story = {
   args: {
+    data: {
+      end: addHours(new Date(), 1),
+      start: new Date(),
+      tag: "all_day",
+      days: ["friday", "monday"],
+      groupId: "123312",
+    },
     method: "post",
     type: "group",
   },
@@ -28,7 +30,11 @@ export const Group: Story = {
 
 export const Shift: Story = {
   args: {
+    data: {
+      end: addHours(new Date(), 1),
+      start: new Date(),
+      tag: "all_day",
+    },
     method: "post",
-    type: undefined,
   },
 };

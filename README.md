@@ -16,7 +16,7 @@ This will install deps, download openapi.yml and generate the typesafe react-que
 
 ```js
 npm install
-npm run build-openapi
+npm run fb-openapi //fetch and build openapi
 npm run dev
 ```
 

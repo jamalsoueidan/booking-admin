@@ -1,34 +1,57 @@
 import { LoaderFunctionArgs } from "react-router-dom";
-import { getUserShiftGetGroupQueryOptions } from "~/api/bookingShopifyApi";
+import {
+  getUserShiftGetByIdQueryOptions,
+  getUserShiftGetGroupQueryOptions,
+} from "~/api/bookingShopifyApi";
 import { queryClient } from "~/providers/query-provider";
 import { ExtractTData } from "~/types/api";
-import { loadShifts } from "../show-user";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const shifts = await loadShifts({ request, params });
-  const shiftId = new URL(request.url).searchParams.get("selectedEvent") || "";
+export const getSearchParams = ({ request }: LoaderFunctionArgs) => {
+  const searchParams = new URL(request.url).searchParams;
+
+  return {
+    selectedShiftId: searchParams.get("selectedShiftId") || "",
+    selectedGroupId: searchParams.get("selectedGroupId"),
+  };
+};
+
+export const loadShiftGroup = async ({
+  request,
+  params,
+}: LoaderFunctionArgs) => {
   const userId = params.userId || "";
-  const shift = shifts.find((shift) => shift._id === shiftId);
-  if (!shift) {
-    throw new Response("Not Found", { status: 404 });
-  }
-
-  // return shift (not part of group)
-  if (!shift.groupId) {
-    return shift;
-  }
-
-  const query = getUserShiftGetGroupQueryOptions(userId, shift.groupId);
-
+  const { selectedGroupId } = getSearchParams({ request, params });
+  const query = getUserShiftGetGroupQueryOptions(userId, selectedGroupId || "");
   const response =
     queryClient.getQueryData<
       ExtractTData<typeof getUserShiftGetGroupQueryOptions>
     >(query.queryKey, { stale: false }) ??
     (await queryClient.fetchQuery(query));
 
-  const shiftGroup = response.data.payload;
-  if (!shiftGroup) {
-    throw new Response("Not Found", { status: 404 });
+  return response.data.payload;
+};
+
+export const loadShift = async ({ request, params }: LoaderFunctionArgs) => {
+  const userId = params.userId || "";
+  const { selectedShiftId } = getSearchParams({ request, params });
+
+  const query = getUserShiftGetByIdQueryOptions(userId, selectedShiftId);
+
+  const response =
+    queryClient.getQueryData<
+      ExtractTData<typeof getUserShiftGetByIdQueryOptions>
+    >(query.queryKey, { stale: false }) ??
+    (await queryClient.fetchQuery(query));
+
+  return response.data.payload;
+};
+
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  const { selectedGroupId } = getSearchParams({ request, params });
+
+  if (!selectedGroupId) {
+    return loadShift({ request, params });
   }
-  return shiftGroup;
+
+  return loadShiftGroup({ request, params });
 };

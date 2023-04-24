@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 import { BadgeStatus } from "~/components/badge-status";
 import { LoadingSpinner } from "~/components/loading/loading-spinner";
 import { ScheduleCalendar } from "~/components/schedule-calendar";
-import { Await, useDeferredLoaderData } from "~/lib/loaderData";
+import { Await, useDeferredLoaderData } from "~/lib/loader-data";
 import { useAbility } from "~/providers/ability-provider";
 import { useTranslation } from "~/providers/translate-provider";
 import { loader } from "./loader";
@@ -43,7 +43,7 @@ export function Component() {
             >
               <AlphaCard>
                 <Suspense fallback={<LoadingSpinner />}>
-                  <Await resolve={shifts} errorElement={<>problems</>}>
+                  <Await resolve={shifts}>
                     {(shifts) => <ScheduleCalendar data={shifts} />}
                   </Await>
                 </Suspense>

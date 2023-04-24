@@ -1,14 +1,8 @@
 import { Modal } from "@shopify/polaris";
 import { useCallback, useState } from "react";
-import {
-  createSearchParams,
-  useLoaderData,
-  useNavigate,
-  useSubmit,
-} from "react-router-dom";
+import { useLoaderData, useNavigate, useSubmit } from "react-router-dom";
 import { useSearchQuery } from "~/hooks/use-search-query";
 import { useTranslation } from "~/providers/translate-provider";
-import { isShiftGroup } from "~/types/shift";
 import { loader } from "../edit-shift";
 
 export function Component() {
@@ -23,6 +17,7 @@ export function Component() {
 
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   console.log(loaderData);
+  const isShiftGroup = isGetShiftGroup(loaderData) ? true : false;
 
   console.log("component loader");
   const onDestroy = useCallback(async () => {
@@ -40,34 +35,13 @@ export function Component() {
       show({ content: t("destroy") });*/
   }, [loaderData, submit]);
 
-  const onClose = useCallback(() => {
-    setOpen((prev) => !prev);
-    const timer = setTimeout(() => {
-      navigate({
-        pathname: `./..`,
-        search: createSearchParams(query).toString(),
-      });
-    }, 250);
-    return () => clearTimeout(timer);
-  }, [navigate, query]);
-
-  const onCancel = useCallback(() => {
-    setOpen((prev) => !prev);
-    navigate({
-      pathname: `./../edit-shift`,
-      search: createSearchParams(query).toString(),
-    });
-  }, [navigate, query]);
-
   return (
     <Modal
       open={open}
       onClose={onClose}
       title={t("title")}
       primaryAction={{
-        content: isShiftGroup(loaderData)
-          ? t("action_shifts")
-          : t("action_shift"),
+        content: isShiftGroup ? t("action_shifts") : t("action_shift"),
         destructive: true,
         onAction: onDestroy,
       }}

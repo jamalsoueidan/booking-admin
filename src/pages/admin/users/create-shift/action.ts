@@ -24,7 +24,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     }
 
     await queryClient.invalidateQueries({
-      queryKey: getUserShiftGetAllQueryKey(userId || "", {} as never),
+      queryKey: getUserShiftGetAllQueryKey(userId || "", null as never),
     });
 
     return response.data.payload;

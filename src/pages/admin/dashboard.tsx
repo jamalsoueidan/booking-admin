@@ -2,7 +2,11 @@ import { AlphaCard, HorizontalGrid, Page, Text } from "@shopify/polaris";
 import { Suspense } from "react";
 import { getUserGetAllQueryOptions } from "~/api/bookingShopifyApi";
 import { DashboardGroup } from "~/components/dashboard/Group";
-import { Await, deferredLoader, useDeferredLoaderData } from "~/lib/loaderData";
+import {
+  Await,
+  deferredLoader,
+  useDeferredLoaderData,
+} from "~/lib/loader-data";
 import { queryClient } from "~/providers/query-provider";
 
 export const loader = deferredLoader(() => {
