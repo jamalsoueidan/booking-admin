@@ -86,6 +86,17 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
 
   return (
     <Form method={method} onSubmit={onSubmit}>
+      <Modal.Section>
+        {isDataShiftGroup(data)
+          ? t("title_range", {
+              from: <strong>{formatInTimezone(data?.start, "PPPP")}</strong>,
+              to: <strong>{formatInTimezone(data?.start, "PPPP")}</strong>,
+            })
+          : t("title_day", {
+              date: <strong>{formatInTimezone(data?.start, "PPP")}</strong>,
+              day: <strong>{formatInTimezone(data?.start, "EEEE")}</strong>,
+            })}
+      </Modal.Section>
       {type === "group" ? (
         <>
           <Modal.Section>
@@ -149,6 +160,8 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
 
 const locales = {
   da: {
+    title_day: "Arbejdsdag {day} og dato {date}",
+    title_range: "Fra dato {from} til og med {to}",
     date_from: { label: "Dato fra" },
     date_to: { label: "Dato til" },
     select_days: { error_empty: "Du skal mindst vælge en dag" },
@@ -156,6 +169,8 @@ const locales = {
     time_to: { label: "Tid til" },
   },
   en: {
+    title_day: "Shiftday {day} og date {date}",
+    title_range: "From {from} to {to}",
     date_from: { label: "Date from" },
     date_to: { label: "Date to" },
     select_days: { error_empty: "You must select atleast one day" },

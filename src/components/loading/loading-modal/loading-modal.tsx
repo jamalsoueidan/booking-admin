@@ -1,4 +1,4 @@
-import { Spinner, Text, VerticalStack } from "@shopify/polaris";
+import { Loading, Spinner, Text, VerticalStack } from "@shopify/polaris";
 import { memo } from "react";
 import { useTranslation } from "~/providers/translate-provider";
 
@@ -10,6 +10,7 @@ export const LoadingModal = memo(({ title }: LoadingModalProps) => {
   const { t } = useTranslation({ id: "loading-modal", locales });
   return (
     <>
+      <Loading />
       <div
         style={{
           backgroundColor: "#e9e9e9",
@@ -31,7 +32,7 @@ export const LoadingModal = memo(({ title }: LoadingModalProps) => {
           zIndex: 6,
         }}
       >
-        <VerticalStack align="center" gap="2">
+        <VerticalStack align="center" gap="2" inlineAlign="center">
           <Spinner accessibilityLabel="Loading" hasFocusableParent={false} />
           <Text variant="bodySm" as="span">
             {title || t("title")}

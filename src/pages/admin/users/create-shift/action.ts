@@ -1,12 +1,20 @@
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { ActionFunctionArgs } from "react-router-dom";
 import {
   getUserShiftGetAllQueryKey,
   userShiftCreate,
   userShiftCreateGroup,
 } from "~/api/bookingShopifyApi";
-import { BadResponseResponse, Errors, Shift } from "~/api/model";
+import {
+  BadResponseResponse,
+  Errors,
+  Shift,
+  ShiftCreateGroupResponse,
+  ShiftCreateResponse,
+  ShiftGetAllResponse,
+} from "~/api/model";
 import { queryClient } from "~/providers/query-provider";
+import { getShiftsSearchParams } from "../show-user";
 
 export const isActionSuccess = (
   actionData: Shift | Shift[] | Errors | undefined
@@ -22,7 +30,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   try {
     const userId = params.userId || "";
     const formData = Object.fromEntries(await request.formData());
-    let response;
+    let response: AxiosResponse<ShiftCreateGroupResponse | ShiftCreateResponse>;
     if (formData.days) {
       // form.days is coming as "wednesday,thursday", useSubmit from react-router convert that.
       response = await userShiftCreateGroup(userId || "", {
@@ -33,9 +41,25 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       response = await userShiftCreate(userId || "", formData as never);
     }
 
-    queryClient.invalidateQueries({
-      queryKey: getUserShiftGetAllQueryKey(userId || "", null as never),
-    });
+    /* Code below is a test instead of invalidating the data, gives better user-experience */
+    const { start, end } = getShiftsSearchParams({ request, params });
+    queryClient.setQueryData(
+      getUserShiftGetAllQueryKey(userId || "", {
+        start: start.toJSON(),
+        end: end.toJSON(),
+      } as never),
+      (data: AxiosResponse<ShiftGetAllResponse, never> | undefined) => {
+        if (data) {
+          data.data.payload = [
+            ...data.data.payload,
+            ...(Array.isArray(response.data.payload)
+              ? response.data.payload
+              : [response.data.payload]),
+          ];
+        }
+        return data;
+      }
+    );
 
     return response.data.payload;
   } catch (error) {

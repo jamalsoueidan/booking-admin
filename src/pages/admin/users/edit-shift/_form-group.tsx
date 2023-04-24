@@ -49,6 +49,9 @@ export function EditShiftGroupForm({
             <Button onClick={onDelete} destructive>
               {t("delete")}
             </Button>
+            <Button onClick={onDelete} destructive>
+              {t("delete_range")}
+            </Button>
           </HorizontalStack>
 
           <HorizontalStack gap={"1"} align="end">
@@ -64,14 +67,16 @@ export function EditShiftGroupForm({
 const locales = {
   da: {
     close: "Luk",
-    delete: "Slet alle vagtplaner",
+    delete: "Slet arbejdsdag",
+    delete_range: "Slet periode",
     save_changes: "Gem ændringer",
     success: "Vagtplaner redigeret",
     title: "Redigere vagtplaner",
   },
   en: {
     close: "Close",
-    delete: "Delete all shifts",
+    delete: "Delete shiftday",
+    delete_range: "Delete range",
     save_changes: "Save changes",
     success: "Shifts edit",
     title: "Edit shifts",
