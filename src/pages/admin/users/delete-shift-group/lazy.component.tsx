@@ -8,12 +8,10 @@ import {
 } from "react-router-dom";
 import { useDate } from "~/hooks/use-date";
 import { useSearchQuery } from "~/hooks/use-search-query";
-import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
 import { loader } from "./loader";
 
 export default () => {
-  const { show } = useToast();
   const submit = useSubmit();
   const navigate = useNavigate();
   const { query } = useSearchQuery();
@@ -25,6 +23,22 @@ export default () => {
   });
 
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+
+  console.log("component loader");
+  const onDestroy = useCallback(async () => {
+    submit(
+      {
+        //shiftType: getShiftType(loaderData),
+        userId: loaderData.userId,
+        groupId: loaderData.groupId || "",
+      },
+      {
+        method: "delete",
+      }
+    );
+    /*onClose();
+      show({ content: t("destroy") });*/
+  }, [loaderData, submit]);
 
   const onClose = useCallback(() => {
     setOpen((prev) => !prev);
@@ -44,19 +58,6 @@ export default () => {
       search: createSearchParams(query).toString(),
     });
   }, [navigate, query]);
-
-  const onDestroy = useCallback(async () => {
-    submit(
-      {
-        userId: loaderData.userId,
-      },
-      {
-        method: "delete",
-      }
-    );
-    onClose();
-    show({ content: t("success") });
-  }, [loaderData.userId, onClose, show, submit, t]);
 
   return (
     <Modal
@@ -100,7 +101,6 @@ const locales = {
     action: "Slet arbejdsdag",
     title: "Er du sikker?",
     cancel: "Annullere",
-    success: "Vagtplan slettet",
   },
   en: {
     date: "Shiftday {day} og date {date}",
@@ -108,6 +108,5 @@ const locales = {
     action: "Delete shiftday",
     title: "Are you sure?",
     cancel: "Cancel",
-    success: "Shift deleted",
   },
 };

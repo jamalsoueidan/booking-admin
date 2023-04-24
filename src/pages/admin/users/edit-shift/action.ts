@@ -8,15 +8,14 @@ import {
   userShiftUpdateGroup,
 } from "~/api/bookingShopifyApi";
 import { BadResponseResponse } from "~/api/model";
+import { scheduleGetSearchParams } from "~/components/schedule-calendar";
 import { queryClient } from "~/providers/query-provider";
-import { getSearchParams } from "./loader";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const userId = params.userId || "";
-  const { selectedGroupId, selectedShiftId } = getSearchParams({
-    request,
-    params,
-  });
+  const { selectedGroupId, selectedShiftId } = scheduleGetSearchParams(
+    request.url
+  );
 
   try {
     const formData = Object.fromEntries(await request.formData());
