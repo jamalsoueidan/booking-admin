@@ -28,7 +28,7 @@ export function Component() {
   const onDestroy = useCallback(async () => {
     submit(
       {
-        shiftType: getShiftType(loaderData),
+        //shiftType: getShiftType(loaderData),
         userId: loaderData.userId,
         groupId: loaderData.groupId || "",
       },
