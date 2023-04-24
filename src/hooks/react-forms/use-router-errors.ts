@@ -20,7 +20,7 @@ export function useRouterErrors<T extends FieldBag>(
       data?.errors.forEach((error) => {
         error.path.forEach((path) => {
           const field = input.fields[path] as Field<T>;
-          if (!field.error) {
+          if (field && !field.error) {
             field.setError(error.message);
           }
         });

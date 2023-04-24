@@ -84,7 +84,7 @@ export const Error = () => {
 
 export const DisabledWithError = () => {
   const field = useField<InputDropdownField>(undefined);
-  const [staff, setStaff] = useState<Array<InputDropdownOption<string>>>([]);
+  const [user, setUser] = useState<Array<InputDropdownOption<string>>>([]);
 
   useEffect(() => {
     field.setError("fejl");
@@ -95,16 +95,16 @@ export const DisabledWithError = () => {
     <>
       <AlphaCard>
         <InputDropdown
-          options={staff}
+          options={user}
           input={{
-            disabled: !staff || staff.length === 0,
+            disabled: !user || user.length === 0,
             helpText: "klik på knap og vælge bruger",
           }}
           {...field}
         />
       </AlphaCard>
       <br />
-      <Button onClick={() => setStaff(options)}>Load staff</Button>
+      <Button onClick={() => setUser(options)}>Load user</Button>
       <div>
         <pre>userId: {field.value}</pre>
       </div>
@@ -114,22 +114,22 @@ export const DisabledWithError = () => {
 
 export const LazyLoad = () => {
   const field = useField<InputDropdownField>(undefined);
-  const [staff, setStaff] = useState<Array<InputDropdownOption<string>>>([]);
+  const [user, setUser] = useState<Array<InputDropdownOption<string>>>([]);
 
   return (
     <>
       <AlphaCard>
         <InputDropdown
-          options={staff}
+          options={user}
           input={{
-            disabled: !staff || staff.length === 0,
+            disabled: !user || user.length === 0,
             helpText: "klik på knap og vælge bruger",
           }}
           {...field}
         />
       </AlphaCard>
       <br />
-      <Button onClick={() => setStaff(options)}>Load staff</Button>
+      <Button onClick={() => setUser(options)}>Load user</Button>
       <div>
         <pre>userId: {field.value}</pre>
       </div>

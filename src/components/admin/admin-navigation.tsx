@@ -9,12 +9,25 @@ import {
   ProfileMajor,
   SettingsMajor,
 } from "@shopify/polaris-icons";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "~/providers/translate-provider";
 
-export const AdminNavigation = () => {
+type AdminNavigationProps = {
+  toggle: () => void;
+};
+export const AdminNavigation = ({ toggle }: AdminNavigationProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation({ id: "app-navigation", locales });
+
+  const nav = useCallback(
+    (path: string) => () => {
+      navigate(path);
+      toggle();
+    },
+    [navigate, toggle]
+  );
+
   return (
     <Navigation location="/">
       <Navigation.Section
@@ -23,22 +36,22 @@ export const AdminNavigation = () => {
           {
             icon: HomeMajor,
             label: t("booking.dashboard"),
-            onClick: () => navigate("/admin"),
+            onClick: nav("/admin"),
           },
           {
             icon: CalendarTickMajor,
             label: t("booking.bookings"),
-            onClick: () => navigate("/admin/bookings"),
+            onClick: nav("/admin/bookings"),
           },
           {
             icon: CollectionsMajor,
             label: t("booking.collections"),
-            onClick: () => navigate("/admin/collections"),
+            onClick: nav("/admin/collections"),
           },
           {
             icon: CustomersMajor,
             label: t("booking.users"),
-            onClick: () => navigate("/admin/users"),
+            onClick: nav("/admin/users"),
           },
         ]}
       />
@@ -48,24 +61,24 @@ export const AdminNavigation = () => {
           {
             icon: CalendarMajor,
             label: t("user.schedules"),
-            onClick: () => navigate("/admin/my/schedules"),
+            onClick: nav("/admin/my/schedules"),
           },
           {
             icon: ProfileMajor,
             label: t("user.account"),
-            onClick: () => navigate("/admin/my/account"),
+            onClick: nav("/admin/my/account"),
           },
           {
             icon: SettingsMajor,
             label: t("user.settings"),
-            onClick: () => navigate("/admin/my/settings"),
+            onClick: nav("/admin/my/settings"),
           },
           {
             icon: ExitMajor,
             label: t("user.logout"),
             onClick: () => {
               localStorage.clear();
-              return navigate("/");
+              return nav("/");
             },
           },
         ]}

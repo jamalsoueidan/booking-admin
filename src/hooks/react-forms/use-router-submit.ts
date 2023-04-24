@@ -19,7 +19,9 @@ export type RouterSubmit<T extends FieldBag> = Pick<
 };
 
 export function useRouterSubmit<T extends FieldBag>(
-  input: Pick<FormWithoutDynamicListsInput<T>, "fields">
+  input: Pick<FormWithoutDynamicListsInput<T>, "fields"> & {
+    method: "put" | "post" | "delete";
+  }
 ): RouterSubmit<T> {
   const form = useForm<T>({ ...input });
   const submit = useSubmit();
@@ -30,11 +32,11 @@ export function useRouterSubmit<T extends FieldBag>(
       event.preventDefault();
       if (form.validate().length === 0) {
         submit(getValues(form.fields) as never, {
-          method: "post",
+          method: input.method,
         });
       }
     },
-    [form, submit]
+    [form, input.method, submit]
   );
 
   return {

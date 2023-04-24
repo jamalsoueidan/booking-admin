@@ -1,7 +1,10 @@
 import { Frame } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 import { Outlet, redirect } from "react-router-dom";
-import { getMyAccountGetQueryOptions } from "~/api/bookingShopifyApi";
+import {
+  getMyAccountGetQueryOptions,
+  myAccountGet,
+} from "~/api/bookingShopifyApi";
 import { AdminNavigation } from "~/components/admin/admin-navigation";
 import { AdminTopbar } from "~/components/admin/admin-topbar";
 import {
@@ -14,7 +17,12 @@ import logo from "../../assets/logo.avif";
 
 export const loader = async () => {
   try {
-    const data = await queryClient.fetchQuery(getMyAccountGetQueryOptions());
+    const query = getMyAccountGetQueryOptions();
+    const data =
+      queryClient.getQueryData<Awaited<ReturnType<typeof myAccountGet>>>(
+        query.queryKey
+      ) ?? (await queryClient.fetchQuery(query));
+
     return data.data.payload;
   } catch (error) {
     return redirect("/");
@@ -44,7 +52,7 @@ export function Component() {
     <Frame
       logo={logoOptions}
       topBar={<AdminTopbar toggleNavigation={setMobileNavigationActive} />}
-      navigation={<AdminNavigation />}
+      navigation={<AdminNavigation toggle={toggleMobileNavigationActive} />}
       showMobileNavigation={mobileNavigationActive}
       onNavigationDismiss={toggleMobileNavigationActive}
     >

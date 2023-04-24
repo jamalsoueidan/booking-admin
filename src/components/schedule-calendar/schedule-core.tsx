@@ -83,11 +83,13 @@ export const ScheduleCalendarCore = ({
 
   const onEventClick = useCallback(
     (args: EventClickArg) => {
+      const shift = args.event._def.extendedProps as Shift;
       navigate({
         pathname: "edit-shift",
         search: createSearchParams({
           ...query,
-          selectedEvent: args.event._def.extendedProps._id,
+          selectedShiftId: shift._id,
+          ...(shift.groupId && { selectedGroupId: shift.groupId }),
         }).toString(),
       });
     },
