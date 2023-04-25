@@ -43,14 +43,14 @@ export function EditShiftForm({
   return (
     <ShiftForm data={loaderData} method="put">
       <Modal.Section>
-        <HorizontalGrid columns={2}>
-          <HorizontalStack gap={"1"}>
+        <HorizontalGrid columns={["oneThird", "twoThirds"]}>
+          <HorizontalStack gap={"1"} align="start" blockAlign="start">
             <Button onClick={onDelete} destructive>
               {t("delete")}
             </Button>
           </HorizontalStack>
 
-          <HorizontalStack gap={"1"} align="end">
+          <HorizontalStack gap={"1"} align="end" blockAlign="start">
             <Button onClick={onClose}>{t("close")}</Button>
             <ButtonNavigation>{t("save_changes")}</ButtonNavigation>
           </HorizontalStack>

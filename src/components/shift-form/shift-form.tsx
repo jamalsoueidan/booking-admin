@@ -1,4 +1,9 @@
-import { HorizontalGrid, Modal, TextField } from "@shopify/polaris";
+import {
+  HorizontalGrid,
+  Modal,
+  TextField,
+  VerticalStack,
+} from "@shopify/polaris";
 import { useField } from "@shopify/react-form";
 
 import { Field } from "@shopify/react-form";
@@ -97,12 +102,10 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
               day: <strong>{formatInTimezone(data?.start, "EEEE")}</strong>,
             })}
       </Modal.Section>
-      {type === "group" ? (
-        <>
-          <Modal.Section>
-            <InputDays field={days} />
-          </Modal.Section>
-          <Modal.Section>
+      <Modal.Section>
+        <VerticalStack gap="4">
+          {type === "group" ? <InputDays field={days} /> : null}
+          {type === "group" ? (
             <HorizontalGrid columns={2} gap="2">
               <InputDateDrop
                 input={{ label: t("date_from.label") }}
@@ -121,38 +124,34 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
                 }}
               />
             </HorizontalGrid>
-          </Modal.Section>
-        </>
-      ) : null}
-      <Modal.Section>
-        <HorizontalGrid columns={2} gap="2">
-          <TextField
-            label={t("time_from.label")}
-            type="time"
-            id="start"
-            name="start"
-            autoComplete="off"
-            value={formatInTimezone(fields.start.value, "HH:mm")}
-            onChange={onChange}
-            error={fields.start.error}
-          />
-          <TextField
-            label={t("time_to.label")}
-            type="time"
-            id="end"
-            name="end"
-            autoComplete="off"
-            value={formatInTimezone(fields.end.value, "HH:mm")}
-            onChange={onChange}
-            error={fields.end.error}
-          />
-        </HorizontalGrid>
+          ) : null}
+
+          <HorizontalGrid columns={2} gap="2">
+            <TextField
+              label={t("time_from.label")}
+              type="time"
+              id="start"
+              name="start"
+              autoComplete="off"
+              value={formatInTimezone(fields.start.value, "HH:mm")}
+              onChange={onChange}
+              error={fields.start.error}
+            />
+            <TextField
+              label={t("time_to.label")}
+              type="time"
+              id="end"
+              name="end"
+              autoComplete="off"
+              value={formatInTimezone(fields.end.value, "HH:mm")}
+              onChange={onChange}
+              error={fields.end.error}
+            />
+          </HorizontalGrid>
+
+          {method === "post" ? <InputTags field={fields.tag} /> : null}
+        </VerticalStack>
       </Modal.Section>
-      {method === "post" ? (
-        <Modal.Section>
-          <InputTags field={fields.tag} />
-        </Modal.Section>
-      ) : null}
       {children}
     </Form>
   );

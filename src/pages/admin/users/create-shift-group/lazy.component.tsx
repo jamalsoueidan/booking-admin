@@ -1,4 +1,4 @@
-import { Box, Button, HorizontalStack } from "@shopify/polaris";
+import { Box, HorizontalStack } from "@shopify/polaris";
 import { useEffect, useMemo } from "react";
 import { ShiftTag } from "~/api/model";
 
@@ -58,7 +58,6 @@ export default () => {
       <HorizontalStack align="end">
         <Box padding={"4"}>
           <HorizontalStack gap={"1"}>
-            <Button onClick={close}>{t("close")}</Button>
             <ButtonNavigation>{t("create")}</ButtonNavigation>
           </HorizontalStack>
         </Box>
@@ -69,12 +68,10 @@ export default () => {
 
 const locales = {
   da: {
-    close: "Luk",
     create: "Opret en arbejdsperiode",
     success: "Arbejdsperiode oprettet",
   },
   en: {
-    close: "Close",
     create: "Create for day",
     success: "Shifts created",
   },
