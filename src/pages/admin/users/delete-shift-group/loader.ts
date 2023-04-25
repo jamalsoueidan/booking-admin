@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from "react-router-dom";
-import { loadShift } from "../edit-shift";
+import { loadShiftGroup } from "../edit-shift";
 
 export const loader = (props: LoaderFunctionArgs) => {
-  return loadShift(props);
+  return loadShiftGroup(props);
 };

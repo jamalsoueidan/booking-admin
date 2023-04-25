@@ -3,7 +3,7 @@ import {
   getUserShiftGetByIdQueryOptions,
   getUserShiftGetGroupQueryOptions,
 } from "~/api/bookingShopifyApi";
-import { scheduleGetSearchParams } from "~/components/schedule-calendar";
+import { scheduleGetQueries } from "~/components/schedule-calendar";
 import { queryClient } from "~/providers/query-provider";
 import { ExtractTData } from "~/types/api";
 
@@ -12,7 +12,7 @@ export const loadShiftGroup = async ({
   params,
 }: LoaderFunctionArgs) => {
   const userId = params.userId || "";
-  const { selectedGroupId } = scheduleGetSearchParams(request.url);
+  const { selectedGroupId } = scheduleGetQueries(request.url);
   const query = getUserShiftGetGroupQueryOptions(userId, selectedGroupId || "");
   const response =
     queryClient.getQueryData<
@@ -25,7 +25,7 @@ export const loadShiftGroup = async ({
 
 export const loadShift = async ({ request, params }: LoaderFunctionArgs) => {
   const userId = params.userId || "";
-  const { selectedShiftId } = scheduleGetSearchParams(request.url);
+  const { selectedShiftId } = scheduleGetQueries(request.url);
 
   const query = getUserShiftGetByIdQueryOptions(userId, selectedShiftId);
 
@@ -39,7 +39,7 @@ export const loadShift = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const { selectedGroupId } = scheduleGetSearchParams(request.url);
+  const { selectedGroupId } = scheduleGetQueries(request.url);
 
   if (!selectedGroupId) {
     return loadShift({ request, params });

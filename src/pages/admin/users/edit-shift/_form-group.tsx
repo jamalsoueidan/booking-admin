@@ -18,12 +18,14 @@ import { loadShiftGroup } from "./loader";
 type EditShiftGroupFormProps = {
   loaderData: Awaited<ReturnType<typeof loadShiftGroup>>;
   onDelete: () => void;
+  onDeleteGroup: () => void;
   onClose: () => void;
 };
 
 export function EditShiftGroupForm({
   loaderData,
   onDelete,
+  onDeleteGroup,
   onClose,
 }: EditShiftGroupFormProps) {
   const { show } = useToast();
@@ -49,7 +51,7 @@ export function EditShiftGroupForm({
             <Button onClick={onDelete} destructive>
               {t("delete")}
             </Button>
-            <Button onClick={onDelete} destructive>
+            <Button onClick={onDeleteGroup} destructive>
               {t("delete_range")}
             </Button>
           </HorizontalStack>

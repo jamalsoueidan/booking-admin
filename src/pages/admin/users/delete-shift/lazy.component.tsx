@@ -1,13 +1,8 @@
 import { Modal, Text } from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import {
-  createSearchParams,
-  useLoaderData,
-  useNavigate,
-  useSubmit,
-} from "react-router-dom";
+import { useCallback } from "react";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import { useDate } from "~/hooks/use-date";
-import { useSearchQuery } from "~/hooks/use-search-query";
+import { useShiftModal } from "~/hooks/use-shift-modal";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
 import { loader } from "./loader";
@@ -15,35 +10,18 @@ import { loader } from "./loader";
 export default () => {
   const { show } = useToast();
   const submit = useSubmit();
-  const navigate = useNavigate();
-  const { query } = useSearchQuery();
   const { formatInTimezone } = useDate();
-  const [open, setOpen] = useState<boolean>(true);
   const { t } = useTranslation({
     id: "delete-shift",
     locales,
   });
 
+  const { isOpen, close, redirect } = useShiftModal();
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  const onClose = useCallback(() => {
-    setOpen((prev) => !prev);
-    const timer = setTimeout(() => {
-      navigate({
-        pathname: `./..`,
-        search: createSearchParams(query).toString(),
-      });
-    }, 250);
-    return () => clearTimeout(timer);
-  }, [navigate, query]);
-
   const onCancel = useCallback(() => {
-    setOpen((prev) => !prev);
-    navigate({
-      pathname: `./../edit-shift`,
-      search: createSearchParams(query).toString(),
-    });
-  }, [navigate, query]);
+    redirect(`./../edit-shift`);
+  }, [redirect]);
 
   const onDestroy = useCallback(async () => {
     submit(
@@ -54,14 +32,14 @@ export default () => {
         method: "delete",
       }
     );
-    onClose();
+    close();
     show({ content: t("success") });
-  }, [loaderData.userId, onClose, show, submit, t]);
+  }, [loaderData.userId, close, show, submit, t]);
 
   return (
     <Modal
-      open={open}
-      onClose={onClose}
+      open={isOpen}
+      onClose={close}
       title={t("title")}
       primaryAction={{
         content: t("action"),
@@ -81,8 +59,7 @@ export default () => {
             date: <strong>{formatInTimezone(loaderData?.start, "PPP")}</strong>,
             day: <strong>{formatInTimezone(loaderData?.start, "EEEE")}</strong>,
           })}
-        </Text>
-        <Text as="p">
+          {", "}
           {t("time", {
             from: <strong>{formatInTimezone(loaderData?.start, "p")}</strong>,
             to: <strong>{formatInTimezone(loaderData?.end, "p")}</strong>,

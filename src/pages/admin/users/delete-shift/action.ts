@@ -5,11 +5,11 @@ import {
   userShiftDestroy,
 } from "~/api/bookingShopifyApi";
 import { ShiftGetAllResponse } from "~/api/model";
-import { scheduleGetSearchParams } from "~/components/schedule-calendar";
+import { scheduleGetQueries } from "~/components/schedule-calendar";
 import { queryClient } from "~/providers/query-provider";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
-  const { selectedShiftId, start, end } = scheduleGetSearchParams(request.url);
+  const { selectedShiftId, start, end } = scheduleGetQueries(request.url);
   const userId = params.userId || "";
 
   // no need to wait
@@ -23,11 +23,9 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     } as never),
     (data: AxiosResponse<ShiftGetAllResponse, never> | undefined) => {
       if (data) {
-        console.log(data.data.payload.length);
         data.data.payload = data.data.payload.filter(
           (shift) => shift._id !== selectedShiftId
         );
-        console.log(data.data.payload.length);
       }
       return data;
     }

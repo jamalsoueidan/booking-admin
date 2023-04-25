@@ -1,22 +1,16 @@
 import { Modal, Tabs } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 
-import {
-  createSearchParams,
-  useActionData,
-  useNavigate,
-} from "react-router-dom";
-import { useSearchQuery } from "~/hooks/use-search-query";
+import { useActionData } from "react-router-dom";
+import { useShiftModal } from "~/hooks/use-shift-modal";
 import { useTranslation } from "~/providers/translate-provider";
 import { CreateShiftForm } from "./_form";
 import { CreateShiftGroupForm } from "./_form-group";
 import { action } from "./action";
 
 export default () => {
-  const navigate = useNavigate();
-  const { query } = useSearchQuery();
+  const { isOpen, close } = useShiftModal();
   const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
-  const [open, setOpen] = useState<boolean>(true);
 
   const { t } = useTranslation({
     id: "create-shift",
@@ -40,26 +34,13 @@ export default () => {
     },
   ];
 
-  const onClose = useCallback(() => {
-    setOpen((prev) => !prev);
-    const timer = setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { selectedDate, ...newQuery } = query;
-      navigate({
-        pathname: `./..`,
-        search: createSearchParams(newQuery).toString(),
-      });
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [navigate, query]);
-
   return (
-    <Modal open={open} onClose={onClose} title={t("title")}>
+    <Modal open={isOpen} onClose={close} title={t("title")}>
       <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
         {tabs[selected].id === "create-group" ? (
-          <CreateShiftGroupForm onClose={onClose} actionData={actionData} />
+          <CreateShiftGroupForm onClose={close} actionData={actionData} />
         ) : (
-          <CreateShiftForm onClose={onClose} actionData={actionData} />
+          <CreateShiftForm onClose={close} actionData={actionData} />
         )}
       </Tabs>
     </Modal>

@@ -1,68 +1,55 @@
 import { Modal, Text } from "@shopify/polaris";
-import { useCallback, useState } from "react";
-import {
-  createSearchParams,
-  useLoaderData,
-  useNavigate,
-  useSubmit,
-} from "react-router-dom";
+import { useCallback } from "react";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import { useDate } from "~/hooks/use-date";
-import { useSearchQuery } from "~/hooks/use-search-query";
+import { useShiftModal } from "~/hooks/use-shift-modal";
+import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
 import { loader } from "./loader";
 
 export default () => {
+  const { show } = useToast();
   const submit = useSubmit();
-  const navigate = useNavigate();
-  const { query } = useSearchQuery();
   const { formatInTimezone } = useDate();
-  const [open, setOpen] = useState<boolean>(true);
+  const { isOpen, close, redirect } = useShiftModal();
   const { t } = useTranslation({
-    id: "delete-shift",
+    id: "delete-shift-group",
     locales,
   });
 
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  console.log("component loader");
+  const onCancel = useCallback(() => {
+    redirect(`./../edit-shift`);
+  }, [redirect]);
+
   const onDestroy = useCallback(async () => {
     submit(
       {
-        //shiftType: getShiftType(loaderData),
         userId: loaderData.userId,
-        groupId: loaderData.groupId || "",
+        start: loaderData.start.toJSON(),
+        end: loaderData.end.toJSON(),
       },
       {
         method: "delete",
       }
     );
-    /*onClose();
-      show({ content: t("destroy") });*/
-  }, [loaderData, submit]);
-
-  const onClose = useCallback(() => {
-    setOpen((prev) => !prev);
-    const timer = setTimeout(() => {
-      navigate({
-        pathname: `./..`,
-        search: createSearchParams(query).toString(),
-      });
-    }, 250);
-    return () => clearTimeout(timer);
-  }, [navigate, query]);
-
-  const onCancel = useCallback(() => {
-    setOpen((prev) => !prev);
-    navigate({
-      pathname: `./../edit-shift`,
-      search: createSearchParams(query).toString(),
-    });
-  }, [navigate, query]);
+    close();
+    show({ content: t("success") });
+  }, [
+    close,
+    loaderData.end,
+    loaderData.start,
+    loaderData.userId,
+    show,
+    submit,
+    t,
+  ]);
 
   return (
     <Modal
-      open={open}
-      onClose={onClose}
+      open={isOpen}
+      onClose={close}
       title={t("title")}
       primaryAction={{
         content: t("action"),
@@ -79,11 +66,10 @@ export default () => {
       <Modal.Section>
         <Text as="p">
           {t("date", {
-            date: <strong>{formatInTimezone(loaderData?.start, "PPP")}</strong>,
-            day: <strong>{formatInTimezone(loaderData?.start, "EEEE")}</strong>,
+            from: <strong>{formatInTimezone(loaderData?.start, "PPP")}</strong>,
+            to: <strong>{formatInTimezone(loaderData?.end, "PPP")}</strong>,
           })}
-        </Text>
-        <Text as="p">
+          {", "}
           {t("time", {
             from: <strong>{formatInTimezone(loaderData?.start, "p")}</strong>,
             to: <strong>{formatInTimezone(loaderData?.end, "p")}</strong>,
@@ -96,17 +82,19 @@ export default () => {
 
 const locales = {
   da: {
-    date: "Du er i gang med at slette arbejdsdagen {day} d. {date}",
+    date: "Du er i gang med at slette arbejdsperioden fra d. {from} tilmed d. {to}",
     time: "fra kl. {from} til {to}",
     action: "Slet arbejdsdag",
     title: "Er du sikker?",
     cancel: "Annullere",
+    success: "Vagtplan slettet",
   },
   en: {
-    date: "Shiftday {day} og date {date}",
+    date: "You are deleting shifts from {from} to {to}",
     time: "Time from {from} til {to}",
     action: "Delete shiftday",
     title: "Are you sure?",
     cancel: "Cancel",
+    success: "Shift deleted",
   },
 };

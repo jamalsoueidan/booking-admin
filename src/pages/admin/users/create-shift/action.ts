@@ -13,7 +13,7 @@ import {
   ShiftCreateResponse,
   ShiftGetAllResponse,
 } from "~/api/model";
-import { scheduleGetSearchParams } from "~/components/schedule-calendar";
+import { scheduleGetQueries } from "~/components/schedule-calendar";
 import { queryClient } from "~/providers/query-provider";
 
 export const isActionSuccess = (
@@ -42,7 +42,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     }
 
     /* Code below is a test instead of invalidating the data, gives better user-experience */
-    const { start, end } = scheduleGetSearchParams(request.url);
+    const { start, end } = scheduleGetQueries(request.url);
     queryClient.setQueryData(
       getUserShiftGetAllQueryKey(userId || "", {
         start: start.toJSON(),
