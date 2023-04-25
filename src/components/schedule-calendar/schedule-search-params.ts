@@ -1,15 +1,12 @@
-import { endOfDay, endOfMonth, startOfDay, startOfMonth } from "date-fns";
+import { startOfMonth } from "date-fns";
 
 export const scheduleGetQueries = (url: string) => {
   const searchParams = new URLSearchParams(url.split("?")[1]);
-  const startStr = searchParams.get("start");
-  const endStr = searchParams.get("end");
-  const start = startStr ? new Date(startStr) : new Date();
-  const end = endStr ? new Date(endStr) : new Date();
+  const dateStr = searchParams.get("date");
+  const date = dateStr ? new Date(dateStr) : startOfMonth(new Date());
 
   return {
-    start: startOfMonth(startOfDay(start)),
-    end: endOfMonth(endOfDay(end)),
+    date,
     selectedShiftId: searchParams.get("selectedShiftId") || "",
     selectedGroupId: searchParams.get("selectedGroupId"),
   };

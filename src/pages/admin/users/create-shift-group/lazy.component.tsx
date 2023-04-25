@@ -8,18 +8,17 @@ import { useSearchQuery } from "~/hooks/use-search-query";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
 
+import { useActionData, useOutletContext } from "react-router-dom";
 import { ShiftData, ShiftForm } from "~/components/shift-form";
 import { action, isActionSuccess } from "./action";
 
-type CreateShiftGroupFormProps = {
-  actionData: Awaited<ReturnType<typeof action>>;
-  onClose: () => void;
+type ComponentProps = {
+  close: () => void;
 };
 
-export function CreateShiftGroupForm({
-  actionData,
-  onClose,
-}: CreateShiftGroupFormProps) {
+export default () => {
+  const { close } = useOutletContext<ComponentProps>();
+  const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
   const { show } = useToast();
   const { query } = useSearchQuery();
 
@@ -49,30 +48,30 @@ export function CreateShiftGroupForm({
 
   useEffect(() => {
     if (isActionSuccess(actionData)) {
-      onClose();
+      close();
       show({ content: t("success") });
     }
-  }, [actionData, onClose, show, t]);
+  }, [actionData, close, show, t]);
 
   return (
     <ShiftForm data={data} type="group" method="post">
       <HorizontalStack align="end">
         <Box padding={"4"}>
           <HorizontalStack gap={"1"}>
-            <Button onClick={onClose}>{t("close")}</Button>
+            <Button onClick={close}>{t("close")}</Button>
             <ButtonNavigation>{t("create")}</ButtonNavigation>
           </HorizontalStack>
         </Box>
       </HorizontalStack>
     </ShiftForm>
   );
-}
+};
 
 const locales = {
   da: {
     close: "Luk",
-    create: "Opret en vagtplan",
-    success: "Vagtplaner oprettet",
+    create: "Opret en arbejdsperiode",
+    success: "Arbejdsperiode oprettet",
   },
   en: {
     close: "Close",

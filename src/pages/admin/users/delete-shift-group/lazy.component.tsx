@@ -36,15 +36,7 @@ export default () => {
     );
     close();
     show({ content: t("success") });
-  }, [
-    close,
-    loaderData.end,
-    loaderData.start,
-    loaderData.userId,
-    show,
-    submit,
-    t,
-  ]);
+  }, [close, loaderData, show, submit, t]);
 
   return (
     <Modal
@@ -84,7 +76,7 @@ const locales = {
   da: {
     date: "Du er i gang med at slette arbejdsperioden fra d. {from} tilmed d. {to}",
     time: "fra kl. {from} til {to}",
-    action: "Slet arbejdsdag",
+    action: "Slet arbejdsperiode",
     title: "Er du sikker?",
     cancel: "Annullere",
     success: "Vagtplan slettet",
@@ -92,7 +84,7 @@ const locales = {
   en: {
     date: "You are deleting shifts from {from} to {to}",
     time: "Time from {from} til {to}",
-    action: "Delete shiftday",
+    action: "Delete shiftdays",
     title: "Are you sure?",
     cancel: "Cancel",
     success: "Shift deleted",

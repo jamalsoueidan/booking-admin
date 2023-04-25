@@ -17,7 +17,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
   try {
     const formData = Object.fromEntries(await request.formData());
-    console.log(selectedGroupId, selectedShiftId, formData);
+
     let response;
     if (selectedGroupId) {
       // form.days is coming as "wednesday,thursday", useSubmit from react-router convert that.

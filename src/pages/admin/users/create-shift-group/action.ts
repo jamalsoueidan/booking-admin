@@ -1,8 +1,9 @@
 import { AxiosError, AxiosResponse } from "axios";
+import { eachMonthOfInterval } from "date-fns";
 import { ActionFunctionArgs } from "react-router-dom";
 import {
   getUserShiftGetAllQueryKey,
-  userShiftCreate,
+  userShiftCreateGroup,
 } from "~/api/bookingShopifyApi";
 import {
   BadResponseResponse,
@@ -10,7 +11,6 @@ import {
   Shift,
   ShiftGetAllResponse,
 } from "~/api/model";
-import { scheduleGetQueries } from "~/components/schedule-calendar";
 import { shiftCreateStartEnd } from "~/lib/shift";
 import { queryClient } from "~/providers/query-provider";
 
@@ -28,24 +28,39 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   try {
     const formData = Object.fromEntries(await request.formData());
     const userId = params.userId || "";
-    const response = await userShiftCreate(userId || "", formData as never);
+
+    const start = new Date(formData.start as string);
+    const end = new Date(formData.end as string);
+
+    // form.days is coming as "wednesday,thursday", useSubmit from react-router convert that.
+    const response = await userShiftCreateGroup(userId || "", {
+      ...formData,
+      days: (formData.days as string).split(","),
+    } as never);
 
     /* Code below is a test instead of invalidating the data, gives better user-experience */
-    const { date } = scheduleGetQueries(request.url);
-    queryClient.setQueryData(
-      getUserShiftGetAllQueryKey(userId || "", shiftCreateStartEnd(date)),
-      (data: AxiosResponse<ShiftGetAllResponse, never> | undefined) => {
-        if (data) {
-          data.data.payload = [
-            ...data.data.payload,
-            ...(Array.isArray(response.data.payload)
-              ? response.data.payload
-              : [response.data.payload]),
-          ];
+    const monthInterval = eachMonthOfInterval({
+      start,
+      end,
+    });
+
+    monthInterval.forEach((startMonth) => {
+      console.log(
+        getUserShiftGetAllQueryKey(userId, shiftCreateStartEnd(startMonth))
+      );
+      queryClient.setQueryData(
+        getUserShiftGetAllQueryKey(userId, shiftCreateStartEnd(startMonth)),
+        (data: AxiosResponse<ShiftGetAllResponse, never> | undefined) => {
+          if (data) {
+            data.data.payload = [
+              ...data.data.payload,
+              ...response.data.payload,
+            ];
+          }
+          return data;
         }
-        return data;
-      }
-    );
+      );
+    });
 
     return response.data.payload;
   } catch (error) {

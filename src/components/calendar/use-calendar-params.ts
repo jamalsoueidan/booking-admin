@@ -1,6 +1,6 @@
 import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction";
-import { eachMonthOfInterval } from "date-fns";
+import { endOfDay } from "date-fns";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSearchQuery } from "~/hooks/use-search-query";
 
@@ -15,13 +15,12 @@ export const useCalendarParams = () => {
   const firstRender = useRef<boolean>(true);
 
   const onDatesSet = useCallback(
-    ({ startStr, endStr }: DatesSetArg) => {
-      const start = startStr.substring(0, 10);
-      const end = endStr.substring(0, 10);
+    (props: DatesSetArg) => {
+      const { currentStart } = props.view;
+      const date = endOfDay(currentStart).toISOString().substring(0, 10);
       if (!firstRender.current) {
         updateQuery({
-          start,
-          end,
+          date,
         });
       }
     },
@@ -46,13 +45,8 @@ export const useCalendarParams = () => {
 
   const initialDate = useMemo(() => {
     if (firstRender.current) {
-      const start = getQuery("start");
-      const end = getQuery("end");
-      const result = eachMonthOfInterval({
-        start: start ? new Date(start) : new Date(),
-        end: end ? new Date(end) : new Date(),
-      });
-      return middleItem(result) || new Date();
+      const date = getQuery("date");
+      return date ? new Date(date) : new Date();
     }
   }, [getQuery]);
 
@@ -67,13 +61,3 @@ export const useCalendarParams = () => {
     initialDate,
   };
 };
-
-function middleItem(arr: Date[]) {
-  if (arr.length === 0) {
-    return null;
-  } else if (arr.length === 2) {
-    return arr[0];
-  } else {
-    return arr[Math.floor(arr.length / 2)];
-  }
-}

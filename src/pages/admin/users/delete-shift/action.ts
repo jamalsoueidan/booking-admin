@@ -6,10 +6,11 @@ import {
 } from "~/api/bookingShopifyApi";
 import { ShiftGetAllResponse } from "~/api/model";
 import { scheduleGetQueries } from "~/components/schedule-calendar";
+import { shiftCreateStartEnd } from "~/lib/shift";
 import { queryClient } from "~/providers/query-provider";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
-  const { selectedShiftId, start, end } = scheduleGetQueries(request.url);
+  const { selectedShiftId, date } = scheduleGetQueries(request.url);
   const userId = params.userId || "";
 
   // no need to wait
@@ -17,10 +18,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
   /* Code below is a test instead of invalidating the data, gives better user-experience */
   queryClient.setQueryData(
-    getUserShiftGetAllQueryKey(userId || "", {
-      start: start.toJSON(),
-      end: end.toJSON(),
-    } as never),
+    getUserShiftGetAllQueryKey(userId || "", shiftCreateStartEnd(date)),
     (data: AxiosResponse<ShiftGetAllResponse, never> | undefined) => {
       if (data) {
         data.data.payload = data.data.payload.filter(

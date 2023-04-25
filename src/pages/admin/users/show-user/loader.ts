@@ -1,33 +1,19 @@
 import { LoaderFunctionArgs } from "react-router-dom";
 
-import {
-  getUserShiftGetAllQueryKey,
-  getUserShiftGetAllQueryOptions,
-} from "~/api/bookingShopifyApi";
+import { getUserShiftGetAllQueryOptions } from "~/api/bookingShopifyApi";
 import { scheduleGetQueries } from "~/components/schedule-calendar";
 import { deferredLoader } from "~/lib/loader-data";
+import { shiftCreateStartEnd } from "~/lib/shift";
 import { queryClient } from "~/providers/query-provider";
 import { ExtractTData } from "~/types/api";
 import { loader as loadUser } from "../edit-user";
 
 export const loadShifts = async ({ request, params }: LoaderFunctionArgs) => {
-  const { start, end } = scheduleGetQueries(request.url);
+  const { date } = scheduleGetQueries(request.url);
   const query = getUserShiftGetAllQueryOptions(
     params.userId || "",
-    {
-      start,
-      end,
-    },
-    {
-      query: {
-        queryKey: getUserShiftGetAllQueryKey(params.userId || "", {
-          start: start.toJSON(),
-          end: end.toJSON(),
-        } as never),
-      },
-    }
+    shiftCreateStartEnd(date)
   );
-  console.log(query);
 
   const response =
     queryClient.getQueryData<

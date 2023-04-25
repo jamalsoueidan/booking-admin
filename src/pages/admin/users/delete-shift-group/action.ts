@@ -1,4 +1,5 @@
 import { AxiosResponse } from "axios";
+import { eachMonthOfInterval } from "date-fns";
 import { ActionFunctionArgs } from "react-router-dom";
 import {
   getUserShiftGetAllQueryKey,
@@ -6,32 +7,25 @@ import {
 } from "~/api/bookingShopifyApi";
 import { ShiftGetAllResponse } from "~/api/model";
 import { scheduleGetQueries } from "~/components/schedule-calendar";
+import { shiftCreateStartEnd, shiftFormData } from "~/lib/shift";
 import { queryClient } from "~/providers/query-provider";
 
-export const formData = async (formData: () => Promise<FormData>) => {
-  const form = await formData();
-  return {
-    userId: form.get("userId") || "",
-    start: form.get("start") || "",
-    end: form.get("end") || "",
-  };
+export type cleanUp = {
+  userId: string;
+  selectedGroupId: string;
+  start: Date;
+  end: Date;
 };
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-  const form = await formData(request.formData);
-  const { selectedGroupId, start, end } = scheduleGetQueries(request.url);
-  const userId = params.userId || "";
+export const cleanup = ({ userId, selectedGroupId, start, end }: cleanUp) => {
+  const monthInterval = eachMonthOfInterval({
+    start,
+    end,
+  });
 
-  console.log(form.start, form.end, start, end);
-  if (selectedGroupId) {
-    userShiftDestroyGroup(userId, selectedGroupId);
-
-    /* Code below is a test instead of invalidating the data, gives better user-experience */
+  monthInterval.forEach((startMonth) => {
     queryClient.setQueryData(
-      getUserShiftGetAllQueryKey(userId || "", {
-        start: start.toJSON(),
-        end: end.toJSON(),
-      } as never),
+      getUserShiftGetAllQueryKey(userId, shiftCreateStartEnd(startMonth)),
       (data: AxiosResponse<ShiftGetAllResponse, never> | undefined) => {
         if (data) {
           data.data.payload = data.data.payload.filter(
@@ -41,6 +35,20 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         return data;
       }
     );
+  });
+};
+
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+  const form = await shiftFormData(request);
+  const { selectedGroupId } = scheduleGetQueries(request.url);
+  const userId = params.userId || "";
+
+  if (selectedGroupId) {
+    //destroy
+    userShiftDestroyGroup(userId, selectedGroupId);
+
+    /* Code below is a test instead of invalidating the data, gives better user-experience */
+    cleanup({ userId, selectedGroupId, start: form.start, end: form.end });
   }
 
   return null;

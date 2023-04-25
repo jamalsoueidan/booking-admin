@@ -1,63 +1,73 @@
-import { Modal, Tabs } from "@shopify/polaris";
-import { useCallback, useState } from "react";
+import { Box, Button, HorizontalStack } from "@shopify/polaris";
+import { useEffect, useMemo } from "react";
+import { ShiftTag } from "~/api/model";
 
-import { useActionData } from "react-router-dom";
-import { useShiftModal } from "~/hooks/use-shift-modal";
+import { setHours } from "date-fns";
+import { ButtonNavigation } from "~/components/authentication/button-navigation";
+import { useSearchQuery } from "~/hooks/use-search-query";
+import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
-import { CreateShiftForm } from "./_form";
-import { CreateShiftGroupForm } from "./_form-group";
-import { action } from "./action";
+
+import { useActionData, useOutletContext } from "react-router-dom";
+import { ShiftData, ShiftForm } from "~/components/shift-form";
+import { action, isActionSuccess } from "./action";
+
+type ComponentProps = {
+  close: () => void;
+};
 
 export default () => {
-  const { isOpen, close } = useShiftModal();
+  const { close } = useOutletContext<ComponentProps>();
   const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
+  const { show } = useToast();
+  const { query } = useSearchQuery();
 
   const { t } = useTranslation({
-    id: "create-shift",
+    id: "create-shift-form",
     locales,
   });
 
-  const [selected, setSelected] = useState(0);
-  const handleTabChange = useCallback(
-    (selectedTabIndex: number) => setSelected(selectedTabIndex),
-    []
-  );
+  const start = setHours(new Date(query.selectedDate), 10);
+  const end = setHours(new Date(query.selectedDate), 16);
 
-  const tabs = [
-    {
-      content: t("create_day"),
-      id: "create-day",
-    },
-    {
-      content: t("create_range"),
-      id: "create-group",
-    },
-  ];
+  const data: ShiftData = useMemo(() => {
+    return {
+      start,
+      end: end,
+      tag: ShiftTag.all_day,
+    };
+  }, [end, start]);
+
+  useEffect(() => {
+    if (isActionSuccess(actionData)) {
+      close();
+      show({ content: t("success") });
+    }
+  }, [actionData, close, show, t]);
 
   return (
-    <Modal open={isOpen} onClose={close} title={t("title")}>
-      <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
-        {tabs[selected].id === "create-group" ? (
-          <CreateShiftGroupForm onClose={close} actionData={actionData} />
-        ) : (
-          <CreateShiftForm onClose={close} actionData={actionData} />
-        )}
-      </Tabs>
-    </Modal>
+    <ShiftForm data={data} method="post">
+      <HorizontalStack align="end">
+        <Box padding={"4"}>
+          <HorizontalStack gap={"1"}>
+            <Button onClick={close}>{t("close")}</Button>
+            <ButtonNavigation>{t("create")}</ButtonNavigation>
+          </HorizontalStack>
+        </Box>
+      </HorizontalStack>
+    </ShiftForm>
   );
 };
 
 const locales = {
   da: {
     close: "Luk",
-    create_day: "Opret en vagtplan",
-    create_range: "Opret en valgtplan (period)",
-    title: "Tilføj vagt(er) til skema",
+    create: "Opret arbejdsdag",
+    success: "Arbejdsdag oprettet",
   },
   en: {
     close: "Close",
-    create_day: "Create shift",
-    create_range: "Create shift (range)",
-    title: "Add shifts to schedule",
+    create: "Create for day",
+    success: "Shift created",
   },
 };
