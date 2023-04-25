@@ -47,7 +47,7 @@ export function EditShiftGroupForm({
     <ShiftForm data={loaderData} type="group" method="put">
       <Modal.Section>
         <HorizontalGrid columns={2}>
-          <HorizontalStack gap={"1"}>
+          <HorizontalStack gap={"1"} align="start" blockAlign="start">
             <Button onClick={onDelete} destructive>
               {t("delete")}
             </Button>
@@ -56,8 +56,7 @@ export function EditShiftGroupForm({
             </Button>
           </HorizontalStack>
 
-          <HorizontalStack gap={"1"} align="end">
-            <Button onClick={onClose}>{t("close")}</Button>
+          <HorizontalStack gap={"1"} align="end" blockAlign="start">
             <ButtonNavigation>{t("save_changes")}</ButtonNavigation>
           </HorizontalStack>
         </HorizontalGrid>
@@ -68,7 +67,6 @@ export function EditShiftGroupForm({
 
 const locales = {
   da: {
-    close: "Luk",
     delete: "Slet arbejdsdag",
     delete_range: "Slet periode",
     save_changes: "Gem ændringer",
@@ -76,7 +74,6 @@ const locales = {
     title: "Redigere vagtplaner",
   },
   en: {
-    close: "Close",
     delete: "Delete shiftday",
     delete_range: "Delete range",
     save_changes: "Save changes",

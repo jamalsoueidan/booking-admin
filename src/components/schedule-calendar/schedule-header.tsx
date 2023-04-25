@@ -44,16 +44,14 @@ export const ScheduleHeader = () => {
     <HorizontalGrid columns={2}>
       <HorizontalStack gap="4">
         <CalendarTitle />
-        <ButtonGroup segmented>
-          <Button onClick={handlePrev} size="slim" disabled={disabled}>
-            &#60;
-          </Button>
-          <Button onClick={handleNext} size="slim">
-            &#62;
-          </Button>
-        </ButtonGroup>
       </HorizontalStack>
       <HorizontalStack gap="4" align="end" blockAlign="end">
+        <ButtonGroup segmented>
+          <Button onClick={handlePrev} disabled={disabled}>
+            &#60;
+          </Button>
+          <Button onClick={handleNext}>&#62;</Button>
+        </ButtonGroup>
         <Button onClick={reset} icon={ResetMinor}>
           {t("reset")}
         </Button>

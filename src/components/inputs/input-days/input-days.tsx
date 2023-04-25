@@ -1,4 +1,9 @@
-import { Button, Labelled, LabelledProps } from "@shopify/polaris";
+import {
+  Button,
+  HorizontalStack,
+  Labelled,
+  LabelledProps,
+} from "@shopify/polaris";
 import { Field } from "@shopify/react-form";
 import { useCallback, useId, useMemo } from "react";
 import { ShiftDayItem } from "~/api/model";
@@ -52,7 +57,6 @@ export const InputDays = ({ input, field }: InputDaysProps) => {
     () =>
       options.map((day) => (
         <Button
-          size="slim"
           key={day.value}
           pressed={!!field.value?.find((p) => day.value === p)}
           onClick={() => onClickDay(day.value)}
@@ -70,7 +74,7 @@ export const InputDays = ({ input, field }: InputDaysProps) => {
       error={field.error}
       id={`${id}-select-days-input`}
     >
-      {daysMarkup}
+      <HorizontalStack gap={"1"}>{daysMarkup}</HorizontalStack>
     </Labelled>
   );
 };

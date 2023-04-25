@@ -4,7 +4,7 @@ import { useTag } from "./use-tag";
 
 export const MockComponent = () => {
   const { selectTag } = useTag();
-  return <>{selectTag(ShiftTag.weekday)}</>;
+  return <>{selectTag(ShiftTag.weekday)?.label}</>;
 };
 
 const meta = {
