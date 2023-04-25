@@ -55,6 +55,7 @@ export const ScheduleCalendarCore = ({
             display: "flex",
             flexDirection: "column",
             padding: "5px",
+            userSelect: "none",
           }}
         >
           <Text variant="bodyMd" as="span" fontWeight="semibold">
@@ -85,7 +86,7 @@ export const ScheduleCalendarCore = ({
     (args: EventClickArg) => {
       const shift = args.event._def.extendedProps as Shift;
       navigate({
-        pathname: "edit-shift",
+        pathname: shift.groupId ? "edit/edit-shift-group" : "edit/edit-shift",
         search: createSearchParams({
           ...query,
           selectedShiftId: shift._id,

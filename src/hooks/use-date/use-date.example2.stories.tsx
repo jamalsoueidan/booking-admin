@@ -24,10 +24,12 @@ import { useDate } from "./use-date";
   console.log(toCopenhagen.toJSON())
 */
 
+const staticStartDate = "2023-04-25T10:00:00Z";
+
 export const ToBackend = () => {
   const { timeZone, toUtc, formatInTimezone } = useDate();
 
-  const copenhagen = new Date();
+  const copenhagen = new Date(staticStartDate);
   const local = toUtc(copenhagen);
 
   return (

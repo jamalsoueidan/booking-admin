@@ -11,24 +11,22 @@ export default () => {
   const { show } = useToast();
   const submit = useSubmit();
   const { formatInTimezone } = useDate();
-  const { isOpen, close, redirect } = useShiftModal();
   const { t } = useTranslation({
-    id: "delete-shift-group",
+    id: "delete-shift",
     locales,
   });
 
+  const { isOpen, close, redirect } = useShiftModal();
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
   const onCancel = useCallback(() => {
-    redirect(`./../edit-shift`);
+    redirect(`./../edit/edit-shift`);
   }, [redirect]);
 
   const onDestroy = useCallback(async () => {
     submit(
       {
         userId: loaderData.userId,
-        start: loaderData.start.toJSON(),
-        end: loaderData.end.toJSON(),
       },
       {
         method: "delete",
@@ -36,7 +34,7 @@ export default () => {
     );
     close();
     show({ content: t("success") });
-  }, [close, loaderData, show, submit, t]);
+  }, [loaderData.userId, close, show, submit, t]);
 
   return (
     <Modal
@@ -58,8 +56,8 @@ export default () => {
       <Modal.Section>
         <Text as="p">
           {t("date", {
-            from: <strong>{formatInTimezone(loaderData?.start, "PPP")}</strong>,
-            to: <strong>{formatInTimezone(loaderData?.end, "PPP")}</strong>,
+            date: <strong>{formatInTimezone(loaderData?.start, "PPP")}</strong>,
+            day: <strong>{formatInTimezone(loaderData?.start, "EEEE")}</strong>,
           })}
           {", "}
           {t("time", {
@@ -74,17 +72,17 @@ export default () => {
 
 const locales = {
   da: {
-    date: "Du er i gang med at slette arbejdsperioden fra d. {from} tilmed d. {to}",
+    date: "Du er i gang med at slette arbejdsdagen {day} d. {date}",
     time: "fra kl. {from} til {to}",
-    action: "Slet arbejdsperiode",
+    action: "Slet arbejdsdag",
     title: "Er du sikker?",
     cancel: "Annullere",
     success: "Vagtplan slettet",
   },
   en: {
-    date: "You are deleting shifts from {from} to {to}",
+    date: "Shiftday {day} og date {date}",
     time: "Time from {from} til {to}",
-    action: "Delete shiftdays",
+    action: "Delete shiftday",
     title: "Are you sure?",
     cancel: "Cancel",
     success: "Shift deleted",

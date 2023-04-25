@@ -1,6 +1,6 @@
-import { LoadingSpinner } from "./loading-spinner";
-
+import { Modal } from "@shopify/polaris";
 import type { Meta, StoryObj } from "@storybook/react";
+import { LoadingSpinner } from "./loading-spinner";
 
 const meta = {
   title: "Components/Loading/LoadingSpinner",
@@ -18,4 +18,18 @@ export const Primary: Story = {
     primary: true,
     label: "LoadingSpinner",
   },
+};
+
+export const ModalExample: Story = {
+  args: {
+    primary: true,
+    label: "LoadingSpinner",
+  },
+  decorators: [
+    (Story) => (
+      <Modal open onClose={close} title="test" noScroll>
+        <Story />
+      </Modal>
+    ),
+  ],
 };

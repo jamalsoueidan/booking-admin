@@ -14,11 +14,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const staticStartDate = "2023-04-25T10:00:00Z";
+const staticEndDate = "2023-04-25T18:00:00Z";
+
 export const Group: Story = {
   args: {
     data: {
-      end: addHours(new Date(), 1),
-      start: new Date(),
+      end: addHours(new Date(staticStartDate), 1),
+      start: new Date(staticEndDate),
       tag: "all_day",
       days: ["friday", "monday"],
       groupId: "123312",
@@ -31,8 +34,8 @@ export const Group: Story = {
 export const Shift: Story = {
   args: {
     data: {
-      end: addHours(new Date(), 1),
-      start: new Date(),
+      end: addHours(new Date(staticStartDate), 1),
+      start: new Date(staticEndDate),
       tag: "all_day",
     },
     method: "post",

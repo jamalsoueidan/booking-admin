@@ -27,7 +27,7 @@ export function Component() {
 
   const renderItem = useCallback(
     ({ _id, fullname, active, avatar, position, phone }: User) => ({
-      url: `../user/${_id}`,
+      url: `../user/${_id}/shifts`,
       desc: (
         <div>
           {selectPosition(position)}, {phone}

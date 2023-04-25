@@ -44,7 +44,7 @@ export default () => {
   }, []);
 
   return (
-    <Modal open={isOpen} onClose={close} title={t("title")}>
+    <Modal open={isOpen} onClose={close} title={t("title")} noScroll>
       <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
         <Outlet context={{ close }} />
       </Tabs>

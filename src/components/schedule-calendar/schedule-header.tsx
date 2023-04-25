@@ -41,8 +41,8 @@ export const ScheduleHeader = () => {
   const disabled = isBefore(currentDate.getTime(), todayDate.getTime());
 
   return (
-    <HorizontalGrid columns={2}>
-      <HorizontalStack gap="4">
+    <HorizontalGrid columns={{ md: "1", lg: "2" }} gap="4">
+      <HorizontalStack>
         <CalendarTitle />
       </HorizontalStack>
       <HorizontalStack gap="4" align="end" blockAlign="end">

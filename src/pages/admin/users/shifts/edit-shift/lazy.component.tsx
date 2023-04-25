@@ -6,53 +6,48 @@ import {
 } from "@shopify/polaris";
 
 import { useEffect } from "react";
-import { useActionData } from "react-router-dom";
+import {
+  useActionData,
+  useLoaderData,
+  useOutletContext,
+} from "react-router-dom";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { ShiftForm } from "~/components/shift-form";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
-import { isActionSuccess } from "../create-shift";
 import { action } from "./action";
-import { loadShiftGroup } from "./loader";
+import { loader } from "./loader";
 
-type EditShiftGroupFormProps = {
-  loaderData: Awaited<ReturnType<typeof loadShiftGroup>>;
-  onDelete: () => void;
-  onDeleteGroup: () => void;
-  onClose: () => void;
+type ComponentProps = {
+  destroy: () => void;
+  close: () => void;
 };
 
-export function EditShiftGroupForm({
-  loaderData,
-  onDelete,
-  onDeleteGroup,
-  onClose,
-}: EditShiftGroupFormProps) {
+export default () => {
   const { show } = useToast();
+  const { close, destroy } = useOutletContext<ComponentProps>();
   const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
+  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
   const { t } = useTranslation({
-    id: "edit-shift-group-form",
+    id: "edit-shift-form",
     locales,
   });
 
   useEffect(() => {
-    if (isActionSuccess(actionData)) {
-      onClose();
+    if (actionData) {
+      close();
       show({ content: t("success") });
     }
-  }, [actionData, onClose, show, t]);
+  }, [actionData, close, show, t]);
 
   return (
-    <ShiftForm data={loaderData} type="group" method="put">
+    <ShiftForm data={loaderData} method="put">
       <Modal.Section>
-        <HorizontalGrid columns={2}>
+        <HorizontalGrid columns={["oneThird", "twoThirds"]}>
           <HorizontalStack gap={"1"} align="start" blockAlign="start">
-            <Button onClick={onDelete} destructive>
+            <Button onClick={destroy} destructive>
               {t("delete")}
-            </Button>
-            <Button onClick={onDeleteGroup} destructive>
-              {t("delete_range")}
             </Button>
           </HorizontalStack>
 
@@ -63,21 +58,17 @@ export function EditShiftGroupForm({
       </Modal.Section>
     </ShiftForm>
   );
-}
+};
 
 const locales = {
   da: {
-    delete: "Slet arbejdsdag",
-    delete_range: "Slet periode",
+    delete: "Slet",
     save_changes: "Gem ændringer",
-    success: "Vagtplaner redigeret",
-    title: "Redigere vagtplaner",
+    success: "Vagtplan redigeret",
   },
   en: {
-    delete: "Delete shiftday",
-    delete_range: "Delete range",
+    delete: "Delete",
     save_changes: "Save changes",
-    success: "Shifts edit",
-    title: "Edit shifts",
+    success: "Shift edit",
   },
 };
