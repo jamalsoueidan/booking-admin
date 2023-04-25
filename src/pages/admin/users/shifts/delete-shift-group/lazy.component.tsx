@@ -70,12 +70,12 @@ export default () => {
 
 const locales = {
   da: {
-    date: "Du er i gang med at slette arbejdsperioden fra d. {from} tilmed d. {to}",
+    date: "Du er i gang med at slette arbejdsperioden fra d. {from} til og med d. {to}",
     time: "fra kl. {from} til {to}",
     action: "Slet arbejdsperiode",
     title: "Er du sikker?",
     cancel: "Annullere",
-    success: "Vagtplan slettet",
+    success: "Arbejdsperiode slettet",
   },
   en: {
     date: "You are deleting shifts from {from} to {to}",
@@ -83,6 +83,6 @@ const locales = {
     action: "Delete shiftdays",
     title: "Are you sure?",
     cancel: "Cancel",
-    success: "Shift deleted",
+    success: "Shifts deleted",
   },
 };
