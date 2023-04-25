@@ -1,4 +1,4 @@
-import { Frame, Loading, Spinner, VerticalStack } from "@shopify/polaris";
+import { Loading, Spinner, VerticalStack } from "@shopify/polaris";
 import { memo } from "react";
 
 export type LoadingPageProps = {
@@ -9,7 +9,7 @@ export type LoadingPageProps = {
 };
 
 export const LoadingPage = memo(({ title }: LoadingPageProps) => (
-  <Frame>
+  <>
     <Loading />
     <div
       style={{
@@ -24,5 +24,5 @@ export const LoadingPage = memo(({ title }: LoadingPageProps) => (
         {title}
       </VerticalStack>
     </div>
-  </Frame>
+  </>
 ));

@@ -1,27 +1,33 @@
+import { AxiosResponse } from "axios";
 import { ActionFunctionArgs } from "react-router-dom";
 import {
   getUserShiftGetAllQueryKey,
   userShiftDestroy,
-  userShiftDestroyGroup,
 } from "~/api/bookingShopifyApi";
-import { ShiftType } from "~/components/shift-form";
+import { ShiftGetAllResponse } from "~/api/model";
+import { scheduleGetQueries } from "~/components/schedule-calendar";
+import { shiftCreateStartEnd } from "~/lib/shift";
 import { queryClient } from "~/providers/query-provider";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = Object.fromEntries(await request.formData());
-  const type = formData.shiftType as ShiftType;
-  const { userId, groupId, _id } = formData as never;
-  if (type === "group") {
-    const response = await userShiftDestroyGroup(userId, groupId);
-    await queryClient.invalidateQueries({
-      queryKey: getUserShiftGetAllQueryKey(userId, null as never),
-    });
-    return response;
-  }
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+  const { selectedShiftId, date } = scheduleGetQueries(request.url);
+  const userId = params.userId || "";
 
-  const response = await userShiftDestroy(userId, _id);
-  await queryClient.invalidateQueries({
-    queryKey: getUserShiftGetAllQueryKey(userId, null as never),
-  });
-  return response;
+  // no need to wait
+  userShiftDestroy(userId, selectedShiftId);
+
+  /* Code below is a test instead of invalidating the data, gives better user-experience */
+  queryClient.setQueryData(
+    getUserShiftGetAllQueryKey(userId || "", shiftCreateStartEnd(date)),
+    (data: AxiosResponse<ShiftGetAllResponse, never> | undefined) => {
+      if (data) {
+        data.data.payload = data.data.payload.filter(
+          (shift) => shift._id !== selectedShiftId
+        );
+      }
+      return data;
+    }
+  );
+
+  return null;
 };

@@ -90,9 +90,9 @@ const getDays = (current = new Date(2017, 1, 27)) => {
 
 const locales = {
   da: {
-    label: "Vælge dage",
+    label: "Vælge gentagne dage",
   },
   en: {
-    label: "Choose days",
+    label: "Choose gentagne  days",
   },
 };

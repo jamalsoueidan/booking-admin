@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react";
-import { LoadingSpinner } from "~/components/loading/loading-spinner";
+import { LoadingModal } from "~/components/loading/loading-modal";
 
 // https://github.com/remix-run/react-router/pull/10045
 // https://codesandbox.io/s/route-lazy-suspense-ooru6p?file=/src/index.js
@@ -8,7 +8,7 @@ const Lazy = lazy(() => import("./lazy.component"));
 
 export function Component() {
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense fallback={<LoadingModal />}>
       <Lazy />
     </Suspense>
   );

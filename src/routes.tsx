@@ -37,9 +37,19 @@ const router = createBrowserRouter(
           lazy={() => import("./pages/admin/users/show-user")}
         >
           <Route
-            path="create-shift"
-            lazy={() => import("./pages/admin/users/create-shift")}
-          />
+            path="create"
+            lazy={() => import("./pages/admin/users/create")}
+          >
+            <Route
+              path="create-shift"
+              lazy={() => import("./pages/admin/users/create-shift")}
+            />
+            <Route
+              path="create-shift-group"
+              lazy={() => import("./pages/admin/users/create-shift-group")}
+            />
+          </Route>
+
           <Route
             path="edit-shift"
             lazy={() => import("./pages/admin/users/edit-shift")}
@@ -47,6 +57,10 @@ const router = createBrowserRouter(
           <Route
             path="delete-shift"
             lazy={() => import("./pages/admin/users/delete-shift")}
+          />
+          <Route
+            path="delete-shift-group"
+            lazy={() => import("./pages/admin/users/delete-shift-group")}
           />
         </Route>
         <Route path="users" lazy={() => import("./pages/admin/users/list")} />

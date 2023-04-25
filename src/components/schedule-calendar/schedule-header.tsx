@@ -41,7 +41,7 @@ export const ScheduleHeader = () => {
   const disabled = isBefore(currentDate.getTime(), todayDate.getTime());
 
   return (
-    <HorizontalGrid columns={["oneThird", "twoThirds"]}>
+    <HorizontalGrid columns={2}>
       <HorizontalStack gap="4">
         <CalendarTitle />
         <ButtonGroup segmented>

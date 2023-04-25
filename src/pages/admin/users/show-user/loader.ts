@@ -1,20 +1,19 @@
-import { endOfMonth, startOfMonth } from "date-fns";
 import { LoaderFunctionArgs } from "react-router-dom";
 
 import { getUserShiftGetAllQueryOptions } from "~/api/bookingShopifyApi";
+import { scheduleGetQueries } from "~/components/schedule-calendar";
 import { deferredLoader } from "~/lib/loader-data";
+import { shiftCreateStartEnd } from "~/lib/shift";
 import { queryClient } from "~/providers/query-provider";
 import { ExtractTData } from "~/types/api";
 import { loader as loadUser } from "../edit-user";
 
 export const loadShifts = async ({ request, params }: LoaderFunctionArgs) => {
-  const searchParams = new URLSearchParams(request.url.split("?")[1]);
-  const start = searchParams.get("start");
-  const end = searchParams.get("end");
-  const query = getUserShiftGetAllQueryOptions(params.userId || "", {
-    start: start ? new Date(start) : startOfMonth(new Date()),
-    end: end ? new Date(end) : endOfMonth(new Date()),
-  });
+  const { date } = scheduleGetQueries(request.url);
+  const query = getUserShiftGetAllQueryOptions(
+    params.userId || "",
+    shiftCreateStartEnd(date)
+  );
 
   const response =
     queryClient.getQueryData<

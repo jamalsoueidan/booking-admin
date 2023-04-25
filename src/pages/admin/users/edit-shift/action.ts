@@ -8,19 +8,16 @@ import {
   userShiftUpdateGroup,
 } from "~/api/bookingShopifyApi";
 import { BadResponseResponse } from "~/api/model";
+import { scheduleGetQueries } from "~/components/schedule-calendar";
 import { queryClient } from "~/providers/query-provider";
-import { getSearchParams } from "./loader";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const userId = params.userId || "";
-  const { selectedGroupId, selectedShiftId } = getSearchParams({
-    request,
-    params,
-  });
+  const { selectedGroupId, selectedShiftId } = scheduleGetQueries(request.url);
 
   try {
     const formData = Object.fromEntries(await request.formData());
-    console.log(selectedGroupId, selectedShiftId, formData);
+
     let response;
     if (selectedGroupId) {
       // form.days is coming as "wednesday,thursday", useSubmit from react-router convert that.
