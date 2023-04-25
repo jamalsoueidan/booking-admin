@@ -31,7 +31,7 @@ export function Component() {
     <Page
       fullWidth
       title={t("form.title")}
-      backAction={{ content: "User View", url: `../user/${user._id}` }}
+      backAction={{ content: "User View", url: `../user/${user._id}/shifts` }}
       titleMetadata={<BadgeStatus active={user?.active || true} />}
     >
       <Form onSubmit={onSubmit} method="post">

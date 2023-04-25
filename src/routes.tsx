@@ -29,7 +29,7 @@ const router = createBrowserRouter(
           lazy={() => import("./pages/admin/users/create-user")}
         />
         <Route
-          path="user/:userId/edit-user"
+          path="user/:userId/edit"
           lazy={() => import("./pages/admin/users/edit-user")}
         />
         <Route
