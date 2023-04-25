@@ -8,6 +8,6 @@ export const scheduleGetQueries = (url: string) => {
   return {
     date,
     selectedShiftId: searchParams.get("selectedShiftId") || "",
-    selectedGroupId: searchParams.get("selectedGroupId"),
+    selectedGroupId: searchParams.get("selectedGroupId") || "",
   };
 };
