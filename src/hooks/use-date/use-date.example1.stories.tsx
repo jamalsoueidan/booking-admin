@@ -25,9 +25,11 @@ import { useDate } from "./use-date";
   console.log(toCopenhagen.toJSON())
 */
 
+const staticStartDate = "2023-04-25T10:00:00Z";
+
 export const FromBackend = () => {
   const { timeZone, formatInTimezone } = useDate();
-  const field = useField<string>(new Date().toJSON());
+  const field = useField<string>(new Date(staticStartDate).toJSON());
   const local = new Date(field.value); // europe/copenhagen time
 
   return (
