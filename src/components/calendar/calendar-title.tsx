@@ -17,7 +17,9 @@ export const CalendarTitle = () => {
   if (mode === "multiMonthYear") {
     return (
       <Text as="h1" variant="heading2xl">
-        {format(currentStart, "MMMM yyyy")}
+        <span style={{ textTransform: "capitalize" }}>
+          {format(currentStart, "MMMM yyyy")}
+        </span>
       </Text>
     );
   }
@@ -25,7 +27,9 @@ export const CalendarTitle = () => {
   if (mode === "dayGridMonth") {
     return (
       <Text as="h1" variant="heading2xl">
-        {format(currentStart, "MMMM yyyy")}
+        <span style={{ textTransform: "capitalize" }}>
+          {format(currentStart, "MMMM yyyy")}
+        </span>
       </Text>
     );
   }
