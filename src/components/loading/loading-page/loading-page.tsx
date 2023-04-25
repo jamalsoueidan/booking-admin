@@ -19,7 +19,7 @@ export const LoadingPage = memo(({ title }: LoadingPageProps) => (
         transform: "translate(-50%, -50%)",
       }}
     >
-      <VerticalStack align="center" gap="2">
+      <VerticalStack align="center" gap="2" inlineAlign="center">
         <Spinner accessibilityLabel="Loading" hasFocusableParent={false} />
         {title}
       </VerticalStack>
