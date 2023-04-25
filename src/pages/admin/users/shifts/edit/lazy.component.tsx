@@ -12,13 +12,13 @@ export default () => {
     locales,
   });
 
-  const onDelete = useCallback(() => {
+  const destroy = useCallback(() => {
     redirect(`./../delete-shift`);
   }, [redirect]);
 
   return (
     <Modal open={isOpen} onClose={close} title={t("title")}>
-      <Outlet context={{ onDelete, close, redirect }} />
+      <Outlet context={{ destroy, close, redirect }} />
     </Modal>
   );
 };

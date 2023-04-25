@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from "@storybook/react";
-import mock from "./mock";
 import { ScheduleCalendar } from "./schedule-calendar";
 
 const meta = {
@@ -7,7 +6,7 @@ const meta = {
   component: ScheduleCalendar,
   argTypes: {},
   args: {
-    data: mock as any,
+    data: [],
   },
 } satisfies Meta<typeof ScheduleCalendar>;
 

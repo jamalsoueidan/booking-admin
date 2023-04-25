@@ -31,5 +31,10 @@ export const useShiftModal = () => {
     [navigate, query]
   );
 
-  return { isOpen, close, redirect };
+  const back = useCallback(() => {
+    setOpen((prev) => prev);
+    navigate(-1);
+  }, [navigate]);
+
+  return { isOpen, close, redirect, back };
 };

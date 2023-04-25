@@ -32,7 +32,7 @@ export const DashboardGroup = memo(({ data }: DashboardGroupProps) => {
           return (
             <ResourceList.Item
               id={_id}
-              url={`/admin/user/${_id}`}
+              url={`/admin/user/${_id}/shifts`}
               media={media}
             >
               <Text variant="bodyMd" fontWeight="bold" as="h3">

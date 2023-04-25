@@ -16,12 +16,8 @@ export default () => {
     locales,
   });
 
-  const { isOpen, close, redirect } = useShiftModal();
+  const { isOpen, close, back } = useShiftModal();
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-
-  const onCancel = useCallback(() => {
-    redirect(`./../edit/edit-shift`);
-  }, [redirect]);
 
   const onDestroy = useCallback(async () => {
     submit(
@@ -49,7 +45,7 @@ export default () => {
       secondaryActions={[
         {
           content: "Cancel",
-          onAction: onCancel,
+          onAction: back,
         },
       ]}
     >

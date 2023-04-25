@@ -11,17 +11,13 @@ export default () => {
   const { show } = useToast();
   const submit = useSubmit();
   const { formatInTimezone } = useDate();
-  const { isOpen, close, redirect } = useShiftModal();
+  const { isOpen, close, back } = useShiftModal();
   const { t } = useTranslation({
     id: "delete-shift-group",
     locales,
   });
 
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-
-  const onCancel = useCallback(() => {
-    redirect(`./../edit/edit-shift-group`);
-  }, [redirect]);
 
   const onDestroy = useCallback(async () => {
     submit(
@@ -51,7 +47,7 @@ export default () => {
       secondaryActions={[
         {
           content: "Cancel",
-          onAction: onCancel,
+          onAction: back,
         },
       ]}
     >
