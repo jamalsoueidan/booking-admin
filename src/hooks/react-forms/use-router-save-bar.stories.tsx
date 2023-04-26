@@ -1,11 +1,13 @@
-import { Button, Form, Page, TextField } from "@shopify/polaris";
+import { Button, Page, TextField } from "@shopify/polaris";
+
 import { useField } from "@shopify/react-form";
 import type { Meta, StoryObj } from "@storybook/react";
 import { SaveBarProvider } from "~/providers/save-bar";
+import { Form } from "./form";
 import { useRouterSaveBar } from "./use-router-save-bar";
 
 const MockComponent = () => {
-  const { onSubmit, fields, dirty } = useRouterSaveBar({
+  const { submit, fields, dirty } = useRouterSaveBar({
     method: "post",
     fields: {
       name: useField(""),
@@ -13,7 +15,7 @@ const MockComponent = () => {
   });
   return (
     <Page title="Example of saveBar form">
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={submit}>
         <TextField label="Name" autoComplete="off" {...fields.name} />
         <Button submit disabled={!dirty}>
           Submit
