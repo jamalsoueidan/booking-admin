@@ -9,7 +9,6 @@ import {
   TextField,
 } from "@shopify/polaris";
 import { Form } from "react-router-dom";
-import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { FormErrors } from "~/components/form-errors";
 import { usePosition } from "~/hooks/use-position";
 import { useUserForm } from "~/hooks/use-user-form";
@@ -22,7 +21,7 @@ export function Component() {
     locales: { da, en },
   });
 
-  const { fields, onSubmit, submitErrors } = useUserForm();
+  const { fields, submitErrors } = useUserForm({ method: "post" });
 
   return (
     <Page
@@ -30,7 +29,7 @@ export function Component() {
       title={t("form.title")}
       backAction={{ content: "Staff", url: "../users" }}
     >
-      <Form onSubmit={onSubmit} method="post">
+      <Form method="post">
         <Layout>
           <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection title={t("form.title")}>
@@ -118,8 +117,6 @@ export function Component() {
             </AlphaCard>
           </Layout.AnnotatedSection>
         </Layout>
-        <br />
-        <ButtonNavigation>aosd</ButtonNavigation>
       </Form>
     </Page>
   );

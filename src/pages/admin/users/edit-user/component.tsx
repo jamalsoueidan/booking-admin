@@ -9,7 +9,6 @@ import {
   TextField,
 } from "@shopify/polaris";
 import { Form, useLoaderData } from "react-router-dom";
-import { ButtonNavigation } from "~/components/authentication/button-navigation";
 import { BadgeStatus } from "~/components/badge-status";
 import { FormErrors } from "~/components/form-errors";
 import { usePosition } from "~/hooks/use-position";
@@ -25,7 +24,10 @@ export function Component() {
     locales: { da, en },
   });
 
-  const { fields, onSubmit, submitErrors } = useUserForm({ data: user });
+  const { fields, submitErrors } = useUserForm({
+    data: user,
+    method: "put",
+  });
 
   return (
     <Page
@@ -34,7 +36,7 @@ export function Component() {
       backAction={{ content: "User View", url: `../user/${user._id}/shifts` }}
       titleMetadata={<BadgeStatus active={user?.active || true} />}
     >
-      <Form onSubmit={onSubmit} method="post">
+      <Form method="post">
         <Layout>
           <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection title={t("form.title")}>
@@ -130,8 +132,6 @@ export function Component() {
             </AlphaCard>
           </Layout.AnnotatedSection>
         </Layout>
-        <br />
-        <ButtonNavigation>Submit</ButtonNavigation>
       </Form>
     </Page>
   );
