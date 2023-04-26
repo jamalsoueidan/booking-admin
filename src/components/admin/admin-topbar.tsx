@@ -1,5 +1,5 @@
 import { TopBar } from "@shopify/polaris";
-import { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { User } from "~/api/model";
 import { HelperText } from "~/helpers/helper-text";
@@ -18,9 +18,8 @@ const locales = {
 };
 
 interface AppTopBarProps {
-  toggleNavigation: (value: unknown) => void;
+  toggleNavigation: Dispatch<SetStateAction<boolean>>;
 }
-
 export const AdminTopbar = ({ toggleNavigation }: AppTopBarProps) => {
   const data = useLoaderData() as User;
   const { t } = useTranslation({ id: "app-topbar", locales });
