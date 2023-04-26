@@ -25,14 +25,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
     const phone = formData.get("phone") as string;
-    await authReceivePassword({ phone });
+    const response = await authReceivePassword({ phone });
+    return redirect(
+      `/login?password=${(response.data.payload as any).password}`
+    );
   } catch (error) {
     if (error instanceof AxiosError) {
       return error.response?.data;
     }
     return error;
   }
-  return redirect("/login");
 };
 
 export function Component() {

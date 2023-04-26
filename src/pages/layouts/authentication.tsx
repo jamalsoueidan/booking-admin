@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getInstallationGetStatusQueryOptions } from "~/api/bookingShopifyApi";
+import { ModalProvider } from "~/providers/modal";
 import { queryClient } from "~/providers/query-provider";
 import { useSettings } from "~/providers/setting-provider";
 import { useTranslation } from "~/providers/translate-provider";
@@ -62,7 +63,7 @@ export function Component() {
     if (!loaderData.done) {
       navigate("/setup");
     }
-  }, [loaderData]);
+  }, [loaderData, navigate]);
 
   const [, setMobileNavigationActive] = useState(false);
 
@@ -126,7 +127,9 @@ export function Component() {
         />
       }
     >
-      <Outlet />
+      <ModalProvider>
+        <Outlet />
+      </ModalProvider>
       <Footer>
         <p>
           {t("rights")} <Link url="https://wwww.by-sisters.dk">BySisters</Link>{" "}

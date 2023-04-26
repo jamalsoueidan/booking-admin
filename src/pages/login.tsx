@@ -45,10 +45,9 @@ export function Component() {
   } = useRouterForm({
     fields: {
       identification: useField(location.state?.phone || "31317428"),
-      password: useField(""),
+      password: useField(location.search.substring(10) || ""),
     },
   });
-
   return (
     <AuthenticationWrapper title={t("title")}>
       <AlphaCard>
