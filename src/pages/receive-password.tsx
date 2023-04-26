@@ -18,7 +18,7 @@ import {
 import { authReceivePassword } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/hooks/react-forms";
+import { useRouterForm } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -27,7 +27,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const phone = formData.get("phone") as string;
     const response = await authReceivePassword({ phone });
     return redirect(
-      `/login?password=${(response.data.payload as any).password}`
+      `/login?password=${
+        (response.data.payload as Record<string, string>).password
+      }`
     );
   } catch (error) {
     if (error instanceof AxiosError) {

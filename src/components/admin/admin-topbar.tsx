@@ -18,7 +18,7 @@ const locales = {
 };
 
 interface AppTopBarProps {
-  toggleNavigation: (value: any) => void;
+  toggleNavigation: (value: unknown) => void;
 }
 
 export const AdminTopbar = ({ toggleNavigation }: AppTopBarProps) => {

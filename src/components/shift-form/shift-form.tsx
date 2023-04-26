@@ -16,10 +16,10 @@ import { InputDateDrop } from "~/components/inputs/input-date-drop";
 import { InputDays } from "~/components/inputs/input-days";
 import { InputTags } from "~/components/inputs/input-tags";
 import { Validators } from "~/helpers/validators";
-import { useRouterSubmit } from "~/hooks/react-forms";
 import { useConvertToUtc } from "~/hooks/use-convert-to-utc";
 import { useDate } from "~/hooks/use-date";
 import { useTag } from "~/hooks/use-tag";
+import { useRouterSubmit } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export function isDataShiftGroup(value?: ShiftData): value is ShiftGroup {
@@ -54,7 +54,7 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
     isDataShiftGroup(data) ? data?.groupId : undefined
   );
 
-  const { fields, onSubmit } = useRouterSubmit({
+  const { fields, submit } = useRouterSubmit({
     fields: {
       ...(type === "group" && {
         days,
@@ -90,7 +90,7 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
   );
 
   return (
-    <Form method={method} onSubmit={onSubmit}>
+    <Form method={method} onSubmit={submit}>
       <Modal.Section>
         {isDataShiftGroup(data)
           ? t("title_range", {

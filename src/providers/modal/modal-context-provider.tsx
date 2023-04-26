@@ -34,7 +34,9 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   );
   return (
     <ModalContext.Provider value={{ ...modal, update }}>
-      <Modal {...modal}>{modal.content}</Modal>
+      <Modal {...modal}>
+        <Modal.Section>{modal.content}</Modal.Section>
+      </Modal>
       {children}
     </ModalContext.Provider>
   );

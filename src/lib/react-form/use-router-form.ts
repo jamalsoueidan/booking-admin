@@ -8,7 +8,7 @@ import { useCallback } from "react";
 import { ErrorsErrorsItem } from "~/api/model";
 import { useRouterErrors } from "./use-router-errors";
 
-export type RouterForm<T extends FieldBag> = Pick<
+export type UseRouterForm<T extends FieldBag> = Pick<
   Form<T>,
   "fields" | "submitErrors"
 > & {
@@ -18,7 +18,7 @@ export type RouterForm<T extends FieldBag> = Pick<
 
 export function useRouterForm<T extends FieldBag>(
   input: Pick<FormWithoutDynamicListsInput<T>, "fields">
-): RouterForm<T> {
+): UseRouterForm<T> {
   const form = useForm<T>({ ...input });
   const actionErrors = useRouterErrors({ fields: input.fields });
 

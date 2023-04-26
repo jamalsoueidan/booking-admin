@@ -2,15 +2,13 @@ import { lengthMoreThan, notEmpty, useField } from "@shopify/react-form";
 import { User } from "~/api/model";
 import { Validators } from "~/helpers/validators";
 import { useTranslation } from "~/providers/translate-provider";
-import {
-  RouterSaveBarType,
-  useRouterSaveBar,
-} from "./react-forms/use-router-save-bar";
+
+import { UseRouterSubmitMethods, useRouterSaveBar } from "~/lib/react-form";
 import { usePosition } from "./use-position";
 
 export type UseUserForm = {
   data?: User;
-  method: RouterSaveBarType;
+  method: UseRouterSubmitMethods;
 };
 export const useUserForm = (
   { data, method }: UseUserForm = { method: "post" }

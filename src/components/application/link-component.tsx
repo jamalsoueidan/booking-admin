@@ -1,7 +1,12 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function LinkComponent({ url, children, external, ...rest }: any) {
+export function LinkComponent({
+  url,
+  children,
+  external,
+  ...rest
+}: Record<string, string>) {
   const navigate = useNavigate();
   const handleClick = useCallback(() => {
     navigate(url);

@@ -18,13 +18,13 @@ import {
 import { authLogin } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/hooks/react-forms";
+import { useRouterForm } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
-    const response = await authLogin(Object.fromEntries(formData) as any);
+    const response = await authLogin(Object.fromEntries(formData) as never);
     localStorage.setItem("token", response.data.payload.token);
   } catch (error) {
     if (error instanceof AxiosError) {

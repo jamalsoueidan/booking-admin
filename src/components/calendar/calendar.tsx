@@ -32,7 +32,6 @@ export type CalendarOptions = Omit<CO, "events"> & {
 
 export const Calendar = ({ children, ...props }: CalendarOptions) => {
   const [calendar, setCalendar] = useState<FullCalendar>();
-  const [, updateState] = useState<unknown>();
   const { language } = useSettings();
   const { toTimeZone } = useDate();
   const { initialDate, onDatesSet, onDateClick, onEventClick } =
@@ -57,7 +56,7 @@ export const Calendar = ({ children, ...props }: CalendarOptions) => {
   const locale = useMemo(() => [da, en], []);
 
   return (
-    <CalendarContext.Provider value={{ calendar, updateState }}>
+    <CalendarContext.Provider value={{ calendar }}>
       {children}
       <FullCalendar
         ref={onRef}

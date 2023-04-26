@@ -10,38 +10,47 @@ import { useSubmit } from "react-router-dom";
 import { ErrorsErrorsItem } from "~/api/model";
 import { useRouterErrors } from "./use-router-errors";
 
-export type RouterSubmit<T extends FieldBag> = Pick<
+export type UseRouterSubmit<T extends FieldBag> = Pick<
   Form<T>,
-  "fields" | "submitErrors"
+  "fields" | "submitErrors" | "dirty" | "reset"
 > & {
-  onSubmit: (event: React.FormEvent) => void;
   actionErrors: ErrorsErrorsItem[] | undefined;
+  submit: (event?: React.FormEvent) => void;
+};
+
+export type UseRouterSubmitMethods = "put" | "post" | "delete";
+
+export type UseRouterSubmitInput<T extends FieldBag> = Pick<
+  FormWithoutDynamicListsInput<T>,
+  "fields"
+> & {
+  method: UseRouterSubmitMethods;
 };
 
 export function useRouterSubmit<T extends FieldBag>(
-  input: Pick<FormWithoutDynamicListsInput<T>, "fields"> & {
-    method: "put" | "post" | "delete";
-  }
-): RouterSubmit<T> {
+  input: UseRouterSubmitInput<T>
+): UseRouterSubmit<T> {
   const form = useForm<T>({ ...input });
-  const submit = useSubmit();
+  const send = useSubmit();
   const actionErrors = useRouterErrors({ fields: input.fields });
 
-  const onSubmit = useCallback(
-    (event: React.FormEvent) => {
-      event.preventDefault();
+  const submit = useCallback(
+    (event?: React.FormEvent) => {
+      event?.preventDefault();
       if (form.validate().length === 0) {
-        submit(getValues(form.fields) as never, {
+        send(getValues(form.fields) as never, {
           method: input.method,
         });
       }
     },
-    [form, input.method, submit]
+    [form, input.method, send]
   );
 
   return {
     fields: form.fields,
-    onSubmit,
+    reset: form.reset,
+    submit,
+    dirty: form.dirty,
     submitErrors: form.submitErrors,
     actionErrors,
   };

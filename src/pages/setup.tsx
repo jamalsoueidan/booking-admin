@@ -13,7 +13,7 @@ import {
 } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/hooks/react-forms";
+import { useRouterForm } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {

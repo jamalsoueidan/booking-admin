@@ -9,10 +9,9 @@ import {
   TextField,
 } from "@shopify/polaris";
 
-import { FormErrors } from "~/components/form-errors";
-import { Form } from "~/hooks/react-forms/form";
 import { usePosition } from "~/hooks/use-position";
 import { useUserForm } from "~/hooks/use-user-form";
+import { Form } from "~/lib/react-form/form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export function Component() {
@@ -30,9 +29,8 @@ export function Component() {
       title={t("form.title")}
       backAction={{ content: "Staff", url: "../users" }}
     >
-      <Form onSubmit={submit} method="post">
+      <Form onSubmit={submit} method="post" submitErrors={submitErrors}>
         <Layout>
-          <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection title={t("form.title")}>
             <AlphaCard>
               <FormLayout>
