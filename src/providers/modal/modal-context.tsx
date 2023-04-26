@@ -1,12 +1,11 @@
-import { ComplexAction, ModalProps } from "@shopify/polaris";
+import { ModalProps as MP } from "@shopify/polaris";
 import { createContext } from "react";
 
-export interface ModalContextType extends Partial<ModalProps> {
-  setPrimaryAction: (value: ComplexAction | undefined) => void;
-  setSecondaryActions: (value: ComplexAction[] | undefined) => void;
-}
+export type ModalProps = MP & {
+  content: string;
+};
+export type ModalContextAction = ModalProps & {
+  update: (modal: Partial<ModalProps>) => void;
+};
 
-export const ModalContext = createContext<ModalContextType>({
-  setPrimaryAction() {},
-  setSecondaryActions() {},
-});
+export const ModalContext = createContext<ModalContextAction>({} as never);

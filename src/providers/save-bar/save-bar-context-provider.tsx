@@ -1,5 +1,5 @@
 import { ContextualSaveBar } from "@shopify/polaris";
-import { ReactNode, useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "../translate-provider";
 import {
   DiscardActions,
@@ -8,7 +8,7 @@ import {
 } from "./save-bar-context";
 
 export interface SaveBarProviderProps {
-  children?: ReactNode;
+  children?: JSX.Element;
 }
 
 export const SaveBarProvider = ({ children }: SaveBarProviderProps) => {

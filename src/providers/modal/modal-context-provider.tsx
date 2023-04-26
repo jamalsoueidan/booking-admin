@@ -1,38 +1,41 @@
-import { ComplexAction, Modal, ModalProps } from "@shopify/polaris";
-import { useMemo, useState } from "react";
-import { ModalContext } from "./modal-context";
+import { Modal } from "@shopify/polaris";
+import { useCallback, useState } from "react";
+import { ModalContext, ModalProps } from "./modal-context";
 
-export type ModalProviderProps = ModalProps;
+export type ModalProviderProps = {
+  children: JSX.Element;
+};
 
-export const ModalProvider = (props: ModalProviderProps) => {
-  const [primaryAction, setPrimaryAction] = useState<
-    ComplexAction | undefined
-  >();
-  const [secondaryActions, setSecondaryActions] = useState<
-    ComplexAction[] | undefined
-  >();
+export const ModalProvider = ({ children }: ModalProviderProps) => {
+  const onClose = useCallback(() => {
+    updateModal((prev) => ({
+      ...prev,
+      open: false,
+    }));
+  }, []);
 
-  const value = useMemo(
-    () => ({
-      ...props,
-      setPrimaryAction,
-      setSecondaryActions,
-    }),
-    [props, setPrimaryAction, setSecondaryActions]
+  const [modal, updateModal] = useState<ModalProps>({
+    open: false,
+    title: "title",
+    content: "content",
+    onClose,
+  });
+
+  const update = useCallback(
+    (props: Partial<ModalProps>) => {
+      updateModal((prev) => {
+        return {
+          ...prev,
+          ...props,
+        };
+      });
+    },
+    [updateModal]
   );
-
-  const { children } = props;
-
   return (
-    <ModalContext.Provider value={value}>
-      <Modal
-        large
-        primaryAction={primaryAction}
-        secondaryActions={secondaryActions}
-        {...props}
-      >
-        {children}
-      </Modal>
+    <ModalContext.Provider value={{ ...modal, update }}>
+      <Modal {...modal}>{modal.content}</Modal>
+      {children}
     </ModalContext.Provider>
   );
 };

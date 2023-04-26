@@ -36,10 +36,12 @@ const MockComponent = () => {
 const meta = {
   title: "Providers/SaveBarProvider",
   component: SaveBarProvider,
-  argTypes: {
+  args: {
     children: <MockComponent />,
   },
 } satisfies Meta<typeof SaveBarProvider>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
+export const Basic: Story = {};
