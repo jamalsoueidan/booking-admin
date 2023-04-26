@@ -24,7 +24,7 @@ export function Component() {
     locales: { da, en },
   });
 
-  const { fields, submitErrors } = useUserForm({
+  const { fields, submitErrors, submit } = useUserForm({
     data: user,
     method: "put",
   });
@@ -36,7 +36,7 @@ export function Component() {
       backAction={{ content: "User View", url: `../user/${user._id}/shifts` }}
       titleMetadata={<BadgeStatus active={user?.active || true} />}
     >
-      <Form method="post">
+      <Form onSubmit={submit} method="post">
         <Layout>
           <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection title={t("form.title")}>

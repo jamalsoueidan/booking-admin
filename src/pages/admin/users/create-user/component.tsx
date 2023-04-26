@@ -8,8 +8,9 @@ import {
   Select,
   TextField,
 } from "@shopify/polaris";
-import { Form } from "react-router-dom";
+
 import { FormErrors } from "~/components/form-errors";
+import { Form } from "~/hooks/react-forms/form";
 import { usePosition } from "~/hooks/use-position";
 import { useUserForm } from "~/hooks/use-user-form";
 import { useTranslation } from "~/providers/translate-provider";
@@ -21,7 +22,7 @@ export function Component() {
     locales: { da, en },
   });
 
-  const { fields, submitErrors } = useUserForm({ method: "post" });
+  const { fields, submitErrors, submit } = useUserForm({ method: "post" });
 
   return (
     <Page
@@ -29,7 +30,7 @@ export function Component() {
       title={t("form.title")}
       backAction={{ content: "Staff", url: "../users" }}
     >
-      <Form method="post">
+      <Form onSubmit={submit} method="post">
         <Layout>
           <FormErrors errors={submitErrors} />
           <Layout.AnnotatedSection title={t("form.title")}>

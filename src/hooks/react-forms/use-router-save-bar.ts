@@ -9,10 +9,10 @@ import { useRouterErrors } from "./use-router-errors";
 
 export type RouterSaveBarForm<T extends FieldBag> = Pick<
   Form<T>,
-  "fields" | "submitErrors"
+  "fields" | "submitErrors" | "dirty"
 > & {
   actionErrors: ErrorsErrorsItem[] | undefined;
-  onSubmit: () => void;
+  submit: () => void;
 };
 
 export type RouterSaveBarType = "post" | "put" | "delete";
@@ -29,27 +29,32 @@ export function useRouterSaveBar<T extends FieldBag>(
 ): RouterSaveBarForm<T> {
   const form = useForm<T>({ ...input });
   const navigate = useNavigate();
-  const submit = useSubmit();
+  const send = useSubmit();
   const { updateSaveAction, updateDiscardAction, updateVisibility } =
     useSaveBar();
 
   const actionErrors = useRouterErrors({ fields: input.fields });
 
-  const onSubmit = useCallback(() => {
-    if (form.validate().length === 0) {
-      submit(getValues(form.fields) as never, {
-        method: input.method,
-      });
-    }
-  }, [form, input.method, submit]);
+  const submit = useCallback(
+    (event?: React.FormEvent) => {
+      event?.preventDefault();
+      if (form.validate().length === 0) {
+        send(getValues(form.fields) as never, {
+          method: input.method,
+        });
+      }
+      return false;
+    },
+    [form, input.method, send]
+  );
 
-  const onDiscard = useCallback(() => {
+  const discard = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
   useEffect(() => {
-    updateSaveAction({ onAction: onSubmit });
-    updateDiscardAction({ onAction: onDiscard });
+    updateSaveAction({ onAction: submit });
+    updateDiscardAction({ onAction: discard });
     if (input.method === "post") {
       updateVisibility(true);
     }
@@ -73,6 +78,7 @@ export function useRouterSaveBar<T extends FieldBag>(
     fields: form.fields,
     actionErrors,
     submitErrors: form.submitErrors,
-    onSubmit,
+    dirty: form.dirty,
+    submit,
   };
 }

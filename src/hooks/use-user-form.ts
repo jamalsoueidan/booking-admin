@@ -1,4 +1,4 @@
-import { notEmpty, useField } from "@shopify/react-form";
+import { lengthMoreThan, notEmpty, useField } from "@shopify/react-form";
 import { User } from "~/api/model";
 import { Validators } from "~/helpers/validators";
 import { useTranslation } from "~/providers/translate-provider";
@@ -42,7 +42,7 @@ export const useUserForm = (
       fullname: useField({
         validates: [
           notEmpty(t("fullname.error_empty")),
-          //lengthMoreThan(3, t("fullname.error_short")),
+          lengthMoreThan(3, t("fullname.error_short")),
         ],
         value: data?.fullname || "",
       }),
