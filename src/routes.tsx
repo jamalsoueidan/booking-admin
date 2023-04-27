@@ -83,7 +83,10 @@ const router = createBrowserRouter(
             />
           </Route>
         </Route>
-        <Route path="users" lazy={() => import("./pages/admin/users/list")} />
+        <Route
+          path="users"
+          lazy={() => import("./pages/admin/users/list-users")}
+        />
       </Route>
     </Route>
   )
