@@ -25,6 +25,7 @@ export function useRouterSubmit<T extends FieldBag>(
           method: input.method || "post",
         });
       }
+      return false;
     },
     [form, input.method, send]
   );

@@ -16,8 +16,8 @@ export const FormErrors = ({ errors }: FormErrorsProps) => {
     return (
       <Box paddingBlockEnd={{ md: "0", lg: "6" }}>
         <Banner status="critical" title={t("error", { total: errors.length })}>
-          {errors.map(({ message }) => (
-            <p key={message}>{message}</p>
+          {errors.map(({ message }, index) => (
+            <p key={index}>{message}</p>
           ))}
         </Banner>
       </Box>
