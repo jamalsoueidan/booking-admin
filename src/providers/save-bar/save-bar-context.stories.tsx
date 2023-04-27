@@ -1,32 +1,25 @@
 import { Button } from "@shopify/polaris";
 import { Meta, StoryObj } from "@storybook/react";
-import { useCallback, useContext, useEffect } from "react";
-import { SaveBarContext } from "./save-bar-context";
+import { useCallback } from "react";
 import { SaveBarProvider } from "./save-bar-context-provider";
+import { useSaveBar } from "./save-bar-context.hook";
 
 const MockComponent = () => {
-  const { update, show } = useContext(SaveBarContext);
+  const { show, hide } = useSaveBar({
+    message: "unsaved changes",
+    saveAction: {
+      content: "Save",
+      onAction: () => show(),
+    },
+    discardAction: {
+      content: "Discard",
+      onAction: () => hide(),
+    },
+  });
 
   const onClick = useCallback(() => {
     show();
   }, [show]);
-
-  useEffect(() => {
-    update({ message: "unsaved changes" });
-    update({
-      saveAction: {
-        content: "Save",
-        onAction: () => onClick(),
-      },
-    });
-
-    update({
-      discardAction: {
-        content: "Discard",
-        onAction: () => onClick(),
-      },
-    });
-  }, [onClick, update]);
 
   return <Button onClick={onClick}>Show</Button>;
 };
