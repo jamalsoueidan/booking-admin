@@ -10,6 +10,7 @@ export type UseUserForm = {
   data?: User;
   method: UseRouterSubmitMethods;
 };
+
 export const useUserForm = (
   { data, method }: UseUserForm = { method: "post" }
 ) => {

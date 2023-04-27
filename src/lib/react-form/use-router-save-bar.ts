@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { useModal } from "~/providers/modal";
 import { useSaveBar } from "~/providers/save-bar";
 import { useTranslation } from "~/providers/translate-provider";
+import { useRouterSubmit } from "./use-router-submit";
 import {
   UseRouterSubmit,
   UseRouterSubmitInput,
-  useRouterSubmit,
-} from "./use-router-submit";
+} from "./use-router-submit.types";
 
 export function useRouterSaveBar<T extends FieldBag>(
   input: UseRouterSubmitInput<T>

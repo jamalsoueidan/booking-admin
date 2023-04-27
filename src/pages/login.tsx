@@ -18,7 +18,7 @@ import {
 import { authLogin } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/lib/react-form";
+import { useRouterSubmit } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -41,8 +41,8 @@ export function Component() {
 
   const {
     fields: { identification, password },
-    onSubmit,
-  } = useRouterForm({
+    submit,
+  } = useRouterSubmit({
     fields: {
       identification: useField(location.state?.phone || "31317428"),
       password: useField(location.search.substring(10) || ""),
@@ -60,7 +60,7 @@ export function Component() {
           </>
         )}
 
-        <Form method="post" onSubmit={onSubmit}>
+        <Form method="post" onSubmit={submit}>
           <FormLayout>
             <TextField
               label={t("login.label")}

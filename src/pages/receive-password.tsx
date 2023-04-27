@@ -18,7 +18,7 @@ import {
 import { authReceivePassword } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/lib/react-form";
+import { useRouterSubmit } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -43,7 +43,7 @@ export function Component() {
   const location = useLocation();
   const { t } = useTranslation({ id: "password", locales });
 
-  const { fields, onSubmit } = useRouterForm({
+  const { fields, submit } = useRouterSubmit({
     fields: {
       phone: useField<string>({
         value: "31317428",
@@ -66,7 +66,7 @@ export function Component() {
         </>
       )}
       <AlphaCard>
-        <Form method="post" onSubmit={onSubmit}>
+        <Form method="post" onSubmit={submit}>
           <FormLayout>
             <TextField
               label={t("phone.label")}
