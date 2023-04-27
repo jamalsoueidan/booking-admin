@@ -19,7 +19,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       response
     );
     // needs to handle it via toast
-    return redirect(`../user/${params.userId}`);
+    return redirect(`../user/${params.userId}/shifts`);
   } catch (error) {
     if (error instanceof AxiosError) {
       return error.response?.data;

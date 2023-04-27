@@ -1,36 +1,27 @@
 import { Button } from "@shopify/polaris";
 import { Meta, StoryObj } from "@storybook/react";
-import { useCallback, useContext, useEffect } from "react";
-import { SaveBarContext } from "./save-bar-context";
+import { useCallback } from "react";
 import { SaveBarProvider } from "./save-bar-context-provider";
+import { useSaveBar } from "./save-bar-context.hook";
 
 const MockComponent = () => {
-  const {
-    updateMessage,
-    updateDiscardAction,
-    updateSaveAction,
-    updateVisibility,
-    visibility,
-  } = useContext(SaveBarContext);
+  const { show, hide } = useSaveBar({
+    message: "unsaved changes",
+    saveAction: {
+      content: "Save",
+      onAction: () => show(),
+    },
+    discardAction: {
+      content: "Discard",
+      onAction: () => hide(),
+    },
+  });
 
   const onClick = useCallback(() => {
-    updateVisibility(!visibility);
-  }, [updateVisibility, visibility]);
+    show();
+  }, [show]);
 
-  useEffect(() => {
-    updateMessage("unsaved changes");
-    updateSaveAction({
-      content: "Save",
-      onAction: () => onClick(),
-    });
-
-    updateDiscardAction({
-      content: "Discard",
-      onAction: () => onClick(),
-    });
-  }, [onClick, updateDiscardAction, updateMessage, updateSaveAction]);
-
-  return <Button onClick={onClick}>{visibility ? "hide" : "show"}</Button>;
+  return <Button onClick={onClick}>Show</Button>;
 };
 
 const meta = {

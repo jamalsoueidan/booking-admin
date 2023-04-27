@@ -1,11 +1,7 @@
-import { ContextualSaveBar } from "@shopify/polaris";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { ContextualSaveBar, ContextualSaveBarProps } from "@shopify/polaris";
+import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "../translate-provider";
-import {
-  DiscardActions,
-  SaveActions,
-  SaveBarContext,
-} from "./save-bar-context";
+import { SaveBarContext } from "./save-bar-context";
 
 export interface SaveBarProviderProps {
   children?: JSX.Element;
@@ -14,72 +10,72 @@ export interface SaveBarProviderProps {
 export const SaveBarProvider = ({ children }: SaveBarProviderProps) => {
   const { t } = useTranslation({ id: "save-bar-provider", locales });
 
-  const [message, updateMessage] = useState<string>(t("unsaved"));
-  const [discardAction, setDiscardAction] = useState<DiscardActions>({
-    content: t("discard"),
-  });
-
-  const [saveAction, setSaveAction] = useState<SaveActions>({
-    content: t("save"),
-  });
-
   const [visibility, updateVisibility] = useState<boolean>(false);
+  const [, forceUpdate] = useState<boolean>();
 
-  const updateDiscardAction = useCallback(
-    (value: Partial<DiscardActions>) => {
-      setDiscardAction((prev) => ({ ...prev, ...value }));
+  const saveAction = useRef<() => void>();
+  const discardAction = useRef<() => void>();
+  const contextual = useRef<ContextualSaveBarProps>();
+
+  const show = useCallback(() => {
+    updateVisibility(true);
+  }, []);
+
+  const hide = useCallback(() => {
+    updateVisibility(false);
+  }, []);
+
+  const onAction = useCallback(() => {
+    if (saveAction.current) {
+      saveAction.current();
+    }
+  }, []);
+
+  const onDiscard = useCallback(() => {
+    if (discardAction.current) {
+      discardAction.current();
+    }
+  }, []);
+
+  const reset = useCallback(
+    (value: ContextualSaveBarProps) => {
+      contextual.current = {
+        message: t("unsaved"),
+        ...value,
+        ...contextual.current,
+        saveAction: {
+          content: t("save"),
+          ...value?.saveAction,
+          onAction: onAction,
+        },
+        discardAction: {
+          content: t("discard"),
+          ...value?.discardAction,
+          onAction: onDiscard,
+        },
+      };
+      discardAction.current = value.discardAction?.onAction;
+      saveAction.current = value.saveAction?.onAction;
     },
-    [setDiscardAction]
+    [onAction, onDiscard, t]
   );
 
   const updateSaveAction = useCallback(
-    (value: Partial<SaveActions>) => {
-      setSaveAction((prev) => ({ ...prev, ...value }));
+    (value: ContextualSaveBarProps["saveAction"]) => {
+      if (contextual.current && contextual.current.saveAction) {
+        contextual.current.saveAction.disabled = value?.disabled;
+        forceUpdate((prev) => !prev);
+      }
     },
-    [setSaveAction]
-  );
-
-  const contextualSaveBar = useMemo(
-    () => ({
-      discardAction,
-      message,
-      saveAction,
-      updateDiscardAction,
-      updateMessage,
-      updateSaveAction,
-      updateVisibility,
-      visibility,
-    }),
-    [
-      message,
-      updateMessage,
-      discardAction,
-      updateDiscardAction,
-      saveAction,
-      updateSaveAction,
-      visibility,
-      updateVisibility,
-    ]
+    []
   );
 
   return (
-    <SaveBarContext.Provider value={contextualSaveBar}>
-      <SaveBarConsumer />
+    <SaveBarContext.Provider value={{ updateSaveAction, show, hide, reset }}>
+      {visibility ? <ContextualSaveBar {...contextual.current} /> : null}
       {children}
     </SaveBarContext.Provider>
   );
-};
-
-const SaveBarConsumer = () => {
-  const { visibility, message, discardAction, saveAction } =
-    useContext(SaveBarContext);
-  return visibility ? (
-    <ContextualSaveBar
-      message={message}
-      discardAction={discardAction}
-      saveAction={saveAction}
-    />
-  ) : null;
 };
 
 const locales = {
