@@ -9,7 +9,7 @@ export const useFieldCallback = <Value = string>(
   dependencies?: unknown[]
 ): Field<Value> => {
   const field = useField<Value>(
-    { value: input.value, validates: [] } as any,
+    { value: input.value, validates: [] } as never,
     dependencies
   );
 
@@ -18,16 +18,16 @@ export const useFieldCallback = <Value = string>(
       input.reset();
     }
     field.reset();
-  }, [field.reset, input.reset]);
+  }, [field, input]);
 
   const onChange = useCallback(
     (value: unknown) => {
       if (input.onChange) {
-        input.onChange(value as any);
+        input.onChange(value as never);
       }
-      field.onChange(value as any);
+      field.onChange(value as never);
     },
-    [field.onChange, input.onChange]
+    [field, input]
   );
 
   return { ...field, reset, onChange };

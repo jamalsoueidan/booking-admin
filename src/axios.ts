@@ -18,10 +18,12 @@ export const setupAxios = () => {
   const isoDateFormat =
     /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?(?:[-+]\d{2}:?\d{2}|Z)?$/;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function isIsoDateString(value: any): boolean {
     return value && typeof value === "string" && isoDateFormat.test(value);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function handleDates(body: any) {
     if (body === null || body === undefined || typeof body !== "object")
       return body;

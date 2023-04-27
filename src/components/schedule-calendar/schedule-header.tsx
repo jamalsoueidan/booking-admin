@@ -4,9 +4,9 @@ import {
   HorizontalGrid,
   HorizontalStack,
 } from "@shopify/polaris";
-import { ResetMinor } from "@shopify/polaris-icons";
+import { MobileCancelMajor } from "@shopify/polaris-icons";
 import { isBefore } from "date-fns";
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 import { CalendarTitle } from "~/components/calendar";
 import { useCalendar } from "~/components/calendar/use-calendar";
 import { InputTags, InputTagsField } from "~/components/inputs/input-tags";
@@ -16,7 +16,7 @@ import { useTranslation } from "~/providers/translate-provider";
 export const ScheduleHeader = () => {
   const { calendar } = useCalendar();
   const { t } = useTranslation({ id: "schedule-calendar", locales });
-
+  const [, startTransition] = useTransition();
   const tag = useFieldParam<InputTagsField>({
     value: "middle_of_week",
     validates: [],
@@ -24,8 +24,10 @@ export const ScheduleHeader = () => {
   });
 
   const reset = useCallback(() => {
-    tag.reset();
     calendar?.getApi().today();
+    startTransition(() => {
+      tag.reset();
+    });
   }, [tag, calendar]);
 
   const handlePrev = useCallback(() => {
@@ -41,20 +43,17 @@ export const ScheduleHeader = () => {
   const disabled = isBefore(currentDate.getTime(), todayDate.getTime());
 
   return (
-    <HorizontalGrid columns={{ md: "1", lg: "2" }} gap="4">
+    <HorizontalGrid columns={{ md: "1", lg: "2" }} gap="3">
       <HorizontalStack>
         <CalendarTitle />
       </HorizontalStack>
-      <HorizontalStack gap="4" align="end" blockAlign="end">
+      <HorizontalStack gap="2" align="end" blockAlign="end">
         <ButtonGroup segmented>
           <Button onClick={handlePrev} disabled={disabled}>
             &#60;
           </Button>
           <Button onClick={handleNext}>&#62;</Button>
         </ButtonGroup>
-        <Button onClick={reset} icon={ResetMinor}>
-          {t("reset")}
-        </Button>
         <InputTags
           field={tag}
           input={{
@@ -63,6 +62,7 @@ export const ScheduleHeader = () => {
             size: "medium",
           }}
         />
+        <Button onClick={reset} icon={MobileCancelMajor}></Button>
       </HorizontalStack>
     </HorizontalGrid>
   );

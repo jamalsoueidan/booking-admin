@@ -11,7 +11,9 @@ import {
   AbilityProvider,
   getAbilityFromToken,
 } from "~/providers/ability-provider";
+import { ModalProvider } from "~/providers/modal";
 import { queryClient } from "~/providers/query-provider";
+import { SaveBarProvider } from "~/providers/save-bar";
 import { ToastProvider } from "~/providers/toast";
 import logo from "../../assets/logo.avif";
 
@@ -58,7 +60,11 @@ export function Component() {
     >
       <AbilityProvider ability={getAbilityFromToken()}>
         <ToastProvider>
-          <Outlet />
+          <SaveBarProvider>
+            <ModalProvider>
+              <Outlet />
+            </ModalProvider>
+          </SaveBarProvider>
         </ToastProvider>
       </AbilityProvider>
     </Frame>

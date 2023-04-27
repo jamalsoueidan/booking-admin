@@ -1,21 +1,27 @@
-import { notEmpty, useField } from "@shopify/react-form";
+import { lengthMoreThan, notEmpty, useField } from "@shopify/react-form";
 import { User } from "~/api/model";
 import { Validators } from "~/helpers/validators";
 import { useTranslation } from "~/providers/translate-provider";
-import { useRouterForm } from "./react-forms";
+
+import { UseRouterSubmitMethods, useRouterSaveBar } from "~/lib/react-form";
 import { usePosition } from "./use-position";
 
 export type UseUserForm = {
   data?: User;
+  method: UseRouterSubmitMethods;
 };
-export const useUserForm = ({ data }: UseUserForm = {}) => {
+
+export const useUserForm = (
+  { data, method }: UseUserForm = { method: "post" }
+) => {
   const { options } = usePosition();
   const { t } = useTranslation({
     id: "use-user-form",
     locales,
   });
 
-  return useRouterForm({
+  return useRouterSaveBar({
+    method,
     fields: {
       address: useField({
         validates: [notEmpty(t("address.error"))],
@@ -35,7 +41,7 @@ export const useUserForm = ({ data }: UseUserForm = {}) => {
       fullname: useField({
         validates: [
           notEmpty(t("fullname.error_empty")),
-          //lengthMoreThan(3, t("fullname.error_short")),
+          lengthMoreThan(3, t("fullname.error_short")),
         ],
         value: data?.fullname || "",
       }),

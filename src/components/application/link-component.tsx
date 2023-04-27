@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function LinkComponent({ url, children, external, ...rest }: any) {
   const navigate = useNavigate();
   const handleClick = useCallback(() => {

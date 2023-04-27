@@ -13,7 +13,7 @@ import {
 } from "~/api/bookingShopifyApi";
 import { AuthenticationWrapper } from "~/components/authentication/authentication-wrapper";
 import { ButtonNavigation } from "~/components/authentication/button-navigation";
-import { useRouterForm } from "~/hooks/react-forms";
+import { useRouterSubmit } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -32,7 +32,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export function Component() {
   const { t } = useTranslation({ id: "login", locales });
 
-  const { fields, onSubmit } = useRouterForm({
+  const { fields, submit } = useRouterSubmit({
     fields: {
       email: useField<InstallationSetupMutationBody["email"]>(""),
       fullname: useField<InstallationSetupMutationBody["fullname"]>(""),
@@ -50,7 +50,7 @@ export function Component() {
     <AuthenticationWrapper title={t("title")}>
       <p>{t("description")}</p>
       <AlphaCard>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={submit}>
           <FormLayout>
             <TextField
               label={t("fullname.label")}

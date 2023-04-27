@@ -8,7 +8,6 @@ import { useField } from "@shopify/react-form";
 
 import { Field } from "@shopify/react-form";
 import { useCallback } from "react";
-import { Form } from "react-router-dom";
 import { Shift, ShiftDay, ShiftTag } from "~/api/model";
 import { ShiftGroup } from "~/api/model/shiftGroup";
 import { InputDateField } from "~/components/inputs/input-date";
@@ -16,10 +15,10 @@ import { InputDateDrop } from "~/components/inputs/input-date-drop";
 import { InputDays } from "~/components/inputs/input-days";
 import { InputTags } from "~/components/inputs/input-tags";
 import { Validators } from "~/helpers/validators";
-import { useRouterSubmit } from "~/hooks/react-forms";
 import { useConvertToUtc } from "~/hooks/use-convert-to-utc";
 import { useDate } from "~/hooks/use-date";
 import { useTag } from "~/hooks/use-tag";
+import { Form, useRouterSubmit } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
 
 export function isDataShiftGroup(value?: ShiftData): value is ShiftGroup {
@@ -54,7 +53,7 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
     isDataShiftGroup(data) ? data?.groupId : undefined
   );
 
-  const { fields, onSubmit } = useRouterSubmit({
+  const { fields, submit, submitErrors } = useRouterSubmit({
     fields: {
       ...(type === "group" && {
         days,
@@ -90,7 +89,7 @@ export const ShiftForm = ({ data, method, type, children }: ShiftFormProps) => {
   );
 
   return (
-    <Form method={method} onSubmit={onSubmit}>
+    <Form method={method} onSubmit={submit} submitErrors={submitErrors}>
       <Modal.Section>
         {isDataShiftGroup(data)
           ? t("title_range", {

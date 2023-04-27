@@ -1,15 +1,6 @@
-import { Banner } from "@shopify/polaris";
+import { Banner, Box } from "@shopify/polaris";
 import { FormError } from "@shopify/react-form";
 import { useTranslation } from "~/providers/translate-provider";
-
-const locales = {
-  da: {
-    error: "Fejl",
-  },
-  en: {
-    error: "Error",
-  },
-};
 
 export interface FormErrorsProps {
   errors?: FormError[];
@@ -23,16 +14,24 @@ export const FormErrors = ({ errors }: FormErrorsProps) => {
 
   if (errors && errors.length > 0) {
     return (
-      <Banner status="critical">
-        <p>{t("error")}:</p>
-        <ul>
-          {errors.map(({ message }) => (
-            <li key={message}>{message}</li>
+      <Box paddingBlockEnd={{ md: "0", lg: "6" }}>
+        <Banner status="critical" title={t("error", { total: errors.length })}>
+          {errors.map(({ message }, index) => (
+            <p key={index}>{message}</p>
           ))}
-        </ul>
-      </Banner>
+        </Banner>
+      </Box>
     );
   }
 
   return <></>;
+};
+
+const locales = {
+  da: {
+    error: "Der findes {total} fejl:",
+  },
+  en: {
+    error: "There is {total} error with this:",
+  },
 };

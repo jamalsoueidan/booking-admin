@@ -2,7 +2,6 @@ import { AlphaCard, Avatar, Page, Text } from "@shopify/polaris";
 
 import { useCallback } from "react";
 import { useLoaderData } from "react-router-dom";
-import { getUserGetAllQueryOptions } from "~/api/bookingShopifyApi";
 import { User } from "~/api/model";
 import { BadgeStatus } from "~/components/badge-status";
 import { UserEmpty } from "~/components/user/user-empty";
@@ -11,13 +10,8 @@ import { UserResourceList } from "~/components/user/user-resource-list";
 import { usePosition } from "~/hooks/use-position";
 
 import { useAbility } from "~/providers/ability-provider";
-import { queryClient } from "~/providers/query-provider";
 import { useTranslation } from "~/providers/translate-provider";
-
-export const loader = async () => {
-  const data = await queryClient.fetchQuery(getUserGetAllQueryOptions());
-  return data.data.payload;
-};
+import { loader } from "./loader";
 
 export function Component() {
   const users = useLoaderData() as Awaited<ReturnType<typeof loader>>;

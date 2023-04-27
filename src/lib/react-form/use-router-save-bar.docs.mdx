@@ -1,0 +1,33 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Libs/ReactForms/UseRouterSavebar" />
+
+A component that handle the save bar while creating or updating forms.
+
+Post will make the savebar always visible, and submit is also enabled
+Put will make the savebar visible when any changes happens to the fields.
+
+### Component usage
+
+```js
+useRouterSaveBar({
+  method: 'post'
+  fields: {
+    address: useField({
+      validates: [notEmpty(t("address.error"))],
+      value: data?.address || "",
+    }),
+    avatar: useField({
+      validates: [notEmpty(t("avatar.error"))],
+      value: data?.avatar || "",
+    }),
+    email: useField({
+      validates: [
+        notEmpty(t("email.error_empty")),
+        Validators.isEmail(t("email.empty_invalid_email")),
+      ],
+      value: data?.email || "",
+    })
+  }
+})
+```

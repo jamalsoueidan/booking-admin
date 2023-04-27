@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import { LinkComponent } from "../src/components/application/link-component";
 import { SettingsProvider } from "../src/providers/setting-provider";
+import { FrameExample } from "./frame";
 
 export const Decorator = ({ children }: { children: React.ReactNode }) => {
   const value = useMemo(
@@ -47,7 +48,9 @@ const preview: Preview = {
               path="*"
               element={
                 <Decorator>
-                  <Story />
+                  <FrameExample>
+                    <Story />
+                  </FrameExample>
                 </Decorator>
               }
             />
