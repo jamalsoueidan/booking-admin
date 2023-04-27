@@ -6,7 +6,7 @@ import { ModalProvider } from "~/providers/modal";
 import { SaveBarProvider } from "~/providers/save-bar";
 import { Form } from "./form";
 import { useRouterSaveBar } from "./use-router-save-bar";
-import { UseRouterSubmitMethods } from "./use-router-submit";
+import { UseRouterSubmitMethods } from "./use-router-submit.types";
 
 export type MockComponentProps = {
   method: UseRouterSubmitMethods;
