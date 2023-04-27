@@ -14,14 +14,10 @@ import {
 export function useRouterSaveBar<T extends FieldBag>(
   input: UseRouterSubmitInput<T>
 ): UseRouterSubmit<T> {
-  const form = useRouterSubmit<T>(input);
-  const { t } = useTranslation({ id: "use-router-save-bar", locales });
-
   const navigate = useNavigate();
-  const { updateSaveAction, updateDiscardAction, updateVisibility } =
-    useSaveBar();
-
+  const form = useRouterSubmit<T>(input);
   const modal = useModal();
+  const { t } = useTranslation({ id: "use-router-save-bar", locales });
 
   const leave = useCallback(() => {
     navigate(-1);
@@ -34,22 +30,25 @@ export function useRouterSaveBar<T extends FieldBag>(
   }, [modal]);
 
   const discard = useCallback(() => {
-    if (input.method === "put") {
+    if (input.method === "put" && form.dirty) {
       modal.update({
         open: true,
       });
     } else {
       leave();
     }
-  }, [input.method, leave, modal]);
+  }, [form.dirty, input.method, leave, modal]);
+
+  const { show, hide } = useSaveBar({
+    saveAction: {
+      onAction: form.submit,
+    },
+    discardAction: {
+      onAction: discard,
+    },
+  });
 
   useEffect(() => {
-    updateSaveAction({ onAction: form.submit });
-    updateDiscardAction({ onAction: discard });
-    if (input.method === "post") {
-      updateVisibility(true);
-    }
-
     modal.update({
       title: t("title"),
       content: t("content"),
@@ -64,22 +63,23 @@ export function useRouterSaveBar<T extends FieldBag>(
         },
       ],
     });
+    show();
 
     return () => {
-      updateVisibility(false);
+      hide();
       closeModal();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (input.method === "post") {
       updateSaveAction({ disabled: !form.dirty });
     }
     if (input.method === "put") {
       updateVisibility(form.dirty);
     }
-  }, [form.dirty, input.method, updateSaveAction, updateVisibility]);
+  }, [form.dirty, input.method, updateVisibility]);*/
 
   return form;
 }

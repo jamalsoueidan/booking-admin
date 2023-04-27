@@ -5,32 +5,30 @@ import { SaveBarContext } from "./save-bar-context";
 import { SaveBarProvider } from "./save-bar-context-provider";
 
 const MockComponent = () => {
-  const {
-    updateMessage,
-    updateDiscardAction,
-    updateSaveAction,
-    updateVisibility,
-    visibility,
-  } = useContext(SaveBarContext);
+  const { update, show } = useContext(SaveBarContext);
 
   const onClick = useCallback(() => {
-    updateVisibility(!visibility);
-  }, [updateVisibility, visibility]);
+    show();
+  }, [show]);
 
   useEffect(() => {
-    updateMessage("unsaved changes");
-    updateSaveAction({
-      content: "Save",
-      onAction: () => onClick(),
+    update({ message: "unsaved changes" });
+    update({
+      saveAction: {
+        content: "Save",
+        onAction: () => onClick(),
+      },
     });
 
-    updateDiscardAction({
-      content: "Discard",
-      onAction: () => onClick(),
+    update({
+      discardAction: {
+        content: "Discard",
+        onAction: () => onClick(),
+      },
     });
-  }, [onClick, updateDiscardAction, updateMessage, updateSaveAction]);
+  }, [onClick, update]);
 
-  return <Button onClick={onClick}>{visibility ? "hide" : "show"}</Button>;
+  return <Button onClick={onClick}>Show</Button>;
 };
 
 const meta = {
