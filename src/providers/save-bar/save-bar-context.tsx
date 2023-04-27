@@ -2,10 +2,10 @@ import { ContextualSaveBarProps } from "@shopify/polaris";
 import { createContext } from "react";
 
 export interface SaveBarContextProps {
-  update: (value: ContextualSaveBarProps) => void;
+  updateSaveAction: (value: ContextualSaveBarProps["saveAction"]) => void;
   hide: () => void;
   show: () => void;
-  reset: () => void;
+  reset: (value: ContextualSaveBarProps) => void;
 }
 
 export const SaveBarContext = createContext<SaveBarContextProps>({} as never);

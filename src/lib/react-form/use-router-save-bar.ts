@@ -39,7 +39,7 @@ export function useRouterSaveBar<T extends FieldBag>(
     }
   }, [form.dirty, input.method, leave, modal]);
 
-  const { show, hide } = useSaveBar({
+  const { show, hide, updateSaveAction } = useSaveBar({
     saveAction: {
       onAction: form.submit,
     },
@@ -72,14 +72,14 @@ export function useRouterSaveBar<T extends FieldBag>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (input.method === "post") {
       updateSaveAction({ disabled: !form.dirty });
     }
     if (input.method === "put") {
-      updateVisibility(form.dirty);
+      form.dirty ? show() : hide();
     }
-  }, [form.dirty, input.method, updateVisibility]);*/
+  }, [form.dirty, hide, input.method, show, updateSaveAction]);
 
   return form;
 }

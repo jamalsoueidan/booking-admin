@@ -8,8 +8,7 @@ export const useSaveBar = (props: ContextualSaveBarProps) => {
     throw new Error("useSaveBar must be used within a SaveBarProvider");
   }
 
-  context.reset();
-  context.update(props);
+  context.reset(props);
 
   return context;
 };

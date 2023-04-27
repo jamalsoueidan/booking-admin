@@ -9,6 +9,9 @@
     "project": ["./tsconfig.json"],
     "sourceType": "module"
   },
+  "ignorePatterns": [
+    "orval.config.ts" // add here the exclusion of the file
+  ],
   "plugins": ["prettier", "react", "@typescript-eslint"],
   "extends": [
     "eslint:recommended",

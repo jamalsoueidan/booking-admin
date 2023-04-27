@@ -11,6 +11,7 @@ export const SaveBarProvider = ({ children }: SaveBarProviderProps) => {
   const { t } = useTranslation({ id: "save-bar-provider", locales });
 
   const [visibility, updateVisibility] = useState<boolean>(false);
+  const [, forceUpdate] = useState<boolean>();
 
   const saveAction = useRef<() => void>();
   const discardAction = useRef<() => void>();
@@ -36,39 +37,41 @@ export const SaveBarProvider = ({ children }: SaveBarProviderProps) => {
     }
   }, []);
 
-  const reset = useCallback(() => {
-    contextual.current = {
-      message: t("unsaved"),
-      discardAction: {
-        content: t("discard"),
-        onAction: onDiscard,
-      },
-      saveAction: {
-        content: t("save"),
-        onAction: onAction,
-      },
-    };
-  }, [onAction, onDiscard, t]);
+  const reset = useCallback(
+    (value: ContextualSaveBarProps) => {
+      contextual.current = {
+        message: t("unsaved"),
+        ...value,
+        ...contextual.current,
+        saveAction: {
+          content: t("save"),
+          ...value?.saveAction,
+          onAction: onAction,
+        },
+        discardAction: {
+          content: t("discard"),
+          ...value?.discardAction,
+          onAction: onDiscard,
+        },
+      };
+      discardAction.current = value.discardAction?.onAction;
+      saveAction.current = value.saveAction?.onAction;
+    },
+    [onAction, onDiscard, t]
+  );
 
-  const update = (value: ContextualSaveBarProps) => {
-    contextual.current = {
-      ...value,
-      ...contextual.current,
-      saveAction: {
-        ...value?.saveAction,
-        onAction: onAction,
-      },
-      discardAction: {
-        ...value?.discardAction,
-        onAction: onDiscard,
-      },
-    };
-    discardAction.current = value.discardAction?.onAction;
-    saveAction.current = value.saveAction?.onAction;
-  };
+  const updateSaveAction = useCallback(
+    (value: ContextualSaveBarProps["saveAction"]) => {
+      if (contextual.current && contextual.current.saveAction) {
+        contextual.current.saveAction.disabled = value?.disabled;
+        forceUpdate((prev) => !prev);
+      }
+    },
+    []
+  );
 
   return (
-    <SaveBarContext.Provider value={{ update, show, hide, reset }}>
+    <SaveBarContext.Provider value={{ updateSaveAction, show, hide, reset }}>
       {visibility ? <ContextualSaveBar {...contextual.current} /> : null}
       {children}
     </SaveBarContext.Provider>

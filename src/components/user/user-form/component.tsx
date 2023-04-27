@@ -8,9 +8,10 @@ import {
   TextField,
 } from "@shopify/polaris";
 import { usePosition } from "~/hooks/use-position";
-import { UseUserForm, useUserForm } from "~/hooks/use-user-form";
+
 import { Form } from "~/lib/react-form";
 import { useTranslation } from "~/providers/translate-provider";
+import { UseUserForm, useUserForm } from "./use-user-form";
 
 export const UserForm = ({ data, method }: UseUserForm) => {
   const { fields, submit, submitErrors } = useUserForm({
