@@ -28,7 +28,7 @@ export const UserForm = ({ data, method }: UseUserForm) => {
   return (
     <Form onSubmit={submit} method={method} submitErrors={submitErrors}>
       <Layout>
-        <Layout.AnnotatedSection title={t("form.title")}>
+        <Layout.AnnotatedSection title={t("section.private")}>
           <AlphaCard>
             <FormLayout>
               <TextField
@@ -77,7 +77,7 @@ export const UserForm = ({ data, method }: UseUserForm) => {
             </FormLayout>
           </AlphaCard>
         </Layout.AnnotatedSection>
-        <Layout.AnnotatedSection title={t("user.title")}>
+        <Layout.AnnotatedSection title={t("section.work")}>
           <AlphaCard>
             <FormLayout>
               <Select
@@ -126,6 +126,14 @@ export const UserForm = ({ data, method }: UseUserForm) => {
 };
 
 export const da = {
+  section: {
+    private: "Overblik",
+    work: "Arbejd",
+  },
+  toast: {
+    created: "Medarbejder created",
+    updated: "Medarbejder er opdateret",
+  },
   address: {
     label: "Din adresse",
     placeholder: "Indtast din adresse",
@@ -135,14 +143,10 @@ export const da = {
     label: "Avatar Link",
     placeholder: "http://...",
   },
-  created: "Medarbejder created",
   email: {
     help: "Vi bruger denne e-mailadresse til at informere dig om fremtidige aftaler.",
     label: "E-mail",
     placeholder: "Eksempel: kristina.larsen@gmail.com",
-  },
-  form: {
-    title: "Medarbejder overblik",
   },
   fullname: {
     label: "Fuldnavn",
@@ -175,68 +179,60 @@ export const da = {
     label: "Brugerrettigheder",
     placeholder: "Brugerrettigheder",
   },
-  updated: "Medarbejder er opdateret",
-  user: {
-    title: "Medarbejder indstillinger",
-  },
-} as const;
+};
 
 export const en = {
+  section: {
+    private: "Overview",
+    work: "Work",
+  },
+  toast: {
+    created: "Employee created",
+    updated: "Employee updated",
+  },
   address: {
     label: "Your address",
     placeholder: "Enter your address",
   },
   avatar: {
-    help: "Use url to import a picture",
-    label: "Avatar URL",
+    help: "Use a URL to import the image",
+    label: "Avatar link",
     placeholder: "http://...",
   },
-  created: "User created",
   email: {
-    help: "We’ll use this email address to inform you about future appointments.",
+    help: "We use this email address to inform you about future appointments.",
     label: "Email",
     placeholder: "Example: kristina.larsen@gmail.com",
-  },
-  form: {
-    title: "User overview",
   },
   fullname: {
     label: "Full name",
     placeholder: "Example: Kristina Larsen",
   },
   group: {
-    help: "Write same group name for the same users that will work together",
+    help: "Enter the same group name for users who will work together",
     label: "Group",
-    placeholder: "Write group",
+    placeholder: "Enter group",
   },
   image: {
-    title: "Upload",
+    title: "Attach",
   },
   phone: {
-    help: "We’ll use this phone number to inform you about future appointments.",
-    label: "Phone number",
+    help: "We use this mobile number to inform you about future bookings.",
+    label: "Mobile number",
     placeholder: "Example: +4531311234",
   },
   position: {
-    title: "Your position makeup artist or hair artist?",
+    label: "Title",
+    title: "Your title, makeup artist, or hairdresser?",
   },
   postal: {
-    help: "8000, 8220",
-    label: "Postal",
-    placeholder: "Postal",
+    help: "8000, 8200",
+    label: "Postal code",
+    placeholder: "Postal code",
   },
   role: {
-    help: "User role",
-    label: "User role",
-    placeholder: "User role",
-  },
-  roles: {
-    admin: "Admin",
-    owner: "Owner",
-    user: "User",
-  },
-  updated: "User has been updated",
-  user: {
-    title: "User Settings",
+    help: "User permissions",
+    label: "User permissions",
+    placeholder: "User permissions",
   },
 };
