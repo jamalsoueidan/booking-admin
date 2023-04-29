@@ -1,7 +1,12 @@
 import { Frame, Icon, Link, Text, TopBar } from "@shopify/polaris";
 import { LanguageMinor } from "@shopify/polaris-icons";
 import { useCallback, useEffect, useState } from "react";
-import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import styled from "styled-components";
 import { getInstallationGetStatusQueryOptions } from "~/api/bookingShopifyApi";
 import { ModalProvider } from "~/providers/modal";
@@ -36,6 +41,7 @@ export const loader = async () => {
 
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const location = useLocation();
   const navigate = useNavigate();
   const { update } = useSettings();
 
@@ -60,10 +66,10 @@ export function Component() {
   // redirect if setup is not done?
   // why is it hiding here?
   useEffect(() => {
-    if (!loaderData.done) {
+    if (!loaderData.done && location.pathname === "/") {
       navigate("/setup");
     }
-  }, [loaderData, navigate]);
+  }, [loaderData, location.pathname, navigate]);
 
   const [, setMobileNavigationActive] = useState(false);
 

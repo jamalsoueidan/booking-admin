@@ -35,10 +35,7 @@ export function Component() {
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
 
   const toggleMobileNavigationActive = useCallback(
-    () =>
-      setMobileNavigationActive(
-        (mobileNavigationActive) => !mobileNavigationActive
-      ),
+    () => setMobileNavigationActive(false),
     []
   );
 

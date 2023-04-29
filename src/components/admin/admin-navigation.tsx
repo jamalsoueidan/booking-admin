@@ -11,6 +11,7 @@ import {
 } from "@shopify/polaris-icons";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { getToken } from "~/providers/ability-provider";
 import { useTranslation } from "~/providers/translate-provider";
 
 type AdminNavigationProps = {
@@ -27,6 +28,8 @@ export const AdminNavigation = ({ toggle }: AdminNavigationProps) => {
     },
     [navigate, toggle]
   );
+
+  const token = getToken();
 
   return (
     <Navigation location="/">
@@ -60,18 +63,18 @@ export const AdminNavigation = ({ toggle }: AdminNavigationProps) => {
         items={[
           {
             icon: CalendarMajor,
-            label: t("user.schedules"),
-            onClick: nav("/admin/my/schedules"),
+            label: t("user.shifts"),
+            onClick: nav(`/admin/my/${token.userId}/shifts`),
           },
           {
             icon: ProfileMajor,
-            label: t("user.account"),
-            onClick: nav("/admin/my/account"),
+            label: t("user.user"),
+            onClick: nav(`/admin/my/${token.userId}/user`),
           },
           {
             icon: SettingsMajor,
             label: t("user.settings"),
-            onClick: nav("/admin/my/settings"),
+            onClick: nav(`/admin/my/${token.userId}/settings`),
           },
           {
             icon: ExitMajor,
@@ -97,9 +100,9 @@ const locales = {
       title: "BySisters",
     },
     user: {
-      account: "Min konto",
+      user: "Min konto",
       logout: "Log ud",
-      schedules: "Min vagtplan",
+      shifts: "Min vagtplan",
       settings: "Min Indstillinger",
       title: "Profil",
     },
@@ -113,9 +116,9 @@ const locales = {
       title: "Application",
     },
     user: {
-      account: "My account",
+      user: "My user",
       logout: "Logout",
-      schedules: "My shifts",
+      shifts: "My shifts",
       settings: "My settings",
       title: "Profile",
     },

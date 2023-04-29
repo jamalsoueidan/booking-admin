@@ -30,7 +30,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export function Component() {
-  const { t } = useTranslation({ id: "login", locales });
+  const { t } = useTranslation({ id: "setup", locales });
 
   const { fields, submit } = useRouterSubmit({
     fields: {

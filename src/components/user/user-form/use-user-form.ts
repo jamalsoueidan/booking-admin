@@ -68,6 +68,14 @@ export const useUserForm = (
         validates: [],
         value: data?.active || true,
       }),
+      language: useField({
+        validates: [],
+        value: data?.language || "da",
+      }),
+      timeZone: useField({
+        validates: [],
+        value: data?.timeZone || "Europe/Copenhagen",
+      }),
     },
   });
 };

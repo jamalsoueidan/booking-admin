@@ -3,14 +3,13 @@ import { useEffect } from "react";
 import { useActionData, useLoaderData } from "react-router-dom";
 import { BadgeStatus } from "~/components/badge-status";
 import { UserForm } from "~/components/user/user-form";
+import { action, loader } from "~/pages/admin/users/edit-user";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
 import { isUser } from "~/types/user";
-import { action } from "./action";
-import { loader } from "./loader";
 
 export function Component() {
-  const { t } = useTranslation({ id: "edit-user", locales });
+  const { t } = useTranslation({ id: "my-user", locales });
   const { show } = useToast();
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const actionData = useActionData() as Awaited<ReturnType<typeof action>>;
@@ -25,10 +24,6 @@ export function Component() {
     <Page
       fullWidth
       title={t("title")}
-      backAction={{
-        content: "User View",
-        url: `../user/${loaderData._id}/shifts`,
-      }}
       titleMetadata={<BadgeStatus active={loaderData?.active || true} />}
     >
       <UserForm data={loaderData} method="put" />
@@ -38,11 +33,11 @@ export function Component() {
 
 const locales = {
   da: {
-    title: "Redigere bruger",
+    title: "Min konto",
     updated: "Konto opdateret",
   },
   en: {
-    title: "Edit user",
+    title: "My user",
     update: "Account updated",
   },
 };

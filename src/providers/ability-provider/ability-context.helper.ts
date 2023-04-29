@@ -1,4 +1,5 @@
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
+import { AuthSession } from "~/api/model";
 import { AbilityContextType, AbilityUser } from "./ability-context";
 
 export const defineAbilityFor = (user: AbilityUser): AbilityContextType => {
@@ -24,7 +25,7 @@ export const defineAbilityFor = (user: AbilityUser): AbilityContextType => {
   return build();
 };
 
-export const getToken = () => {
+export const getToken = (): AuthSession => {
   return parseJwt(localStorage.getItem("token") || "");
 };
 
