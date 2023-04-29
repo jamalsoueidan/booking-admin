@@ -5,11 +5,10 @@ import { InputLanguage } from "~/components/inputs/input-language";
 import { InputTimeZone } from "~/components/inputs/input-time-zone";
 import { useUserForm } from "~/components/user/user-form/use-user-form";
 import { Form } from "~/lib/react-form";
+import { action, loader } from "~/pages/admin/users/edit-user";
 import { useToast } from "~/providers/toast";
 import { useTranslation } from "~/providers/translate-provider";
 import { isUser } from "~/types/user";
-import { action } from "./action";
-import { loader } from "./loader";
 
 export function Component() {
   const { show } = useToast();

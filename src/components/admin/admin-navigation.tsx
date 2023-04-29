@@ -69,12 +69,12 @@ export const AdminNavigation = ({ toggle }: AdminNavigationProps) => {
           {
             icon: ProfileMajor,
             label: t("user.user"),
-            onClick: nav("/admin/my/user"),
+            onClick: nav(`/admin/my/${token.userId}/user`),
           },
           {
             icon: SettingsMajor,
             label: t("user.settings"),
-            onClick: nav("/admin/my/settings"),
+            onClick: nav(`/admin/my/${token.userId}/settings`),
           },
           {
             icon: ExitMajor,

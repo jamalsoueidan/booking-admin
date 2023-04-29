@@ -86,12 +86,9 @@ const router = createBrowserRouter([
         lazy: () => import("./pages/admin/my/shifts"),
         children: ShiftRoutes,
       },
+      { path: "my/:userId/user", lazy: () => import("./pages/admin/my/user") },
       {
-        path: "my/user",
-        lazy: () => import("./pages/admin/my/user"),
-      },
-      {
-        path: "my/settings",
+        path: "my/:userId/settings",
         lazy: () => import("./pages/admin/my/settings"),
       },
       {

@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { ActionFunctionArgs, redirect } from "react-router-dom";
+import { ActionFunctionArgs } from "react-router-dom";
 import {
   getUserGetByIdQueryKey,
   userUpdateById,
@@ -18,8 +18,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       getUserGetByIdQueryKey(params.userId || ""),
       response
     );
-    // needs to handle it via toast
-    return redirect(`../user/${params.userId}/shifts`);
+    return response.data.payload;
   } catch (error) {
     if (error instanceof AxiosError) {
       return error.response?.data;
