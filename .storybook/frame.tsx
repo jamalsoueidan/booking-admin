@@ -1,8 +1,19 @@
 import { Frame, TopBar } from "@shopify/polaris";
 import React, { useCallback, useRef, useState } from "react";
+import {
+  AbilityProvider,
+  defineAbilityFor,
+} from "../src/providers/ability-provider";
 
 export function FrameExample({ children }) {
   const skipToContentRef = useRef<HTMLAnchorElement>(null);
+
+  const ability = defineAbilityFor({
+    isAdmin: true,
+    isOwner: true,
+    isUser: true,
+    userId: "1",
+  });
 
   const [userMenuActive, setUserMenuActive] = useState(false);
 
@@ -47,7 +58,7 @@ export function FrameExample({ children }) {
       topBar={topBarMarkup}
       skipToContentTarget={skipToContentRef}
     >
-      {children}
+      <AbilityProvider ability={ability}>{children}</AbilityProvider>
     </Frame>
   );
 }

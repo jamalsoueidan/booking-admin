@@ -1,11 +1,11 @@
 import { Avatar, AvatarProps } from "@shopify/polaris";
 import { useMemo } from "react";
 import styled from "styled-components";
-import { User } from "~/api/model";
+import { ProductGetByIdUser, User } from "~/api/model";
 import { HelperArray } from "~/helpers/helper-array";
 
 export type UserAvatarStackProps = {
-  users: User[];
+  users: Array<User | ProductGetByIdUser>;
   size: AvatarProps["size"];
   align?: "left" | "right";
 };
@@ -21,9 +21,9 @@ export const UserAvatarStack = ({
     () =>
       [...users]
         .sort(HelperArray.sortByText((d) => d.fullname))
-        .map(({ _id, fullname, avatar }) => (
+        .map(({ phone, fullname, avatar }) => (
           <UserAvatarItemStyled
-            key={_id}
+            key={phone}
             size={size}
             length={users.length}
             align={align}
